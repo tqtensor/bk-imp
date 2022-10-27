@@ -30,7 +30,7 @@ docker-compose down
 
 Define schema.
 
-```json
+```yaml
 db.createCollection("students", {
    validator: {
       $jsonSchema: {
@@ -60,7 +60,7 @@ db.createCollection("students", {
 
 Invalid record.
 
-```json
+```yaml
 db.students.insertOne( {
    name: "Alice",
    year: 2019,
@@ -75,7 +75,7 @@ db.students.insertOne( {
 
 Valid record.
 
-```json
+```yaml
 db.students.insertOne( {
    name: "Alice",
    year: 2019,
