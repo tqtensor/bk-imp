@@ -1,0 +1,3 @@
+[submodule "elastic-docker"]
+path = mini_project/elastic-docker
+url = https://github.com/xeraa/elastic-docker.git
