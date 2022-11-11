@@ -1,4 +1,7 @@
-# Add Documents
+# ElasticSearch
+
+## Add Documents
+
 ```json
 PUT bk_imp/_doc/0
 {
@@ -26,7 +29,8 @@ GET bk_imp/_search
 }
 ```
 
-# Explain Query
+## Explain Query
+
 ```json
 GET /_search
 {
