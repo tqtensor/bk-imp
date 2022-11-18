@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "==6.7"
+py = "==1.4.34"
+pytest = "==3.2.3"
+m3u8 = "==0.3.7"
+requests = "==2.18.4"
+ffmpy = "==0.2.2"
+pydub = "*"
+
+[dev-packages]
+yapf = "*"
+isort = "*"
+pipfile-sort = "*"
+
+[requires]
+python_version = "3.7"
