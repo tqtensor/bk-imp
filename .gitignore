@@ -1,5 +1,7 @@
 *.aac
 .env
 data
+**/.DS_Store
 .idea/*
-mini_project/.DS_Store
+voh/service-account.json
+.vscode
