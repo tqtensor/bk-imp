@@ -76,7 +76,7 @@ def download_file(uri, outputdir, filename):
               default=os.getenv("M3U8_URL"),
               help='URL to HLS m3u8 playlist.')
 @click.option('--freq',
-              default=5,
+              default=10,
               help="Frequency for downloading the HLS m3u8 stream")
 @click.option('--output',
               default=os.getenv("OUTPUT_DIR"),
