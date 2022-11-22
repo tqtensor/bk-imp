@@ -72,12 +72,14 @@ def download_file(uri, outputdir, filename):
 
 
 @click.command()
-@click.option('--url', help='URL to HLS m3u8 playlist.')
+@click.option('--url',
+              default=os.getenv("M3U8_URL"),
+              help='URL to HLS m3u8 playlist.')
 @click.option('--freq',
               default=5,
               help="Frequency for downloading the HLS m3u8 stream")
 @click.option('--output',
-              default="./",
+              default=os.getenv("OUTPUT_DIR"),
               type=click.Path(exists=True),
               help="Output directory for video files")
 @click.option('--verbose', is_flag=True, help="Verbose")

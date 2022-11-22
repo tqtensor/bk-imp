@@ -33,5 +33,10 @@ COPY fetch_hls_stream.py .
 COPY service-account.json .
 
 # Run the application
+ARG CHANNEL
+ENV OUTPUT_DIR=$CHANNEL
+ARG M3U8_URL
+ENV M3U8_URL=$M3U8_URL
+
+RUN mkdir ${CHANNEL}
 ENTRYPOINT ["python", "-m", "fetch_hls_stream"]
-CMD ["--url", "M3U8_URL", "--output", ".", "--freq", "10"]
