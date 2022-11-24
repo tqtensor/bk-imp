@@ -26,5 +26,5 @@ repos:
       - id: poetry-check
       - id: poetry-lock
         files: ^pyproject.toml$
-      # - id: poetry-export
-      #   args: ["-f", "requirements.txt", "-o", "requirements.txt"]
+      - id: poetry-export
+        args: ['-f', 'requirements.txt', '-o', 'requirements.txt']
