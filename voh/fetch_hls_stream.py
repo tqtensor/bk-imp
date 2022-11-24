@@ -1,13 +1,13 @@
+from concurrent.futures import ThreadPoolExecutor
 import datetime
 import logging
 import os
 import time
-from concurrent.futures import ThreadPoolExecutor
 
 import click
-import m3u8
 from google.cloud import storage
 from google.oauth2 import service_account
+import m3u8
 from requests import get
 
 # Set representing chunks that we have already downloaded
