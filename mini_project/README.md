@@ -3,6 +3,7 @@
 ## ElasticSearch
 
 ### Start
+
 ```bash
 cd mini_project/es-docker
 docker-compose up -d
@@ -61,9 +62,45 @@ GET /bk_imp/_explain/1
 }
 ```
 
+### Twitter Query
+
+```json
+PUT twitter/_mapping
+{
+  "properties": {
+    "text": {
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+GET /_search
+{
+  "aggs": {
+    "texts": {
+      "terms": { "field": "text" }
+    }
+  }
+}
+
+GET /_search
+{
+  "query": {
+    "terms": { "text": [ "zoom", "computer", "remote"] }
+  },
+  "aggregations": {
+    "significant_crime_types": {
+      "significant_terms": { "field": "text" }
+    }
+  }
+}
+```
+
 ## PostgreSQL
 
 ### Start
+
 ```bash
 cd mini_project/psql-docker
 docker-compose up -d
@@ -72,6 +109,7 @@ psql -U postgres
 ```
 
 ### Add Documents
+
 ```sql
 create table ts(doc text, doc_tsv tsvector);
 
@@ -94,6 +132,7 @@ select ctid, left(doc,20), doc_tsv from ts;
 ```
 
 ### Query
+
 ```sql
 select doc from ts where doc_tsv @@ to_tsquery('many & slitter');
 ```
