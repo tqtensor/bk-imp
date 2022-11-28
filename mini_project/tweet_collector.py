@@ -81,6 +81,7 @@ def get_stream(set):
     for response_line in response.iter_lines():
         if response_line:
             json_response = json.loads(response_line)
+            print(json_response)
             # Ingest to ElasticSearch
             es_response = es.index(index="twitter",
                                    document={
