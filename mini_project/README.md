@@ -87,10 +87,10 @@ GET /_search
 GET /_search
 {
   "query": {
-    "terms": { "text": [ "zoom", "computer", "remote"] }
+    "terms": { "text": [ "election", "elon"] }
   },
   "aggregations": {
-    "significant_crime_types": {
+    "significance": {
       "significant_terms": { "field": "text" }
     }
   }
