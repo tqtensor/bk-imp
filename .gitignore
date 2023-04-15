@@ -1,7 +1,5 @@
 *.aac
 .env
-data
-**/.DS_Store
-.idea/*
-voh/service-account.json
+.DS_Store
+graph-based_recsys.png
 .vscode
