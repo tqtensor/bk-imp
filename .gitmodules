@@ -1,6 +1,6 @@
 [submodule "es-docker"]
-path = mini_project/es-docker
+path = de-mini-project/es-docker
 url = https://github.com/xeraa/elastic-docker.git
 [submodule "psql-docker"]
-path = mini_project/psql-docker
+path = de-mini-project/psql-docker
 url = https://github.com/khezen/compose-postgres.git
