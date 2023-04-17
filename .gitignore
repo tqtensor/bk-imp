@@ -1,5 +1,6 @@
 *.aac
 .env
 .DS_Store
-graph-based_recsys.png
+*.json
+*.png
 .vscode
