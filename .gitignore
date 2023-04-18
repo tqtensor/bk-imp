@@ -4,3 +4,6 @@
 *.json
 *.png
 .vscode
+
+bigdata-mini-project/docker/neo4j/data/
+bigdata-mini-project/docker/neo4j/logs/
