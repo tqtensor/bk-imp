@@ -27,6 +27,7 @@ torchaudio = "^2.0.1"
 torchvision = "^0.15.1"
 tqdm = "^4.64.1"
 tweepy = "^4.12.1"
+pyarrow = "^12.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.22.0"
