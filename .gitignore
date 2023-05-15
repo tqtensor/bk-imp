@@ -1,7 +1,23 @@
+# Ignore audio files
 *.aac
+
+# Ignore environment files
 .env
-data
+
+# Ignore data directory
+data/
+
+# Ignore macOS .DS_Store files in all directories
 **/.DS_Store
-.idea/*
+
+# Ignore IDEA project files
+.idea/
+
+# Ignore Google Cloud service account credentials file
 voh/service-account.json
-.vscode
+
+# Ignore Visual Studio Code files
+.vscode/
+
+# Ignore Jupyter Notebook checkpoint files
+.ipynb_checkpoints/
