@@ -21,3 +21,6 @@ voh/service-account.json
 
 # Ignore Jupyter Notebook checkpoint files
 .ipynb_checkpoints/
+
+# Ignore log files
+*.log
