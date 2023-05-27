@@ -24,3 +24,9 @@ voh/service-account.json
 
 # Ignore log files
 *.log
+
+# Ignore JSON files
+*.json
+
+# OSM data files
+*.graphml
