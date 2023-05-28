@@ -1,17 +1,15 @@
 import copy
+import multiprocessing
 import os
 import pickle
 import random
 
 import networkx as nx
-import multiprocessing
-import ctypes
 import numpy as np
 import osmnx as ox
-from networkx import Graph
-
 import pulp as pl
 from haversine import Unit, haversine_vector
+from networkx import Graph
 from networkx.exception import NetworkXNoPath
 from tqdm.auto import tqdm
 
@@ -25,13 +23,23 @@ os.environ["PATH"] += (
     + os.environ["CPO_HOME"]
     + "/bin/x86-64_linux"
 )
-os.environ["LD_LIBRARY_PATH"] += (
-    ":"
-    + os.environ["CPLEX_HOME"]
-    + "/bin/x86-64_linux:"
-    + os.environ["CPO_HOME"]
-    + "/bin/x86-64_linux"
-)
+LD_LIBRARY_PATH = os.environ.get("LD_LIBRARY_PATH")
+if LD_LIBRARY_PATH:
+    os.environ["LD_LIBRARY_PATH"] = LD_LIBRARY_PATH + (
+        ":"
+        + os.environ["CPLEX_HOME"]
+        + "/bin/x86-64_linux:"
+        + os.environ["CPO_HOME"]
+        + "/bin/x86-64_linux"
+    )
+else:
+    os.environ["LD_LIBRARY_PATH"] = (
+        ":"
+        + os.environ["CPLEX_HOME"]
+        + "/bin/x86-64_linux:"
+        + os.environ["CPO_HOME"]
+        + "/bin/x86-64_linux"
+    )
 os.environ[
     "PYTHONPATH"
 ] = "/opt/ibm/ILOG/CPLEX_Studio2211/cplex/python/3.10/x86-64_linux"
@@ -129,7 +137,7 @@ def solve_problem(exp: int, it: int):
         f.write(f"Total cost: {pl.value(problem.objective)}\n")
         f.write(
             "Num of updated distances: {}\n".format(
-                np.sum(updated_cost == True)
+                np.sum(updated_cost is True)
             )
         )
 
@@ -184,13 +192,13 @@ if __name__ == "__main__":
         # Define problem variables
         warehouse_ids = range(M)
         w_cost = random.sample(
-            range(100, 301), M
+            range(100, 100 + M), M
         )  # Operational cost of warehouses
         w_capacity = random.sample(
-            range(13000, 15001), M
+            range(13000, 13000 + M), M
         )  # Operational cost of warehouses
         store_ids = range(N)
-        demands = random.sample(range(10, 2011), N)  # Daily demand of stores
+        demands = random.sample(range(10, 10 + N), N)  # Daily demand of stores
         d_cost = copy.copy(
             dinstance_matrix
         )  # Delivery cost between warehouses vs stores
@@ -202,7 +210,8 @@ if __name__ == "__main__":
             demands
         ), "All warehouses' capacity is less than stores' demands"
 
-        # We will continously update the distance matrix until there is no change
+        # We will continously update the distance matrix
+        # until there is no change
         for i in range(10000):
             print(f"Iteration {i+1}")
 
