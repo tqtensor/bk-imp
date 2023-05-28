@@ -4,8 +4,12 @@ import pickle
 import random
 
 import networkx as nx
+import multiprocessing
+import ctypes
 import numpy as np
 import osmnx as ox
+from networkx import Graph
+
 import pulp as pl
 from haversine import Unit, haversine_vector
 from networkx.exception import NetworkXNoPath
@@ -33,7 +37,13 @@ os.environ[
 ] = "/opt/ibm/ILOG/CPLEX_Studio2211/cplex/python/3.10/x86-64_linux"
 
 
-def calculate_distance(graph, source_node, target_node):
+# Number of threads
+threads = multiprocessing.cpu_count() - 2
+
+
+def calculate_distance(
+    graph: Graph, source_node: int, target_node: int
+) -> int:
     try:
         shortest_path_length = (
             nx.shortest_path_length(
@@ -46,26 +56,39 @@ def calculate_distance(graph, source_node, target_node):
     return shortest_path_length
 
 
+def update_distance(args):
+    w, s = args
+    new_cost = calculate_distance(graph, warehouses[w][0], stores[s][0])
+    return w, s, new_cost
+
+
 def update_distance_matrix(wr: dict):
     to_update = []
     for w in warehouse_ids:
         for s in store_ids:
-            if (pl.value(wr[w][s]) == 1) & (not updated_cost[w][s]):
+            if (pl.value(wr[w][s]) == 1) and (not updated_cost[w][s]):
                 to_update.append((w, s))
 
-    for w, s in tqdm(
-        to_update, total=len(to_update), desc="Updating distance matrix"
-    ):
-        new_cost = calculate_distance(
-            graph,
-            warehouses[w][0],
-            stores[s][0],
+    num_processes = max(threads, 1)
+    pool = multiprocessing.Pool(processes=num_processes)
+    results = list(
+        tqdm(
+            pool.imap(update_distance, to_update),
+            total=len(to_update),
+            desc="Updating distance matrix",
         )
+    )
+
+    # Update d_cost with the collected new_cost values
+    for w, s, new_cost in results:
         d_cost[w][s] = new_cost
         updated_cost[w][s] = True
 
+    pool.close()
+    pool.join()
 
-def solve_problem():
+
+def solve_problem(exp: int, it: int):
     # Set up the problem
     problem = pl.LpProblem("Warehouse_Optimization", pl.LpMinimize)
 
@@ -95,10 +118,20 @@ def solve_problem():
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=120, threads=6, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=60, threads=threads, msg=0))
 
     # Print the total cost
-    print("Total Cost: ", pl.value(problem.objective))
+    print("Total cost: ", pl.value(problem.objective))
+
+    # Save the results
+    with open(f"results/exp{exp+1}/result.txt", "a") as f:
+        f.write(f"Iteration {it+1}\n")
+        f.write(f"Total cost: {pl.value(problem.objective)}\n")
+        f.write(
+            "Num of updated distances: {}\n".format(
+                np.sum(updated_cost == True)
+            )
+        )
 
     # Update distance matrix
     update_distance_matrix(wr)
@@ -120,52 +153,65 @@ if __name__ == "__main__":
     with open("stores.pkl", "rb") as f:
         stores = pickle.load(f)
 
-    M = 100  # Number of warehouses
-    N = 1000  # Number of stores
+    for exp in range(10):
+        print(f"Experiment {exp+1}")
+        os.makedirs(f"results/exp{exp+1}", exist_ok=True)
 
-    # Randomly select M warehouses and N stores
-    warehouses = random.sample(warehouses, k=M)
-    stores = random.sample(stores, k=N)
+        M = random.randint(100, 150)  # Number of warehouses
+        N = random.randint(10, 20) * M  # Number of stores
 
-    # Calculate distance matrix
-    dinstance_matrix = haversine_vector(
-        [(store[1], store[2]) for store in stores],
-        [(warehouse[1], warehouse[2]) for warehouse in warehouses],
-        Unit.KILOMETERS,
-        comb=True,
-    )
+        # Randomly select M warehouses and N stores
+        warehouses = random.sample(warehouses, k=M)
+        stores = random.sample(stores, k=N)
 
-    # Define problem variables
-    warehouse_ids = range(M)
-    w_cost = random.sample(
-        range(100, 201), M
-    )  # Operational cost of warehouses
-    w_capacity = random.sample(
-        range(13000, 15001), M
-    )  # Operational cost of warehouses
-    store_ids = range(N)
-    demands = random.sample(range(10, 1101), N)  # Daily demand of stores
-    d_cost = copy.copy(
-        dinstance_matrix
-    )  # Delivery cost between warehouses vs stores
-    updated_cost = np.full_like(
-        d_cost, False
-    )  # Whether the cost is updated based on actual map distance
+        # Save the selected warehouses and stores
+        with open(f"results/exp{exp+1}/warehouses.pkl", "wb") as f:
+            pickle.dump(warehouses, f)
+        with open(f"results/exp{exp+1}/stores.pkl", "wb") as f:
+            pickle.dump(stores, f)
+        with open(f"results/exp{exp+1}/result.txt", "a") as f:
+            f.write(f"Number of warehouses: {M}\n")
+            f.write(f"Number of stores: {N}\n")
 
-    assert sum(w_capacity) > sum(
-        demands
-    ), "All warehouses' capacity is less than stores' demands"
+        # Calculate distance matrix
+        dinstance_matrix = haversine_vector(
+            [(store[1], store[2]) for store in stores],
+            [(warehouse[1], warehouse[2]) for warehouse in warehouses],
+            Unit.KILOMETERS,
+            comb=True,
+        )
 
-    # We will continously update the distance matrix until there is no change
-    for i in range(100):
-        print(f"Iteration {i+1}")
+        # Define problem variables
+        warehouse_ids = range(M)
+        w_cost = random.sample(
+            range(100, 301), M
+        )  # Operational cost of warehouses
+        w_capacity = random.sample(
+            range(13000, 15001), M
+        )  # Operational cost of warehouses
+        store_ids = range(N)
+        demands = random.sample(range(10, 2011), N)  # Daily demand of stores
+        d_cost = copy.copy(
+            dinstance_matrix
+        )  # Delivery cost between warehouses vs stores
+        updated_cost = np.full_like(
+            d_cost, False
+        )  # Whether the cost is updated based on actual map distance
 
-        # Capture the current distance matrix
-        d_cost_old = copy.copy(d_cost)
+        assert sum(w_capacity) > sum(
+            demands
+        ), "All warehouses' capacity is less than stores' demands"
 
-        # Solve the problem and update distance matrix
-        solve_problem()
+        # We will continously update the distance matrix until there is no change
+        for i in range(10000):
+            print(f"Iteration {i+1}")
 
-        # Check if the distance matrix is updated
-        if np.array_equal(d_cost, d_cost_old):
-            break
+            # Capture the current distance matrix
+            d_cost_old = copy.copy(d_cost)
+
+            # Solve the problem and update distance matrix
+            solve_problem(exp=exp, it=i)
+
+            # Check if the distance matrix is updated
+            if np.array_equal(d_cost, d_cost_old):
+                break

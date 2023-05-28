@@ -30,3 +30,6 @@ voh/service-account.json
 
 # OSM data files
 *.graphml
+
+# Results files
+results
