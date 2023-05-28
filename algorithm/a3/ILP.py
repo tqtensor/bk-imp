@@ -137,7 +137,7 @@ def solve_problem(exp: int, it: int):
         f.write(f"Total cost: {pl.value(problem.objective)}\n")
         f.write(
             "Num of updated distances: {}\n".format(
-                np.sum(updated_cost is True)
+                np.sum(updated_cost == True)  # noqa
             )
         )
 
@@ -162,65 +162,70 @@ if __name__ == "__main__":
         stores = pickle.load(f)
 
     for exp in range(10):
-        print(f"Experiment {exp+1}")
-        os.makedirs(f"results/exp{exp+1}", exist_ok=True)
+        try:
+            print(f"Experiment {exp+1}")
+            os.makedirs(f"results/exp{exp+1}", exist_ok=True)
 
-        M = random.randint(100, 150)  # Number of warehouses
-        N = random.randint(10, 20) * M  # Number of stores
+            M = random.randint(100, 150)  # Number of warehouses
+            N = random.randint(10, 20) * M  # Number of stores
 
-        # Randomly select M warehouses and N stores
-        warehouses = random.sample(warehouses, k=M)
-        stores = random.sample(stores, k=N)
+            # Randomly select M warehouses and N stores
+            warehouses = random.sample(warehouses, k=M)
+            stores = random.sample(stores, k=N)
 
-        # Save the selected warehouses and stores
-        with open(f"results/exp{exp+1}/warehouses.pkl", "wb") as f:
-            pickle.dump(warehouses, f)
-        with open(f"results/exp{exp+1}/stores.pkl", "wb") as f:
-            pickle.dump(stores, f)
-        with open(f"results/exp{exp+1}/result.txt", "a") as f:
-            f.write(f"Number of warehouses: {M}\n")
-            f.write(f"Number of stores: {N}\n")
+            # Save the selected warehouses and stores
+            with open(f"results/exp{exp+1}/warehouses.pkl", "wb") as f:
+                pickle.dump(warehouses, f)
+            with open(f"results/exp{exp+1}/stores.pkl", "wb") as f:
+                pickle.dump(stores, f)
+            with open(f"results/exp{exp+1}/result.txt", "a") as f:
+                f.write(f"Number of warehouses: {M}\n")
+                f.write(f"Number of stores: {N}\n")
 
-        # Calculate distance matrix
-        dinstance_matrix = haversine_vector(
-            [(store[1], store[2]) for store in stores],
-            [(warehouse[1], warehouse[2]) for warehouse in warehouses],
-            Unit.KILOMETERS,
-            comb=True,
-        )
+            # Calculate distance matrix
+            dinstance_matrix = haversine_vector(
+                [(store[1], store[2]) for store in stores],
+                [(warehouse[1], warehouse[2]) for warehouse in warehouses],
+                Unit.KILOMETERS,
+                comb=True,
+            )
 
-        # Define problem variables
-        warehouse_ids = range(M)
-        w_cost = random.sample(
-            range(100, 100 + M), M
-        )  # Operational cost of warehouses
-        w_capacity = random.sample(
-            range(13000, 13000 + M), M
-        )  # Operational cost of warehouses
-        store_ids = range(N)
-        demands = random.sample(range(10, 10 + N), N)  # Daily demand of stores
-        d_cost = copy.copy(
-            dinstance_matrix
-        )  # Delivery cost between warehouses vs stores
-        updated_cost = np.full_like(
-            d_cost, False
-        )  # Whether the cost is updated based on actual map distance
+            # Define problem variables
+            warehouse_ids = range(M)
+            w_cost = random.sample(
+                range(100, 100 + M), M
+            )  # Operational cost of warehouses
+            w_capacity = random.sample(
+                range(13000, 13000 + M), M
+            )  # Operational cost of warehouses
+            store_ids = range(N)
+            demands = random.sample(
+                range(10, 10 + N), N
+            )  # Daily demand of stores
+            d_cost = copy.copy(
+                dinstance_matrix
+            )  # Delivery cost between warehouses vs stores
+            updated_cost = np.full_like(
+                d_cost, False
+            )  # Whether the cost is updated based on actual map distance
 
-        assert sum(w_capacity) > sum(
-            demands
-        ), "All warehouses' capacity is less than stores' demands"
+            assert sum(w_capacity) > sum(
+                demands
+            ), "All warehouses' capacity is less than stores' demands"
 
-        # We will continously update the distance matrix
-        # until there is no change
-        for i in range(10000):
-            print(f"Iteration {i+1}")
+            # We will continously update the distance matrix
+            # until there is no change
+            for i in range(10000):
+                print(f"Iteration {i+1}")
 
-            # Capture the current distance matrix
-            d_cost_old = copy.copy(d_cost)
+                # Capture the current distance matrix
+                d_cost_old = copy.copy(d_cost)
 
-            # Solve the problem and update distance matrix
-            solve_problem(exp=exp, it=i)
+                # Solve the problem and update distance matrix
+                solve_problem(exp=exp, it=i)
 
-            # Check if the distance matrix is updated
-            if np.array_equal(d_cost, d_cost_old):
-                break
+                # Check if the distance matrix is updated
+                if np.array_equal(d_cost, d_cost_old):
+                    break
+        except Exception as ex:
+            print(ex)
