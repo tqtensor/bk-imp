@@ -191,23 +191,32 @@ if __name__ == "__main__":
             )
 
             # Define problem variables
-            warehouse_ids = range(M)
-            w_cost = random.sample(
-                range(100, 100 + M), M
-            )  # Operational cost of warehouses
-            w_capacity = random.sample(
-                range(13000, 13000 + M), M
-            )  # Operational cost of warehouses
             store_ids = range(N)
             demands = random.sample(
                 range(10, 10 + N), N
             )  # Daily demand of stores
+            total_demand = sum(demands)
+
             d_cost = copy.copy(
                 dinstance_matrix
             )  # Delivery cost between warehouses vs stores
             updated_cost = np.full_like(
                 d_cost, False
             )  # Whether the cost is updated based on actual map distance
+
+            warehouse_ids = range(M)
+            w_cost = random.sample(
+                range(100, 100 + M), M
+            )  # Operational cost of warehouses
+            # Generate warehouse capacities until the sum is larger than
+            # the total demands
+            w_capacity_sum = 0
+            w_capacity = []
+            while w_capacity_sum <= total_demand:
+                w_capacity = random.sample(
+                    range(13000, 15001), M
+                )  # Operational cost of warehouses
+                w_capacity_sum = sum(w_capacity)
 
             assert sum(w_capacity) > sum(
                 demands
