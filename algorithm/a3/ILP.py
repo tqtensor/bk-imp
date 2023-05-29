@@ -126,7 +126,7 @@ def solve_problem(exp: int, it: int):
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=60, threads=threads, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=600, gapRel=0.01, msg=0))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
