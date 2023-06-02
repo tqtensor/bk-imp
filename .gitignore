@@ -25,3 +25,6 @@ voh/service-account.json
 # Ignore audio and video files
 *.mp4
 *.wav
+
+# Ignore log files
+*.log

@@ -1,16 +1,13 @@
 import os
+import re
+import shutil
+import tempfile
+import wave
 
+import ffmpeg
+import webrtcvad
 from dotenv import load_dotenv
 from minio import Minio
-
-import tempfile
-import ffmpeg
-import shutil
-import wave
-import webrtcvad
-
-
-import re
 
 # Load environment variables from .env file
 load_dotenv()
@@ -131,7 +128,7 @@ def convert_audio_format(obj) -> str:
 
 
 if __name__ == "__main__":
-    ## Download audio files from MinIO ##
+    # Download audio files from MinIO #
     # Configure MinIO client
     minio_client = Minio(
         "11.11.1.100:9000",
