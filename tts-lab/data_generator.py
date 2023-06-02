@@ -41,59 +41,64 @@ def generate_voice_clips(input_file, output_folder, clip_duration):
     )  # Convert frame duration to samples
 
     # Find voice activity and generate voice clips
-    start_frame = 0
-    clip_count = 1
-    while start_frame < num_frames:
-        # Find the start frame of the voice activity
-        end_frame = min(start_frame + clip_frames, num_frames)
-        num_frames_processed = start_frame
-        while num_frames_processed < end_frame:
-            frame_end = min(num_frames_processed + frame_size, end_frame)
-            frame = pcm_data[
-                num_frames_processed * sample_width : frame_end * sample_width
-            ]
-            if vad.is_speech(frame, sample_rate):
-                start_frame = num_frames_processed
-                break
-            num_frames_processed += frame_size
-
-        # Check if voice activity is found
-        if start_frame is not None:
-            # Calculate the end frame based on the clip duration
+    try:
+        start_frame = 0
+        clip_count = 1
+        while start_frame < num_frames:
+            # Find the start frame of the voice activity
             end_frame = min(start_frame + clip_frames, num_frames)
+            num_frames_processed = start_frame
+            while num_frames_processed < end_frame:
+                frame_end = min(num_frames_processed + frame_size, end_frame)
+                frame = pcm_data[
+                    num_frames_processed
+                    * sample_width : frame_end
+                    * sample_width
+                ]
+                if vad.is_speech(frame, sample_rate):
+                    start_frame = num_frames_processed
+                    break
+                num_frames_processed += frame_size
 
-            # Extract the voice clip data
-            clip_data = pcm_data[
-                start_frame * sample_width : end_frame * sample_width
-            ]
+            # Check if voice activity is found
+            if start_frame is not None:
+                # Calculate the end frame based on the clip duration
+                end_frame = min(start_frame + clip_frames, num_frames)
 
-            # Write the voice clip to the output file
-            clip_file = os.path.join(
-                output_folder, f"{base_name}_{clip_count:03d}.wav"
-            )
-            with wave.open(clip_file, "wb") as wav_out:
-                wav_out.setparams(
-                    (
-                        1,
-                        sample_width,
-                        sample_rate,
-                        len(clip_data),
-                        "NONE",
-                        "not compressed",
-                    )
+                # Extract the voice clip data
+                clip_data = pcm_data[
+                    start_frame * sample_width : end_frame * sample_width
+                ]
+
+                # Write the voice clip to the output file
+                clip_file = os.path.join(
+                    output_folder, f"{base_name}_{clip_count:03d}.wav"
                 )
-                wav_out.writeframes(clip_data)
-            print(f"Voice clip generated: {clip_file}")
+                with wave.open(clip_file, "wb") as wav_out:
+                    wav_out.setparams(
+                        (
+                            1,
+                            sample_width,
+                            sample_rate,
+                            len(clip_data),
+                            "NONE",
+                            "not compressed",
+                        )
+                    )
+                    wav_out.writeframes(clip_data)
+                print(f"Voice clip generated: {clip_file}")
 
-            # Update the start frame for the next iteration
-            start_frame = end_frame
-            clip_count += 1
-        else:
-            print("No voice activity found in the input file.")
-            break
+                # Update the start frame for the next iteration
+                start_frame = end_frame
+                clip_count += 1
+            else:
+                print("No voice activity found in the input file.")
+                break
+    except Exception as ex:
+        print(ex)
 
     # Clean up
-    os.remove
+    os.remove(input_file)
 
 
 def convert_audio_format(obj) -> str:
