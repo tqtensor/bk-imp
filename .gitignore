@@ -22,5 +22,6 @@ voh/service-account.json
 # Ignore Jupyter Notebook checkpoint files
 .ipynb_checkpoints/
 
-# Ignore video files
+# Ignore audio and video files
 *.mp4
+*.wav
