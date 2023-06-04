@@ -126,7 +126,7 @@ def solve_problem(exp: int, it: int):
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=60, gapRel=0.01, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=300, gapRel=0.01, msg=0))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
@@ -169,8 +169,8 @@ if __name__ == "__main__":
             print(f"Experiment {exp+1}")
             os.makedirs(f"results/exp{exp+1}", exist_ok=True)
 
-            M = random.randint(100, 150)  # Number of warehouses
-            N = random.randint(10, 20) * M  # Number of stores
+            M = random.randint(100, 250)  # Number of warehouses
+            N = 1000  # Number of stores
 
             # Randomly select M warehouses and N stores
             warehouses = random.sample(warehouses, k=M)
