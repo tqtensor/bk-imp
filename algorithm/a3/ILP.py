@@ -126,7 +126,7 @@ def solve_problem(exp: int, it: int):
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=600, gapRel=0.01, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=60, gapRel=0.01, msg=0))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
@@ -140,6 +140,9 @@ def solve_problem(exp: int, it: int):
                 np.sum(updated_cost == True)  # noqa
             )
         )
+
+    with open(f"results/exp{exp+1}/wr.pkl", "wb") as f:
+        f.write(pickle.dumps(wr))
 
     # Update distance matrix
     update_distance_matrix(wr)
@@ -182,7 +185,7 @@ if __name__ == "__main__":
                 f.write(f"Number of warehouses: {M}\n")
                 f.write(f"Number of stores: {N}\n")
 
-            # Calculate distance matrix
+            # Calculate distance matrix based on Harversine formula
             dinstance_matrix = haversine_vector(
                 [(store[1], store[2]) for store in stores],
                 [(warehouse[1], warehouse[2]) for warehouse in warehouses],
@@ -193,7 +196,7 @@ if __name__ == "__main__":
             # Define problem variables
             store_ids = range(N)
             demands = random.sample(
-                range(10, 10 + N), N
+                range(10, 11 + N), N
             )  # Daily demand of stores
             total_demand = sum(demands)
 
@@ -206,17 +209,19 @@ if __name__ == "__main__":
 
             warehouse_ids = range(M)
             w_cost = random.sample(
-                range(100, 100 + M), M
+                range(100, 101 + M), M
             )  # Operational cost of warehouses
             # Generate warehouse capacities until the sum is larger than
             # the total demands
             w_capacity_sum = 0
             w_capacity = []
+            start_capacity = 1000
             while w_capacity_sum <= total_demand:
                 w_capacity = random.sample(
-                    range(13000, 15001), M
+                    range(start_capacity, start_capacity + 1 + M), M
                 )  # Operational cost of warehouses
                 w_capacity_sum = sum(w_capacity)
+                start_capacity += 1000
 
             assert sum(w_capacity) > sum(
                 demands
