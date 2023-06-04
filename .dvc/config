@@ -1,0 +1,4 @@
+[core]
+    remote = tts-lab
+['remote "tts-lab"']
+    url = gs://thaitang-backup
