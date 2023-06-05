@@ -105,18 +105,23 @@ def solve_problem(exp: int, it: int):
         "warehouse_store_connection", (warehouse_ids, store_ids), cat="Binary"
     )
 
+    chosen_warehouse = pl.LpVariable.dicts(
+        "chosen_warehouse", warehouse_ids, cat="Binary"
+    )
+
     # Objective function
     total_cost = pl.lpSum(
-        w_cost[w] * wr[w][s] + d_cost[w][s] * wr[w][s]
+        w_cost[w] + pl.lpSum(d_cost[w][s] * wr[w][s] for s in store_ids)
+        if chosen_warehouse[w] == 1
+        else 0
         for w in warehouse_ids
-        for s in store_ids
     )
     problem += total_cost
 
     # Constraints
     # Each store must be assigned to one warehouse
-    for i in store_ids:
-        problem += pl.lpSum(wr[j][i] for j in warehouse_ids) == 1
+    for s in store_ids:
+        problem += pl.lpSum(wr[w][s] for w in warehouse_ids) == 1
 
     # Total demand of assigned stores for a warehouse
     # must be smaller than its capacity
@@ -125,8 +130,17 @@ def solve_problem(exp: int, it: int):
             pl.lpSum(demands[s] * wr[w][s] for s in store_ids) <= w_capacity[w]
         )
 
+    # The number of chosen warehouses should be less than 19
+    problem += pl.lpSum(chosen_warehouse[w] for w in warehouse_ids) <= 19
+
+    # If a warehouse is chosen, then at least one store must be assigned
+    for w in warehouse_ids:
+        problem += (
+            pl.lpSum(wr[w][s] for s in store_ids) <= 1000 * chosen_warehouse[w]
+        )
+
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=300, gapRel=0.01, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=1800, gapRel=0.0001, msg=1))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
@@ -160,21 +174,21 @@ if __name__ == "__main__":
 
     # Load warehouses and stores data
     with open("warehouses.pkl", "rb") as f:
-        warehouses = pickle.load(f)
+        master_warehouses = pickle.load(f)
     with open("stores.pkl", "rb") as f:
-        stores = pickle.load(f)
+        master_stores = pickle.load(f)
 
     for exp in range(10):
         try:
             print(f"Experiment {exp+1}")
             os.makedirs(f"results/exp{exp+1}", exist_ok=True)
 
-            M = random.randint(100, 250)  # Number of warehouses
+            M = 50  # Number of warehouses
             N = 1000  # Number of stores
 
             # Randomly select M warehouses and N stores
-            warehouses = random.sample(warehouses, k=M)
-            stores = random.sample(stores, k=N)
+            warehouses = random.sample(master_warehouses, k=M)
+            stores = random.sample(master_stores, k=N)
 
             # Save the selected warehouses and stores
             with open(f"results/exp{exp+1}/warehouses.pkl", "wb") as f:
@@ -195,9 +209,9 @@ if __name__ == "__main__":
 
             # Define problem variables
             store_ids = range(N)
-            demands = random.sample(
-                range(10, 11 + N), N
-            )  # Daily demand of stores
+            demands = [
+                random.randint(100, 200) for _ in range(N)
+            ]  # Daily demand of stores
             total_demand = sum(demands)
 
             d_cost = copy.copy(
@@ -208,20 +222,23 @@ if __name__ == "__main__":
             )  # Whether the cost is updated based on actual map distance
 
             warehouse_ids = range(M)
-            w_cost = random.sample(
-                range(100, 101 + M), M
-            )  # Operational cost of warehouses
+            w_cost = [
+                random.randint(100, 200) for _ in range(M)
+            ]  # Operational cost of warehouses
             # Generate warehouse capacities until the sum is larger than
             # the total demands
             w_capacity_sum = 0
             w_capacity = []
-            start_capacity = 1000
-            while w_capacity_sum <= total_demand:
-                w_capacity = random.sample(
-                    range(start_capacity, start_capacity + 1 + M), M
-                )  # Operational cost of warehouses
+            start_capacity = 100
+            while (
+                w_capacity_sum / 50 * 19 <= total_demand
+            ):  # because we want to select 19 from 50 warehouses
+                w_capacity = [
+                    random.randint(start_capacity - 50, start_capacity + 50)
+                    for _ in range(M)
+                ]  # Operational cost of warehouses
                 w_capacity_sum = sum(w_capacity)
-                start_capacity += 1000
+                start_capacity += 100
 
             assert sum(w_capacity) > sum(
                 demands
