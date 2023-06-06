@@ -49,6 +49,26 @@ os.environ[
 threads = multiprocessing.cpu_count() - 2
 
 
+def check_early_stopping(log_file, window_size=10, threshold=10):
+    num_updated_distances = []
+    with open(log_file, "r") as file:
+        lines = file.readlines()
+
+    for line in lines:
+        if line.startswith("Num of updated distances:"):
+            num_updated = int(line.split(":")[-1].strip())
+            num_updated_distances.append(num_updated)
+
+    if len(num_updated_distances) < window_size:
+        return False  # Not enough iterations for early stopping
+
+    last_window = num_updated_distances[-window_size:]
+    for i in range(window_size - 1):
+        if abs(last_window[i] - last_window[i + 1]) > threshold:
+            return False  # Continue optimization
+    return True  # Perform early stopping
+
+
 def calculate_distance(
     graph: Graph, source_node: int, target_node: int
 ) -> int:
@@ -249,14 +269,13 @@ if __name__ == "__main__":
             for i in range(10000):
                 print(f"Iteration {i+1}")
 
-                # Capture the current distance matrix
-                d_cost_old = copy.copy(d_cost)
-
                 # Solve the problem and update distance matrix
                 solve_problem(exp=exp, it=i, time_limit=180, gap_rel=1e-3)
 
-                # Check if the distance matrix is updated
-                if np.array_equal(d_cost, d_cost_old):
+                # Check early stopping condition
+                if check_early_stopping(
+                    f"results/exp{exp+1}/result.txt", 5, 10
+                ):
                     # Solve the problem one more time with very small gap
                     # to make sure the solution is optimal
                     print(f"Final iteration {i+1}")
