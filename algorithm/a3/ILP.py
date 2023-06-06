@@ -96,7 +96,7 @@ def update_distance_matrix(wr: dict):
     pool.join()
 
 
-def solve_problem(exp: int, it: int):
+def solve_problem(exp: int, it: int, time_limit: int, gap_rel: float):
     # Set up the problem
     problem = pl.LpProblem("Warehouse_Optimization", pl.LpMinimize)
 
@@ -140,7 +140,7 @@ def solve_problem(exp: int, it: int):
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=1800, gapRel=0.0001, msg=1))
+    problem.solve(pl.CPLEX_CMD(timeLimit=time_limit, gapRel=gap_rel, msg=0))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
@@ -253,10 +253,16 @@ if __name__ == "__main__":
                 d_cost_old = copy.copy(d_cost)
 
                 # Solve the problem and update distance matrix
-                solve_problem(exp=exp, it=i)
+                solve_problem(exp=exp, it=i, time_limit=180, gap_rel=1e-3)
 
                 # Check if the distance matrix is updated
                 if np.array_equal(d_cost, d_cost_old):
+                    # Solve the problem one more time with very small gap
+                    # to make sure the solution is optimal
+                    print(f"Final iteration {i+1}")
+                    solve_problem(
+                        exp=exp, it=i + 1, time_limit=3600, gap_rel=1e-6
+                    )
                     break
         except Exception as ex:
             print(ex)
