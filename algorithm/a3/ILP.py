@@ -64,7 +64,9 @@ def check_early_stopping(log_file, window_size=10, threshold=10):
 
     last_window = num_updated_distances[-window_size:]
     for i in range(window_size - 1):
-        if abs(last_window[i] - last_window[i + 1]) > threshold:
+        if abs((last_window[i + 1] / (last_window[i] + 1)) - 1) > (
+            threshold / 100
+        ):
             return False  # Continue optimization
     return True  # Perform early stopping
 
@@ -116,7 +118,7 @@ def update_distance_matrix(wr: dict):
     pool.join()
 
 
-def solve_problem(exp: int, it: int, time_limit: int, gap_rel: float):
+def solve_problem(exp: int, it: int, time_limit: int):
     # Set up the problem
     problem = pl.LpProblem("Warehouse_Optimization", pl.LpMinimize)
 
@@ -160,7 +162,7 @@ def solve_problem(exp: int, it: int, time_limit: int, gap_rel: float):
         )
 
     # Solve the problem using CPLEX solver
-    problem.solve(pl.CPLEX_CMD(timeLimit=time_limit, gapRel=gap_rel, msg=0))
+    problem.solve(pl.CPLEX_CMD(timeLimit=time_limit, msg=1))
 
     # Print the total cost
     print("Total cost: ", pl.value(problem.objective))
@@ -270,18 +272,16 @@ if __name__ == "__main__":
                 print(f"Iteration {i+1}")
 
                 # Solve the problem and update distance matrix
-                solve_problem(exp=exp, it=i, time_limit=180, gap_rel=1e-3)
+                solve_problem(exp=exp, it=i, time_limit=180)
 
                 # Check early stopping condition
                 if check_early_stopping(
-                    f"results/exp{exp+1}/result.txt", 5, 10
+                    f"results/exp{exp+1}/result.txt", 5, 5
                 ):
                     # Solve the problem one more time with very small gap
                     # to make sure the solution is optimal
                     print(f"Final iteration {i+1}")
-                    solve_problem(
-                        exp=exp, it=i + 1, time_limit=3600, gap_rel=1e-6
-                    )
+                    solve_problem(exp=exp, it=i + 1, time_limit=3600)
                     break
         except Exception as ex:
             print(ex)
