@@ -27,6 +27,14 @@ voh/service-account.json
 
 # Ignore log files
 *.log
+*.txt
 
 # Ignore pickle files
 *.pkl
+
+# Ignore JSON files
+*.json
+
+# Ignore OSM map files
+*.osm
+*.graphml

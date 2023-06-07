@@ -17,6 +17,7 @@ version = "0.1.0"
 python = "^3.10"
 diagrams = "^0.23.3"
 ffmpeg-python = "^0.2.0"
+folium = "^0.14.0"
 geopy = "^2.3.0"
 haversine = "^2.8.0"
 minio = "^7.1.15"
@@ -33,9 +34,9 @@ webrtcvad = "^2.0.10"
 yt-dlp = "^2023.3.4"
 
 [tool.poetry.group.dev.dependencies]
+dvc = {extras = ["gs"], version = "^2.58.2"}
 ipykernel = "^6.22.0"
 jupyterlab = "^3.6.3"
 nbqa = {extras = ["toolchain"], version = "^1.7.0"}
 pre-commit = "^2.20.0"
 toml-sort = "^0.23.0"
-dvc = {extras = ["gs"], version = "^2.58.2"}
