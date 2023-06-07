@@ -3,20 +3,23 @@ import re
 import shutil
 import tempfile
 import wave
+from unicodedata import normalize
 
 import ffmpeg
 import webrtcvad
 from dotenv import load_dotenv
 from minio import Minio
+from tqdm.auto import tqdm
 
 # Load environment variables from .env file
 load_dotenv()
 
 
-def generate_voice_clips(input_file, output_folder, clip_duration):
+def generate_voice_clips(input_file, output_folder, clip_duration) -> bool:
     # Normalize the input file name for creating clip names
     base_name = os.path.splitext(os.path.basename(input_file))[0]
     base_name = re.sub(r"\W+", "", base_name.lower())
+    base_name = normalize("NFKD", base_name).encode("ascii", "ignore").decode()
 
     # Open the input wave file
     with wave.open(input_file, "rb") as wav:
@@ -86,7 +89,6 @@ def generate_voice_clips(input_file, output_folder, clip_duration):
                         )
                     )
                     wav_out.writeframes(clip_data)
-                print(f"Voice clip generated: {clip_file}")
 
                 # Update the start frame for the next iteration
                 start_frame = end_frame
@@ -94,11 +96,13 @@ def generate_voice_clips(input_file, output_folder, clip_duration):
             else:
                 print("No voice activity found in the input file.")
                 break
+        return True
     except Exception as ex:
         print(ex)
-
-    # Clean up
-    os.remove(input_file)
+        return False
+    finally:
+        # Clean up
+        os.remove(input_file)
 
 
 def convert_audio_format(obj) -> str:
@@ -113,7 +117,6 @@ def convert_audio_format(obj) -> str:
             minio_client.fget_object(
                 bucket_name, obj.object_name, local_file_path
             )
-            print(f"File downloaded: {local_file_path}")
 
             # Perform any necessary operations with the downloaded file
             audio_output_path = "tts-lab/vtv5/audio/{}.wav".format(
@@ -123,10 +126,13 @@ def convert_audio_format(obj) -> str:
             # Convert audio format using ffmpeg
             (
                 ffmpeg.input(local_file_path)
-                .output(audio_output_path, format="wav", ar=8000, ac=1)
-                .run(cmd="/home/terrabot/ffmpeg/ffmpeg", overwrite_output=True)
+                .output(audio_output_path, format="wav", ar=16000, ac=1)
+                .run(
+                    cmd=os.path.join(os.path.expanduser("~"), "ffmpeg/ffmpeg"),
+                    overwrite_output=True,
+                    quiet=True,
+                )
             )
-            print(f"Audio saved as: {audio_output_path}")
             return audio_output_path
     except Exception as ex:
         print(ex)
@@ -136,7 +142,7 @@ if __name__ == "__main__":
     # Download audio files from MinIO #
     # Configure MinIO client
     minio_client = Minio(
-        "https://remote.tqtensor.com:9000",
+        "remote.tqtensor.com:9000",
         access_key=os.getenv("MINIO_ACCESS_KEY"),
         secret_key=os.getenv("MINIO_SECRET_KEY"),
         secure=False,  # Change to True if you're using SSL/TLS
@@ -153,9 +159,25 @@ if __name__ == "__main__":
 
     bucket_name = "tts-lab"
     objects = minio_client.list_objects(bucket_name, recursive=True)
+    objects = [obj for obj in objects if obj.object_name.endswith(".mp4")]
 
-    for obj in objects:
-        audio_output_path = convert_audio_format(obj=obj)
-        generate_voice_clips(
-            audio_output_path, "tts-lab/vtv5/audio/voice_clips", 15
-        )
+    for obj in tqdm(
+        objects, total=len(objects), desc="Generating voice clips"
+    ):
+        if os.path.exists("tts-lab/vtv5/audio/voice_clips.txt"):
+            proccsed_objects = (
+                open("tts-lab/vtv5/audio/voice_clips.txt", "r")
+                .read()
+                .splitlines()
+            )
+        else:
+            proccsed_objects = []
+
+        if obj.object_name.replace(".mp4", "") not in proccsed_objects:
+            audio_output_path = convert_audio_format(obj=obj)
+            successful = generate_voice_clips(
+                audio_output_path, "tts-lab/vtv5/audio/voice_clips", 5
+            )
+            if successful:
+                with open("tts-lab/vtv5/audio/voice_clips.txt", "a") as f:
+                    f.write("{}\n".format(obj.object_name.replace(".mp4", "")))
