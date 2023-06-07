@@ -136,7 +136,7 @@ if __name__ == "__main__":
     # Download audio files from MinIO #
     # Configure MinIO client
     minio_client = Minio(
-        "11.11.1.100:9000",
+        "https://remote.tqtensor.com:9000",
         access_key=os.getenv("MINIO_ACCESS_KEY"),
         secret_key=os.getenv("MINIO_SECRET_KEY"),
         secure=False,  # Change to True if you're using SSL/TLS
