@@ -16,35 +16,37 @@ load_dotenv()
 
 
 def generate_voice_clips(input_file, output_folder, clip_duration) -> bool:
-    # Normalize the input file name for creating clip names
-    base_name = os.path.splitext(os.path.basename(input_file))[0]
-    base_name = re.sub(r"\W+", "", base_name.lower())
-    base_name = normalize("NFKD", base_name).encode("ascii", "ignore").decode()
-
-    # Open the input wave file
-    with wave.open(input_file, "rb") as wav:
-        sample_width = wav.getsampwidth()
-        sample_rate = wav.getframerate()
-        num_frames = wav.getnframes()
-        pcm_data = wav.readframes(num_frames)
-
-    # Initialize the WebRTC VAD
-    vad = webrtcvad.Vad()
-    vad.set_mode(
-        3
-    )  # Set the aggressiveness level of the VAD (0 to 3, 3 being the most aggressive)
-
-    # Calculate the number of frames for the desired clip duration
-    clip_frames = int(sample_rate * clip_duration)
-
-    # Set the frame duration for the VAD
-    frame_duration = 10  # ms
-    frame_size = int(
-        sample_rate * frame_duration / 1000
-    )  # Convert frame duration to samples
-
-    # Find voice activity and generate voice clips
     try:
+        # Normalize the input file name for creating clip names
+        base_name = os.path.splitext(os.path.basename(input_file))[0]
+        base_name = re.sub(r"\W+", "", base_name.lower())
+        base_name = (
+            normalize("NFKD", base_name).encode("ascii", "ignore").decode()
+        )
+
+        # Open the input wave file
+        with wave.open(input_file, "rb") as wav:
+            sample_width = wav.getsampwidth()
+            sample_rate = wav.getframerate()
+            num_frames = wav.getnframes()
+            pcm_data = wav.readframes(num_frames)
+
+        # Initialize the WebRTC VAD
+        vad = webrtcvad.Vad()
+        vad.set_mode(
+            3
+        )  # Set the aggressiveness level of the VAD (0 to 3, 3 being the most aggressive)
+
+        # Calculate the number of frames for the desired clip duration
+        clip_frames = int(sample_rate * clip_duration)
+
+        # Set the frame duration for the VAD
+        frame_duration = 10  # ms
+        frame_size = int(
+            sample_rate * frame_duration / 1000
+        )  # Convert frame duration to samples
+
+        # Find voice activity and generate voice clips
         start_frame = 0
         clip_count = 1
         while start_frame < num_frames:
