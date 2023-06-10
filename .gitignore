@@ -39,3 +39,7 @@ voh/service-account.json
 # Ignore OSM map files
 *.osm
 *.graphml
+
+# Ignore Fairseq files
+*.pt
+*.tsv

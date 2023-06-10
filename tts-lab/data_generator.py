@@ -178,7 +178,7 @@ if __name__ == "__main__":
         if obj.object_name.replace(".mp4", "") not in proccsed_objects:
             audio_output_path = convert_audio_format(obj=obj)
             successful = generate_voice_clips(
-                audio_output_path, "tts-lab/vtv5/audio/voice_clips", 5
+                audio_output_path, "tts-lab/vtv5/audio/voice_clips", 15
             )
             if successful:
                 with open("tts-lab/vtv5/audio/voice_clips.txt", "a") as f:
