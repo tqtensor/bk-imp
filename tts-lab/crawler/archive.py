@@ -9,7 +9,7 @@ load_dotenv()
 
 # Configure MinIO client
 minio_client = Minio(
-    "11.11.1.100:9000",
+    "remote.tqtensor.com:9000",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
     secure=False,  # Change to True if you're using SSL/TLS
@@ -42,7 +42,8 @@ for file_name in tqdm(
 
     try:
         # Upload the file to the bucket
-        minio_client.fput_object(bucket_name, file_name, file_path)
+        object_name = os.path.join(bucket_name, "vtv5/video", file_name)
+        minio_client.fput_object(bucket_name, object_name, file_path)
     except Exception as ex:
         print(f"Error occurred while uploading files: {ex}")
 

@@ -153,11 +153,11 @@ if __name__ == "__main__":
     # Create the output folder if it doesn't exist
     if not os.path.exists("tts-lab/vtv5/audio"):
         os.makedirs("tts-lab/vtv5/audio")
-    if not os.path.exists("tts-lab/vtv5/audio/voice_clips"):
-        os.makedirs("tts-lab/vtv5/audio/voice_clips")
+    if not os.path.exists("tts-lab/vtv5/audio/voice-clips"):
+        os.makedirs("tts-lab/vtv5/audio/voice-clips")
     else:
-        shutil.rmtree("tts-lab/vtv5/audio/voice_clips")
-        os.makedirs("tts-lab/vtv5/audio/voice_clips")
+        shutil.rmtree("tts-lab/vtv5/audio/voice-clips")
+        os.makedirs("tts-lab/vtv5/audio/voice-clips")
 
     bucket_name = "tts-lab"
     objects = minio_client.list_objects(bucket_name, recursive=True)
@@ -166,9 +166,9 @@ if __name__ == "__main__":
     for obj in tqdm(
         objects, total=len(objects), desc="Generating voice clips"
     ):
-        if os.path.exists("tts-lab/vtv5/audio/voice_clips.txt"):
+        if os.path.exists("tts-lab/vtv5/audio/voice-clips.txt"):
             proccsed_objects = (
-                open("tts-lab/vtv5/audio/voice_clips.txt", "r")
+                open("tts-lab/vtv5/audio/voice-clips.txt", "r")
                 .read()
                 .splitlines()
             )
@@ -178,8 +178,8 @@ if __name__ == "__main__":
         if obj.object_name.replace(".mp4", "") not in proccsed_objects:
             audio_output_path = convert_audio_format(obj=obj)
             successful = generate_voice_clips(
-                audio_output_path, "tts-lab/vtv5/audio/voice_clips", 15
+                audio_output_path, "tts-lab/vtv5/audio/voice-clips", 15
             )
             if successful:
-                with open("tts-lab/vtv5/audio/voice_clips.txt", "a") as f:
+                with open("tts-lab/vtv5/audio/voice-clips.txt", "a") as f:
                     f.write("{}\n".format(obj.object_name.replace(".mp4", "")))
