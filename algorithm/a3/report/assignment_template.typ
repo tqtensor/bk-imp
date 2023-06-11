@@ -14,9 +14,9 @@ The programmer has to decide which warehouses in a given set will be open and wh
 
 There are n possible warehouses and m shops. The programmer wishes to choose 
 - (1) which of the n warehouses to open, and
-- (2) which (open) warehouses to use to supply the m shops, in order to satisfy some fixed daily demand (of shops) at minimum cost. It is assumed that there is a (fixed) cost to open a warehouse, denoted by $f_{i}$. Let shop j denoted by ${j}$ and $c_{i j}$ denote the cost to ship a package of goods from warehouse i to shop j.
+- (2) which (open) warehouses to use to supply the m shops, in order to satisfy some fixed daily demand (of shops) at minimum cost. It is assumed that there is a (fixed) cost to open a warehouse, denoted by $f_(i)$. Let $c_(i j)$ denotes the cost to ship a package of goods from warehouse i to shop j.
 
-Let $d_{j}$ denote the daily demand (in package) of shop j. Moreover, a warehouse has a maximum output. Let $u_{i}$ denote the maximum number of packages which is manageable by warehouse i (i.e., $u_{i}$ denotes the capacity of warehouse i). Note that shipping cost $c_{i j}$ is computed by the travel distance from warehouse i to shop j (shortest path).
+Let $d_(j)$ denote the daily demand (in package) of shop j. Moreover, a warehouse has a maximum output. Let $u_(i)$ denotes the maximum number of packages which is manageable by warehouse i (i.e., $u_(i)$ denotes the capacity of warehouse i). Note that shipping cost $c_(i j)$ is computed by the travel distance from warehouse i to shop j (shortest path).
 ]
 
 = Solution
