@@ -43,3 +43,6 @@ voh/service-account.json
 # Ignore Fairseq files
 *.pt
 *.tsv
+
+# Ignore generated PDF files
+*.pdf

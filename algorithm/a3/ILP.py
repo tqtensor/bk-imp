@@ -133,9 +133,8 @@ def solve_problem(exp: int, it: int, time_limit: int):
 
     # Objective function
     total_cost = pl.lpSum(
-        w_cost[w] + pl.lpSum(d_cost[w][s] * wr[w][s] for s in store_ids)
-        if chosen_warehouse[w] == 1
-        else 0
+        chosen_warehouse[w]
+        * (w_cost[w] + pl.lpSum(d_cost[w][s] * wr[w][s] for s in store_ids))
         for w in warehouse_ids
     )
     problem += total_cost
@@ -158,7 +157,7 @@ def solve_problem(exp: int, it: int, time_limit: int):
     # If a warehouse is chosen, then at least one store must be assigned
     for w in warehouse_ids:
         problem += (
-            pl.lpSum(wr[w][s] for s in store_ids) <= 1000 * chosen_warehouse[w]
+            pl.lpSum(wr[w][s] for s in store_ids) <= N * chosen_warehouse[w]
         )
 
     # Solve the problem using CPLEX solver
