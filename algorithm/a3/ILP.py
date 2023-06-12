@@ -271,7 +271,7 @@ if __name__ == "__main__":
                 print(f"Iteration {i+1}")
 
                 # Solve the problem and update distance matrix
-                solve_problem(exp=exp, it=i, time_limit=180)
+                solve_problem(exp=exp, it=i, time_limit=300)
 
                 # Check early stopping condition
                 if check_early_stopping(
