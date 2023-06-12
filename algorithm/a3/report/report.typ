@@ -69,16 +69,16 @@ $ sum_(j=0)^N r_(i j) <= N * w_(i), forall i in M $
 - If $w_(i) = 1$, then $ N >= sum_(j=0)^N r_(i j) >= 1$, means that warehouse i is chosen, then it is used to supply at least one store.
 
 === Distance Calculation
-While the current assignment assumes a manageable number of 1000 stores, real-life applications often rely on expensive map provider APIs like Google Maps for determining the shortest distances. To address this issue, we propose an alternative approach that optimizes the number of distance calculations using the Haversine formula as an approximation. The algorithm can be summarized as follows:
+While the current assignment assumes a manageable number of 1000 stores, real-life applications often rely on expensive map provider APIs like Google Maps for determining the shortest distances. To address this issue, I propose an alternative approach that optimizes the number of distance calculations using the Haversine formula as an approximation. The algorithm can be summarized as follows:
 
 - *Step 1*: The Haversine formula is employed to compute the distance matrix between all warehouses and stores. This provides an estimate of the distances.
 - *Step 2*: CPLEX solver is utilized to solve the optimization problem and determine the optimal paths connecting the stores and warehouses.
-- *Step 3*: The connected paths obtained from the solver are used to update the distances. To achieve this, the actual distances between the connected warehouse and shop locations are obtained by performing a shortest path search using the OSM data.
+- *Step 3*: The connected paths obtained from the solver are used to update the distances. To achieve this, the actual distances between the connected warehouse and shop locations are obtained by performing a shortest path search using the OSM data (simulating actual Google Maps API).
 - *Step 4*: The algorithm checks if the number of updated distances changes by less than 5% over five consecutive iterations.
     - *Step 4.1*: If the number of updated distances changes by less than 5% for five consecutive steps, the algorithm terminates.
     - *Step 4.2*: If the number of updated distances changes by more than 5%, the algorithm returns to step 2 to run the solver again with updated distances.
 
-To keep track of the updated distances, we use a variable $d_(i j)$, intialized to be 0, to indicate whether the distance between warehouse i and store j is updated or not. If the distance is updated, then $d_(i j) = 1$, otherwise $d_(i j) = 0$.
+To keep track of the updated distances, I use a variable $d_(i j)$, intialized to be 0, to indicate whether the distance between warehouse i and store j is updated or not. If the distance is updated, then $d_(i j) = 1$, otherwise $d_(i j) = 0$.
 
 The number of updated distances is computed as follows:
 $ sum d $
@@ -118,7 +118,7 @@ The overall map of Ho Chi Minh City with the optimal allocation is shown as foll
 
 == Conclusion
 
-In this assignment, I have proposed an algorithm to solve the Capacitated Facility Location Problem (CFLP) using the Haversine formula as an approximation for the distance calculation. The proposed algorithm is able to find the optimal solution for all experiments. Moreover, the algorithm can reduce the number of distance calculations by 92% compared to the naive approach.
+In this assignment, I have proposed an algorithm to solve the Capacitated Facility Location Problem (CFLP) by formulating it as a Mixed Integer Linear Programming (MILP) problem. The proposed algorithm optimizes the number of distance calculations by using the Haversine formula as an approximation for the distance calculation. The proposed algorithm is able to find the optimal solution for all experiments. Moreover, the algorithm can reduce the number of distance calculations by 92% compared to the naive approach.
 
 === Future Work
 
