@@ -6,6 +6,8 @@ import wave
 from unicodedata import normalize
 
 import ffmpeg
+import librosa
+import numpy as np
 import webrtcvad
 from dotenv import load_dotenv
 from minio import Minio
@@ -14,8 +16,26 @@ from tqdm.auto import tqdm
 # Load environment variables from .env file
 load_dotenv()
 
+ENGERY_THRESHOLD = 500  # energy threshold for voice activity detection
+CLIP_DURATION = 5  # seconds
+SAMPLE_RATE = 16000
 
-def generate_voice_clips(input_file, output_folder, clip_duration) -> bool:
+
+def check_audio_threshold(audio_path: str, threshold: float) -> bool:
+    # Load audio file
+    audio, _ = librosa.load(audio_path, sr=None)
+
+    # Calculate energy using squared signal
+    energy = np.sum(np.square(audio))
+
+    # Check if all frames are above the threshold
+    is_above_threshold = energy > threshold
+    return is_above_threshold
+
+
+def generate_voice_clips(
+    input_file: str, output_folder: str, clip_duration: int
+) -> bool:
     try:
         # Normalize the input file name for creating clip names
         base_name = os.path.splitext(os.path.basename(input_file))[0]
@@ -92,6 +112,13 @@ def generate_voice_clips(input_file, output_folder, clip_duration) -> bool:
                     )
                     wav_out.writeframes(clip_data)
 
+                # Check if the clip is above the energy threshold
+                if not check_audio_threshold(clip_file, ENGERY_THRESHOLD):
+                    os.remove(clip_file)
+                    print(
+                        f"Voice clip {clip_count} is below the energy threshold. Removing..."
+                    )
+
                 # Update the start frame for the next iteration
                 start_frame = end_frame
                 clip_count += 1
@@ -121,18 +148,28 @@ def convert_audio_format(obj) -> str:
             )
 
             # Perform any necessary operations with the downloaded file
-            audio_output_path = "tts-lab/vtv5/audio/{}.wav".format(
-                obj.object_name.replace(".mp4", "")
+            audio_output_path = (
+                "tts-lab/voice-conversion/bk-dataset/{}.wav".format(
+                    "/".join(
+                        obj.object_name.replace(".wav", "").split("/")[-2:]
+                    )
+                )
             )
 
             # Convert audio format using ffmpeg
             (
                 ffmpeg.input(local_file_path)
-                .output(audio_output_path, format="wav", ar=16000, ac=1)
+                .output(
+                    audio_output_path,
+                    format="wav",
+                    ar=SAMPLE_RATE,
+                    ac=1,
+                    af="afftdn=nr=10:nf=-40,dynaudnorm=p=0.95",
+                )
                 .run(
                     cmd=os.path.join(os.path.expanduser("~"), "ffmpeg/ffmpeg"),
                     overwrite_output=True,
-                    quiet=True,
+                    quiet=False,
                 )
             )
             return audio_output_path
@@ -150,36 +187,54 @@ if __name__ == "__main__":
         secure=False,  # Change to True if you're using SSL/TLS
     )
 
-    # Create the output folder if it doesn't exist
-    if not os.path.exists("tts-lab/vtv5/audio"):
-        os.makedirs("tts-lab/vtv5/audio")
-    if not os.path.exists("tts-lab/vtv5/audio/voice-clips"):
-        os.makedirs("tts-lab/vtv5/audio/voice-clips")
-    else:
-        shutil.rmtree("tts-lab/vtv5/audio/voice-clips")
-        os.makedirs("tts-lab/vtv5/audio/voice-clips")
-
-    bucket_name = "bk-imp"
-    objects = minio_client.list_objects(bucket_name, recursive=True)
-    objects = [obj for obj in objects if obj.object_name.endswith(".mp4")]
-
-    for obj in tqdm(
-        objects, total=len(objects), desc="Generating voice clips"
-    ):
-        if os.path.exists("tts-lab/vtv5/audio/voice-clips.txt"):
-            processed_objects = (
-                open("tts-lab/vtv5/audio/voice-clips.txt", "r")
-                .read()
-                .splitlines()
-            )
+    for source in ["binh_dinh_male", "kon_tum_male"]:
+        # Create the output folder if it doesn't exist
+        voice_clips_path = os.path.join(
+            "tts-lab/voice-conversion/bk-dataset", source
+        )
+        if not os.path.exists(voice_clips_path):
+            os.makedirs(voice_clips_path)
         else:
-            processed_objects = []
+            shutil.rmtree(voice_clips_path)
+            os.makedirs(voice_clips_path)
 
-        if obj.object_name.replace(".mp4", "") not in processed_objects:
-            audio_output_path = convert_audio_format(obj=obj)
-            successful = generate_voice_clips(
-                audio_output_path, "tts-lab/vtv5/audio/voice-clips", 15
-            )
-            if successful:
-                with open("tts-lab/vtv5/audio/voice-clips.txt", "a") as f:
-                    f.write("{}\n".format(obj.object_name.replace(".mp4", "")))
+        bucket_name = "bk-imp"
+        objects = minio_client.list_objects(
+            bucket_name,
+            prefix=os.path.join("tts-lab/recordings", source),
+            recursive=True,
+        )
+        objects = [obj for obj in objects if obj.object_name.endswith(".wav")]
+
+        for obj in tqdm(
+            objects, total=len(objects), desc="Generating voice clips"
+        ):
+            if os.path.exists(
+                "tts-lab/voice-conversion/bk-dataset/voice-clips.txt"
+            ):
+                processed_objects = (
+                    open(
+                        "tts-lab/voice-conversion/bk-dataset/voice-clips.txt",
+                        "r",
+                    )
+                    .read()
+                    .splitlines()
+                )
+            else:
+                processed_objects = []
+
+            if obj.object_name.replace(".wav", "") not in processed_objects:
+                audio_output_path = convert_audio_format(obj=obj)
+                successful = generate_voice_clips(
+                    audio_output_path,
+                    f"tts-lab/voice-conversion/bk-dataset/{source}",
+                    CLIP_DURATION,
+                )
+                if successful:
+                    with open(
+                        "tts-lab/voice-conversion/bk-dataset/voice-clips.txt",
+                        "a",
+                    ) as f:
+                        f.write(
+                            "{}\n".format(obj.object_name.replace(".wav", ""))
+                        )
