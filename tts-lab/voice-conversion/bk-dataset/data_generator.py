@@ -169,7 +169,7 @@ def convert_audio_format(obj) -> str:
                 .run(
                     cmd=os.path.join(os.path.expanduser("~"), "ffmpeg/ffmpeg"),
                     overwrite_output=True,
-                    quiet=False,
+                    quiet=True,
                 )
             )
             return audio_output_path
@@ -187,7 +187,7 @@ if __name__ == "__main__":
         secure=False,  # Change to True if you're using SSL/TLS
     )
 
-    for source in ["binh_dinh_male", "kon_tum_male"]:
+    for source in ["binh_dinh_male", "binh_dinh_female", "kon_tum_male"]:
         # Create the output folder if it doesn't exist
         voice_clips_path = os.path.join(
             "tts-lab/voice-conversion/bk-dataset", source
