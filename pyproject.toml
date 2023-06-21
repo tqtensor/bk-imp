@@ -9,23 +9,21 @@ line-length = 79
 authors = ["Tăng Quốc Thái - <tqthai.sdh222@hcmut.edu.vn>"]
 description = "BK-IMP repo"
 name = "bk-imp"
-packages = [{include = "bk_imp"}]
 readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = "^3.10"
 diagrams = "^0.23.3"
+dtw-python = "^1.3.0"
 ffmpeg-python = "^0.2.0"
-folium = "^0.14.0"
-geopy = "^2.3.0"
-haversine = "^2.8.0"
+librosa = "^0.10.0.post2"
+llvmlite = "==0.39.*"
 minio = "^7.1.15"
 pandas = "^1.5.2"
 praat-parselmouth = "^0.4.3"
-pulp = "^2.7.0"
 pyarrow = "^12.0.0"
-pymcd = "^0.2.1"
+pydub = "^0.25.1"
+python = "^3.10"
 python-dotenv = "^1.0.0"
 scikit-learn = "^1.1.3"
 soundfile = "^0.12.1"
