@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Set the directory where the JSON files should be stored
+cd ..
 DATA_DIR="bigdata-mini-project/data/"
 
 # Prompt the user for the dataset name
