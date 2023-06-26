@@ -42,4 +42,5 @@ voh/service-account.json
 
 # Ignore Fairseq files
 *.pt
+*.tar.gz
 *.tsv

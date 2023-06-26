@@ -1,4 +1,5 @@
 [core]
     remote = tts-lab
+    autostage = true
 ['remote "tts-lab"']
     url = gs://thaitang-backup
