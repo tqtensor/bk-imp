@@ -44,3 +44,6 @@ voh/service-account.json
 *.pt
 *.tar.gz
 *.tsv
+
+# Ignore data files
+*.zip
