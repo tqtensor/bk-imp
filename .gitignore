@@ -46,4 +46,5 @@ voh/service-account.json
 *.tsv
 
 # Ignore data files
+*.parquet
 *.zip
