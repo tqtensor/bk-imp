@@ -45,5 +45,9 @@ voh/service-account.json
 *.tar.gz
 *.tsv
 
+# Ignore data files
+*.parquet
+*.zip
+
 # Ignore generated PDF files
 *.pdf
