@@ -20,4 +20,9 @@ fi
 
 # Download the trip data using wget and apply the filters
 cd ml/nyc-dataset
-wget -i <(grep -i "$dataset_filter" raw_data_urls | grep -i "$year_filter") -P data/ -w 2
+wget -i <(grep -i "$dataset_filter" raw_data_urls | grep -i "$year_filter") -P data/trips -w 2
+
+# Download taxi zone shape file
+wget https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip .
+unzip taxi_zones.zip -d data/taxi_zones
+rm taxi_zones.zip

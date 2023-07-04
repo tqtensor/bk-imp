@@ -2868,6 +2868,10 @@ files = [
 name = "mdit-py-plugins"
 version = "0.4.0"
 description = "Collection of plugins for markdown-it-py"
+<<<<<<< HEAD
+=======
+category = "dev"
+>>>>>>> 87867d4 (feat: add weather data)
 optional = false
 python-versions = ">=3.8"
 files = [
