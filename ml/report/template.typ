@@ -1,9 +1,8 @@
 
 #let problem_counter = counter("problem")
 
-#let prob(body) = {
-  // let current_problem = problem_counter.step()
-  [== Problem #problem_counter.step() #problem_counter.display()]
+#let abstract(body) = {
+  [== Abstract]
   block(fill:rgb(250, 255, 250),
    width: 100%,
    inset:8pt,
