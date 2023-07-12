@@ -24,6 +24,7 @@ By forecasting demand accurately and gaining insights into the factors influenci
 = Data Preparation
 
 == Data Collection
+
 The dataset is created from two sources:
 - NYC Taxi and Limousine Commission (TLC) Trip Record Data.
 - Weather data from the API of Meteo.
