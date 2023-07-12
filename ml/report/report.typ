@@ -25,6 +25,43 @@ By forecasting demand accurately and gaining insights into the factors influenci
 == Background Theory
 
 == Data Preparation
+=== Data Collection
+The dataset is created from two sources:
+- NYC Taxi and Limousine Commission (TLC) Trip Record Data with the script below.
+- Weather data from the API of Meteo.
+
+#figure(
+  image("data_sources.png", width: 50%),
+  caption: [Data Sources],
+)
+
+In the script below we can specify the type of dataset (yellow, green, fhv, fhvhv) and the year of the dataset. The script will download the dataset from the TLC website and save it in the folder `ml/nyc-dataset/data/trips`. The script will also download the weather data from the Meteo API and save it in the folder `ml/nyc-dataset/data/weather`.
+
+```bash
+#!/bin/bash
+
+# Ask the user to choose a dataset type
+read -p "Enter the dataset type (yellow, green, fhv, fhvhv): " dataset_type
+
+# Ask the user to choose a year or select "all years"
+read -p "Enter the year for trip data download (e.g., 2021) or type 'all' for all years: " year
+
+# Construct the dataset filter based on the chosen dataset type
+dataset_filter=""
+if [ "$dataset_type" != "all" ]; then
+    dataset_filter="$dataset_type"
+fi
+
+# Construct the URL filter based on the chosen year
+year_filter=""
+if [ "$year" != "all" ]; then
+    year_filter="$year"
+fi
+
+# Download the trip data using wget and apply the filters
+cd ml/nyc-dataset
+wget -i <(grep -i "$dataset_filter" raw_data_urls | grep -i "$year_filter") -P data/trips -w 2
+```
 
 == ML Pipeline
 
