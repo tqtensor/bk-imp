@@ -309,4 +309,8 @@ Example of the dataset after merging the trip data with the weather data.
 
 = ML Pipeline
 
+== Training Features
+
+== Model Training Pipeline
+
 = Results Evaluation
