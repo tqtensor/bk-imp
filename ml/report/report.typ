@@ -37,9 +37,11 @@ The dataset is created from two sources:
 === NYC Taxi and Limousine Commission (TLC) Trip Record Data
 In the script below we can specify the type of dataset (yellow, green, fhv, fhvhv) and the year of the dataset. The script will download the dataset from the TLC website and save it in the folder `ml/nyc-dataset/data/trips`. The script will also download the weather data from the Meteo API and save it in the folder `ml/nyc-dataset/data/weather`.
 
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
 ```bash
-#!/bin/bash
-
 # Ask the user to choose a dataset type
 read -p "Enter the dataset type (yellow, green, fhv, fhvhv): " dataset_type
 
@@ -61,7 +63,7 @@ fi
 # Download the trip data using wget and apply the filters
 cd ml/nyc-dataset
 wget -i <(grep -i "$dataset_filter" raw_data_urls | grep -i "$year_filter") -P data/trips -w 2
-```
+```)
 
 === Weather data from the API of Meteo
 The map of NYC taxi zones is shown below and shapefile can be downloaded from (https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip). A shapefile is a common geospatial vector data format used in geographic information system (GIS) software. It contains both geometric and attribute information about geographic features, such as points, lines, and polygons. In the case of the NYC taxi zones, the shapefile provides information about the boundaries and attributes of each taxi zone in the city.
@@ -94,6 +96,10 @@ The return weather data will contains the following fields:
 - `precipitation_sum`: precipitation sum.
 - `rain_sum`: rain sum.
 
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
 ```python
 def get_lat_lon(sf):
     content = []
@@ -125,7 +131,7 @@ shp_attr = [dict(zip(fields_name, attr)) for attr in attributes]
 df_loc = pd.DataFrame(shp_attr).join(
     get_lat_lon(sf).set_index("LocationID"), on="LocationID"
 )
-```
+```)
 
 Example of the location data from `df_loc`.
 
@@ -165,6 +171,10 @@ Example of the location data from `df_loc`.
 == Data Preprocessing
 First, we group the data by hour and location to calculate the number of trips. We then filter the data from 2021 and 2022.
 
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
 ```python
 # Read the data
 df = pd.read_parquet("nyc-dataset/data/trips")
@@ -185,10 +195,14 @@ df = (
 )
 df["time"] = df["tpep_pickup_hour"].dt.date
 df.rename({"PULocationID": "location_id"}, axis=1, inplace=True)
-```
+```)
 
 Second, we load the weather data from the folder `ml/nyc-dataset/data/weather` and merge it with the trip data.
 
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
 ```python
 dfs = []
 for filename in glob.glob(f"{output_dir}/*.csv"):
@@ -204,7 +218,7 @@ dataset = df.merge(
     right_on=["time", "location_id"],
     how="left",
 )
-```
+```)
 
 Example of the dataset after merging the trip data with the weather data.
 
@@ -310,7 +324,107 @@ Example of the dataset after merging the trip data with the weather data.
 
 = ML Pipeline
 
-== Training Features
+== Architecture
+
+#figure(
+  image("pipeline.jpg", width: 100%),
+  caption: [ML Training and Deployment Pipeline],
+)
+
+The ML pipeline consists of the following steps:
+1. Feature Engineering:
+  - Transform raw timeseries data into meaningful features.
+  - Create sliding window features to capture patterns and dependencies within the data.
+
+2. Split Dataset:
+  - Partition the dataset into train and test sets.
+  - Ensure that future values are not mixed into the training data to prevent data leakage.
+
+3. Declare Possible Models:
+  - Identify and declare several potential regression models for evaluation.
+
+4. Train and Predict:
+  - Train the selected models using the train set.
+  - Predict the target variable using the test set.
+  - Calculate metrics such as MAPE and RMSLE to assess model performance.
+
+5. Model Evaluation:
+  - Analyze the results to determine the best-performing model.
+  - Save the best model in a pickle file format.
+
+6. Deployment:
+  - Retrieve the saved model from the pickle file.
+  - Deploy the model as an API for real-time predictions or integration with other systems.
+
+By following this structured ML pipeline, researchers and practitioners can effectively develop, evaluate, and deploy regression models for timeseries data, ensuring reliable and accurate predictions in various applications.
+
+== Feature Engineering
+
+The `create_sliding_window` function is designed to generate sliding window features for a given timeseries dataset. Sliding window features are an essential technique in time series analysis that capture temporal patterns and dependencies in the data. The function takes two parameters: `df`, which represents the timeseries dataset, and `window_size`, which specifies the size of the sliding window.
+
+To create the sliding window features, the function first sorts the data to ensure chronological order within each group. It then applies the sliding window operation within each group defined by the "location_id" column. Starting from 1 up to the specified `window_size`, the function creates new columns named "trip_count_backward_i", where "i" represents the index of the sliding window. Each column contains the lagged values of the "trip_count" variable shifted by "i" time steps.
+
+To ensure consistency in the dataset, the function removes the first rows within each group that contain NaN values resulting from the shifting operation. This step is necessary to avoid introducing biased or incomplete data into the subsequent analysis.
+
+Sliding window features are crucial in time series analysis as they provide valuable information about the historical behavior and trends in the data. By incorporating lagged values as additional input features, the model can learn from the past to make predictions about future values. These features enable the model to capture temporal dependencies, seasonality, and other patterns that may influence the target variable. Therefore, the sliding window function plays a pivotal role in extracting relevant features and enhancing the predictive capabilities of time series models.
+
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
+```python
+def create_sliding_window(df, window_size):
+    # Sort the data to ensure chronological order within each group
+    tmp_data = df.copy()
+    tmp_data = tmp_data.sort_values(
+        ["location_id", "day_of_year", "hour"], ascending=True
+    )
+
+    # Apply sliding window to create new columns within each group
+    grouped = tmp_data.groupby("location_id")
+    for i in range(1, window_size + 1):
+        col_name = f"trip_count_backward_{i}"
+        tmp_data[col_name] = grouped["trip_count"].shift(i)
+
+    # Remove the first rows within each group that contain NaN values due to shifting
+    tmp_data = (
+        tmp_data.groupby("location_id")
+        .apply(lambda x: x.iloc[window_size:])
+        .reset_index(drop=True)
+    )
+    return tmp_data
+```)
+
+== Train-Test Split
+
+The train-test split is a crucial step in machine learning to evaluate the performance of a model on unseen data. In the provided code snippet, the dataset is split into training and testing sets for regression analysis.
+
+To prevent mixing future values into the training data and ensure the integrity of the analysis, the shuffle parameter is set to False in the train_test_split function. This ensures that the data is split sequentially, maintaining the temporal order of the observations. By avoiding shuffling, the model is trained on historical data and tested on future data, simulating real-world scenarios where predictions are made based on past information.
+
+Before splitting the data, preprocessing steps are applied to handle categorical columns. One-hot encoding is employed to expand categorical columns such as location_id and weather_code into numeric representations. This technique converts each category into binary columns, indicating the presence or absence of a specific category. The resulting encoded features are stored in `X_num`.
+
+However, it is worth noting that for certain models, like CatBoost, there is no need to perform one-hot encoding explicitly. CatBoost is a gradient boosting algorithm that natively handles categorical features. Hence, for an alternative version using CatBoost, the categorical columns do not require one-hot encoding, and the original `X_cat` can be used directly.
+
+The resulting splits consist of `X_train_cat`, `X_test_cat`, `X_train_num`, and `X_test_num`, representing the categorical and numerical features of the training and testing sets, respectively. The target variable y is split accordingly into `y_train` and `y_test`.
+
+By performing the train-test split with attention to the sequential order and applying appropriate preprocessing techniques, we can evaluate the model's performance accurately and make predictions on unseen data, reflecting real-world scenarios.
+
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
+```python
+y = df_for_reg["trip_count"]
+X_cat = df_for_reg.drop(["trip_count"], axis=1)
+X_num = pd.get_dummies(X_cat, drop_first=True)
+X_train_cat, X_test_cat, y_train, y_test = train_test_split(
+    X_cat, y, test_size=0.2, shuffle=False
+)
+X_train_num, X_test_num, y_train, y_test = train_test_split(
+    X_num, y, test_size=0.2, shuffle=False
+)
+```)
+
 
 == Model Training Pipeline
 
