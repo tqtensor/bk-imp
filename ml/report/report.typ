@@ -37,10 +37,6 @@ The dataset is created from two sources:
 === NYC Taxi and Limousine Commission (TLC) Trip Record Data
 In the script below we can specify the type of dataset (yellow, green, fhv, fhvhv) and the year of the dataset. The script will download the dataset from the TLC website and save it in the folder `ml/nyc-dataset/data/trips`. The script will also download the weather data from the Meteo API and save it in the folder `ml/nyc-dataset/data/weather`.
 
-#block(
-  width: 100%,
-  clip: false,
-  fill: luma(90%),
 ```bash
 # Ask the user to choose a dataset type
 read -p "Enter the dataset type (yellow, green, fhv, fhvhv): " dataset_type
@@ -63,7 +59,7 @@ fi
 # Download the trip data using wget and apply the filters
 cd ml/nyc-dataset
 wget -i <(grep -i "$dataset_filter" raw_data_urls | grep -i "$year_filter") -P data/trips -w 2
-```)
+```
 
 === Weather data from the API of Meteo
 The map of NYC taxi zones is shown below and shapefile can be downloaded from (https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip). A shapefile is a common geospatial vector data format used in geographic information system (GIS) software. It contains both geometric and attribute information about geographic features, such as points, lines, and polygons. In the case of the NYC taxi zones, the shapefile provides information about the boundaries and attributes of each taxi zone in the city.
@@ -427,5 +423,99 @@ X_train_num, X_test_num, y_train, y_test = train_test_split(
 
 
 == Model Training Pipeline
+
+We use three regression models for evaluation: CatBoost, XGBoost, and Random Forest. The models are trained using the training set and evaluated using the test set. The evaluation metrics include MAPE and RMSLE.
+
+#block(
+  width: 100%,
+  clip: false,
+  fill: luma(90%),
+```python
+# Define the regressors
+regressors = {
+    "CatBoost": CatBoostRegressor(
+        cat_features=["location_id", "weathercode"],
+        iterations=1000,
+        learning_rate=0.1,
+        verbose=0,
+    ),
+    "XGBRegressor": XGBRegressor(),
+    "RandomForestRegressor": RandomForestRegressor(n_estimators=20, n_jobs=-1),
+}
+
+# Create the pipelines
+pipelines = []
+for regressor_name, regressor in regressors.items():
+    pipeline = Pipeline([(regressor_name, regressor)])
+    pipelines.append(pipeline)
+```)
+
+== Serving API
+
+We use fastAPI to deploy the model as an API for real-time predictions or integration with other systems. The API can be deployed easily using Docker. The Dockerfile is provided in the `ml/service/Dockerfile`.
+
+Simply run the following command to build the Docker image:
+
+```bash
+docker build -t fastapi-deployment .
+docker run -p 8000:80 fastapi-deployment
+```
+
+The API can be accessed at `http://localhost:8000/docs`. Or can be tested using the following command:
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8000/predict' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '[
+    {
+        "location_id": "location_id_0082",
+        "weathercode": "weather_code_0003",
+        "temperature_2m_max": 16.5,
+        "temperature_2m_min": 8.6,
+        "temperature_2m_mean": 12.6,
+        "precipitation_sum": 0.0,
+        "rain_sum": 0.0,
+        "day_of_year": 131,
+        "day_of_month": 11,
+        "day_of_week": 1,
+        "is_weekend": 0,
+        "year": 2021,
+        "month": 5,
+        "hour": 22,
+        "trip_count_backward_1": 1.0,
+        "trip_count_backward_2": 2.0,
+        "trip_count_backward_3": 1.0,
+        "trip_count_backward_4": 1.0,
+        "trip_count_backward_5": 1.0,
+        "trip_count_backward_6": 3.0,
+        "trip_count_backward_7": 1.0
+    },
+    {
+        "location_id": "location_id_0065",
+        "weathercode": "weather_code_0061",
+        "temperature_2m_max": 33.5,
+        "temperature_2m_min": 25.1,
+        "temperature_2m_mean": 28.6,
+        "precipitation_sum": 3.0,
+        "rain_sum": 3.0,
+        "day_of_year": 219,
+        "day_of_month": 7,
+        "day_of_week": 6,
+        "is_weekend": 1,
+        "year": 2022,
+        "month": 8,
+        "hour": 11,
+        "trip_count_backward_1": 6.0,
+        "trip_count_backward_2": 1.0,
+        "trip_count_backward_3": 3.0,
+        "trip_count_backward_4": 2.0,
+        "trip_count_backward_5": 6.0,
+        "trip_count_backward_6": 2.0,
+        "trip_count_backward_7": 1.0
+    }
+]'
+```
 
 = Results Evaluation
