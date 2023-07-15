@@ -21,6 +21,36 @@ By forecasting demand accurately and gaining insights into the factors influenci
 
 = Background Theory
 
+In this background theory session, we will explore two approaches: regression and SARIMAX, which are commonly used in various fields for modeling and forecasting. We will begin by explaining the foundations of these techniques and then delve into the potential reasons behind the longer convergence time and difficulty in achieving convergence with SARIMAX.
+
+== Regression Approach
+
+Regression is a statistical modeling technique used to examine the relationship between a dependent variable and one or more independent variables. It aims to find the best-fitting line or curve that represents the relationship between the variables. The primary objective of regression analysis is to estimate the coefficients of the independent variables and establish their statistical significance.
+
+The fundamental concept in regression analysis is the assumption that the relationship between the dependent variable and independent variables is linear. However, various types of regression models exist to accommodate different scenarios, such as linear regression, polynomial regression, and multiple regression, among others.
+
+Regression models provide valuable insights into the impact of independent variables on the dependent variable and help in predicting future outcomes based on these relationships.
+
+== SARIMAX Approach
+SARIMAX, which stands for Seasonal AutoRegressive Integrated Moving Average with eXogenous variables, is a popular method used for time series analysis and forecasting. It extends the traditional ARIMA model by incorporating additional factors, such as seasonality and exogenous variables.
+
+ARIMA (AutoRegressive Integrated Moving Average) models capture the linear dependencies in a time series by considering the autoregressive (AR), integrated (I), and moving average (MA) components. These models are suitable for data exhibiting trends, seasonality, and non-stationarity.
+
+SARIMAX further enhances the ARIMA model by introducing exogenous variables that can impact the time series. Exogenous variables are independent variables that may have a causal relationship with the dependent variable but are not affected by it.
+
+In this project we found that applying SARIMAX on the demand forecast of NYC taxi trips is not as effective as applying regression. The reasons for this are explained in the next section.
+- While SARIMAX is a powerful modeling technique, it can sometimes present challenges that result in longer convergence time and difficulties in achieving convergence. Several factors could contribute to these issues:
+
+- Data Complexity: SARIMAX models can struggle with complex datasets that exhibit high levels of noise, outliers, or irregular patterns. When the data contains intricate relationships or unexpected variations, the model may require more iterations to converge.
+
+- Seasonality: SARIMAX incorporates the consideration of seasonal patterns in the data. However, if the seasonality is highly irregular or changes over time, the model may face difficulties in capturing and adjusting to these patterns accurately.
+
+- Exogenous Variables: The inclusion of exogenous variables introduces additional complexity to the model. If the exogenous variables are not well-correlated with the dependent variable or have weak explanatory power, it can hinder convergence and impact the model's forecasting performance.
+
+- Insufficient Data: SARIMAX models require a sufficient amount of historical data to estimate the model parameters accurately. If the dataset is limited, contains gaps, or lacks stationarity, the model's convergence may be compromised.
+
+- Model Hyperparameters: SARIMAX models involve several hyperparameters that need to be tuned appropriately. Inadequate selection of hyperparameters, such as the order of differencing or the number of seasonal terms, can lead to convergence issues.
+
 = Data Preparation
 
 == Data Collection
