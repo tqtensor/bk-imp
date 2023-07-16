@@ -555,17 +555,17 @@ curl -X 'POST' \
 The top 5 most important features for each model in training our dataset have been identified as below:
 
 #figure(
-  image("catboost_feature_importance.png", width: 50%),
+  image("catboost_feature_importance.png", width: 100%),
   caption: [CatBoost Feature Importance],
 )
 
 #figure(
-  image("xgboost_feature_importance.png", width: 50%),
+  image("xgboost_feature_importance.png", width: 100%),
   caption: [RandomForestRegressor Feature Importance],
 )
 
 #figure(
-  image("rf_feature_importance.png", width: 50%),
+  image("rf_feature_importance.png", width: 100%),
   caption: [RandomForestRegressor Feature Importance],
 )
 
