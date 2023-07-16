@@ -549,3 +549,162 @@ curl -X 'POST' \
 ```
 
 = Results Evaluation
+
+== Feature Importance
+
+The top 5 most important features for each model in training our dataset have been identified as below:
+
+#figure(
+  image("catboost_feature_importance.png", width: 50%),
+  caption: [CatBoost Feature Importance],
+)
+
+#figure(
+  image("xgboost_feature_importance.png", width: 50%),
+  caption: [RandomForestRegressor Feature Importance],
+)
+
+#figure(
+  image("rf_feature_importance.png", width: 50%),
+  caption: [RandomForestRegressor Feature Importance],
+)
+
+It is observed that the demand in the previous hours has the greatest influence on predicting the demand for a specific hour on a specific day. Additionally, the time of day is also a significant factor in determining the need for taxi usage across all three models. This implies that when predicting demand for a future day that is distant from the current day, the accuracy of the predictions may significantly decrease. To improve accuracy, it is recommended to update the input and make predictions on an hourly basis.
+
+There is a wide range of loss functions available for evaluating regression models, and there is no universally optimal function for all scenarios. The choice of the appropriate loss function is critical and depends on the specific characteristics of the data. Each loss function has its own unique properties. Several factors come into play when selecting a suitable loss function, such as the algorithm employed, the presence of outliers in the data, the requirement for differentiability, and more. In this section, we will explore various approaches to loss functions and determine which set of metrics will be utilized to assess our models.
+
+== Used Metrics
+
+=== Mean Absolute Error (MAE)
+
+MAE (Mean Absolute Error) is a commonly used metric for evaluating time series models. It measures the average magnitude of errors between predicted and actual values. MAE is suitable for time series analysis as it provides a measure of the average absolute deviation from the true values over a given period.
+
+Pros:
+-	Intuitive interpretation: MAE represents the average absolute deviation of the predictions from the actual values, making it easy to understand and interpret.
+-	Robust to outliers: MAE is less sensitive to outliers compared to other metrics like RMSE, which makes it suitable for handling extreme values often present in time series data.
+-	Reflects magnitude of errors: MAE captures the magnitude of errors without considering their direction, providing insights into the overall accuracy of the model's predictions.
+
+Cons:
+-	Ignores error direction and patterns: MAE treats positive and negative errors equally, disregarding the direction of errors and potential patterns such as over- or under-predictions. This can be a limitation if the direction of errors is important in the specific time series analysis.
+-	Equal weighting of errors: MAE assigns equal weight to all errors, which may not be desirable in cases where certain errors should be penalized more heavily.
+
+=== Root Mean Squared Error (RMSE)
+
+Root Mean Squared Error (RMSE) is a commonly used metric for evaluating the performance of models. It measures the average magnitude of the errors between the predicted and actual values, giving higher weight to larger errors
+
+Pros:
+-	RMSE provides a measure of the overall model accuracy, taking into account both the bias and variability of the errors.
+-	It is widely used and easy to interpret since it is in the same unit as the target variable.
+-	RMSE penalizes large errors more heavily, which will emphasize the outliers.
+
+Cons:
+-	RMSE is sensitive to outliers, meaning that extreme values can disproportionately influence the metric.
+-	It does not provide a direct interpretation of the percentage of error, making it less intuitive for non-technical audiences.
+-	RMSE treats positive and negative errors equally, which may not be desirable in all cases.
+
+=== Mean Absolute Percentage Error (MAPE)
+
+Mean Absolute Percentage Error is commonly used metric for evaluating the performance of time series models. It measures the average percentage difference between the predicted and actual values.
+
+Pros:
+-	MAPE provides a measure of the average relative error, which is helpful for understanding the accuracy of the predictions in percentage terms.
+-	It is a scale-independent metric, making it suitable for comparing the performance of models across different datasets and variables.
+-	MAPE is easy to interpret and understand, as it represents the average percentage deviation from the actual values.
+
+Cons:
+-	MAPE can be sensitive to zero or close-to-zero actual values, as the percentage calculation may become undefined or very large.
+-	It may not be suitable for situations where small errors are more important than larger errors.
+-	MAPE does not account for the direction of the errors, treating over-predictions and under-predictions equally.
+
+=== Root Mean Squared Logarithmic Error (RMSLE)
+
+Root Mean Squared Logarithmic Error measures the root mean squared logarithmic difference between the predicted and actual values.
+
+Pros:
+-	RMLSE penalizes large errors more than MAE or RMSE, making it more sensitive to outliers.
+-	It is a scale-independent metric, making it suitable for comparing models across different datasets and variables.
+-	RMLSE handles zero and negative values gracefully by applying a logarithmic transformation, preventing undefined values.
+
+Cons:
+-	RMLSE can be sensitive to small actual values, as the logarithmic transformation can amplify the differences.
+-	It may not be suitable for situations where small errors are more important than larger errors.
+-	RMLSE does not provide a direct interpretation in the same way as MAE or MAPE.
+
+=== Mean Under-Prediction (MUP) and Mean Over-Prediction (MOP)
+
+MUP and MOP provide insights into the average magnitude of under-predictions and over-predictions made by the model. A higher MUP value indicates that the model tends to under-predict the values, on average. It signifies that the predicted values are consistently lower than the actual values. And vice versa, for MOP, A higher MOP value indicates that the model tends to over-predict the values, on average.
+
+Pros:
+-	Reflects the tendency of the model to over or under-estimate the target variable.
+-	Helps identify potential biases or inaccuracies in the model that consistently lead to over and under-estimation.
+-	Can be used to assess the impact of over and under-estimation on decision-making or resource allocation.
+
+Cons:
+-	May not provide a comprehensive understanding of the overall model performance.
+-	As they are independent metrics, each separated metric could ignore the instances where the model accurately predicts or underpredicts the target variable.
+
+=== Conclusion
+
+In our dataset, the demand for taxis varies significantly across different locations. This variation in demand makes it challenging to directly compare the Mean Absolute Error (MAE) or Root Mean Squared Error (RMSE) values between areas with low demand and those with high demand. To address this issue, it is more appropriate to use metrics such as Mean Absolute Percentage Error (MAPE) or Root Mean Squared Logarithmic Error (RMSLE). Among these metrics, MAPE is preferred as it is easier to understand and present to stakeholders due to its simplicity.
+
+Additionally, when planning resources based on the model predictions, it is crucial to consider both overestimation and underestimation. Therefore, we will use a set of metrics consisting of MAPE, Mean Over-Prediction (MOP), and Mean Under-Prediction (MUP) for evaluating and selecting the best model.Im summary, the set of metrics: MAPE, MOP, MUP will be used for model evaluation and selection.
+
+#align(center)[#table(
+  columns: 4,
+  align: (col, row) => (auto,auto,auto,auto,).at(col),
+  inset: 6pt,
+  text(size: 8pt, fill: blue, weight: "medium")[Pipeline], text(size: 8pt, fill: blue, weight: "medium")[CatBoost], text(size: 8pt, fill: blue, weight: "medium")[RandomForestRegressor], text(size: 8pt, fill: blue, weight: "medium")[XGBRegressor],
+  [Train MAE],
+  [5.103079],
+  [1.953024],
+  [5.10299],
+  [Test MAE],
+  [17.980025],
+  [10.632502],
+  [10.63064],
+  [Train RMSE],
+  [10.613764],
+  [4.413968],
+  [10.410122],
+  [Test RMSE],
+  [32.466774],
+  [20.388465],
+  [20.283713],
+  [Train MAPE],
+  [46.503349],
+  [16.171341],
+  [49.441491],
+  [Test MAPE],
+  [67.235588],
+  [36.444995],
+  [42.934687],
+  [Train RMSLE],
+  [0.373687],
+  [0.15279],
+  [0.38029],
+  [Test RMSLE],
+  [0.788658],
+  [0.369841],
+  [0.390765],
+  [Train MOP],
+  [2.571882],
+  [0.994603],
+  [2.551493],
+  [Test MOP],
+  [1.275124],
+  [4.758648],
+  [4.215477],
+  [Train MUP],
+  [-2.531197],
+  [-0.958421],
+  [-2.551497],
+  [Test MUP],
+  [-16.704901],
+  [-5.873854],
+  [-6.415163],
+)
+]
+
+Analyzing the provided results table, we observe that the RandomForestRegressor model performs the best in terms of MAPE and MUP on the test set. This model optimizes accuracy and minimizes underestimation, which is crucial for ensuring sufficient resources are allocated to the respective areas. In this context, prioritizing customer satisfaction over profit, a relatively higher overestimation is acceptable.
+
+Based on these considerations, we will choose the RandomForestRegressor model to predict future demand in the target area.
