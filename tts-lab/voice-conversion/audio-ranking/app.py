@@ -1,7 +1,8 @@
-import streamlit as st
-import requests
-from io import BytesIO
 import random
+from io import BytesIO
+
+import requests
+import streamlit as st
 
 
 def main():

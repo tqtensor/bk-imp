@@ -12,7 +12,7 @@
 #prob[
 The programmer has to decide which warehouses in a given set will be open and which shops an individual warehouse supplies. The detailed problem statement is given as follows.
 
-There are n possible warehouses and m shops. The programmer wishes to choose 
+There are n possible warehouses and m shops. The programmer wishes to choose
 - (1) which of the n warehouses to open, and
 - (2) which (open) warehouses to use to supply the m shops, in order to satisfy some fixed daily demand (of shops) at minimum cost. It is assumed that there is a (fixed) cost to open a warehouse, denoted by $f_(i)$. Let $c_(i j)$ denotes the cost to ship a package of goods from warehouse i to shop j.
 
