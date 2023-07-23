@@ -1,8 +1,17 @@
-import random
+import os
 from io import BytesIO
 
+import psycopg2
 import requests
 import streamlit as st
+
+
+# Function to insert data into the PostgreSQL database
+def insert_ranking_data(conn, question_num, url, ranking):
+    sql = "INSERT INTO audio_rankings (question_num, url, ranking) VALUES (%s, %s, %s);"
+    cur = conn.cursor()
+    cur.execute(sql, (question_num, url, ranking))
+    conn.commit()
 
 
 def main():
@@ -36,6 +45,15 @@ def main():
     urls = audio["urls"]
     num_blocks = len(urls) // 4
 
+    # Connect to the PostgreSQL database using environment variables
+    conn = psycopg2.connect(
+        host=os.environ.get("DATABASE_HOST"),
+        port=os.environ.get("DATABASE_PORT"),
+        database=os.environ.get("DATABASE_NAME"),
+        user=os.environ.get("DATABASE_USER"),
+        password=os.environ.get("DATABASE_PASSWORD"),
+    )
+
     for block in range(num_blocks):
         question_num = block + 1
         st.write(f"Question {question_num}")
@@ -62,10 +80,15 @@ def main():
             )
             block_rankings.append(ranking)
 
+            # Persist data to PostgreSQL database
+            insert_ranking_data(conn, question_num, url, ranking)
+
         if None not in block_rankings:
             rankings[f"Question {question_num}"] = block_rankings
 
         st.write("---")
+
+    conn.close()
 
     st.write("Overall Rankings:")
     for question_name, question_rankings in rankings.items():
