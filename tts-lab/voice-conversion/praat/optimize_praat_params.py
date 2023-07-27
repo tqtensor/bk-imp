@@ -108,7 +108,7 @@ def calculate_mcd_distance(args):
 
 if __name__ == "__main__":
     # Generate the pitch candidates
-    num_candidates = 1000
+    num_candidates = 10000
     num_steps = np.ceil(math.pow(num_candidates, 1 / 3))
     formant_shift_ratio = (1.0, 1.3)
     new_pitch_median = (180, 220)
@@ -144,22 +144,18 @@ if __name__ == "__main__":
     )
 
     # Generate training data
-    source_speaker = "MBD1"
-    target_speakers = ["MGL1", "MKT1", "FGL1", "FBD1"]
     training_data = {}
-    parralel_voices = json.load(
+    training_data = json.load(
         open("tts-lab/voice-conversion/praat/parallel_voices.json", "r")
     )
 
-    for file_path, speakers in parralel_voices.items():
-        for speaker in target_speakers:
-            if speaker not in training_data:
-                if speaker in speakers:
-                    training_data[
-                        f"tts-lab/voice-conversion/bahnar-dataset/parallel/{speaker}/{file_path}"
-                    ] = f"tts-lab/voice-conversion/bahnar-dataset/parallel/{source_speaker}/{file_path}"
-
-    for target, source in training_data.items():
+    for source, target in training_data.items():
+        source = os.path.join(
+            "tts-lab/voice-conversion/bahnar-dataset", source
+        )
+        target = os.path.join(
+            "tts-lab/voice-conversion/bahnar-dataset", target
+        )
         # Load the source audio
         source_audio = parselmouth.Sound(source).resample(
             new_frequency=sampling_frequency
@@ -191,7 +187,7 @@ if __name__ == "__main__":
         pool.close()
         pool.join()
 
-        print(f"Finished processing {target}")
+        print(f"Finished processing {source}")
 
         # Load the target voice recording
         target_audio = parselmouth.Sound(target).resample(
@@ -238,12 +234,33 @@ if __name__ == "__main__":
         print("Minimum MCD: {}".format(min_mcd))
         print("Best parameters: {}".format(best_params))
 
+        # Persist the best parameters
+        if not os.path.exists("tts-lab/voice-conversion/praat/params.json"):
+            with open("tts-lab/voice-conversion/praat/params.json", "w") as f:
+                json.dump({"dummy": "dummy"}, f)
+        else:
+            with open("tts-lab/voice-conversion/praat/params.json", "r") as f:
+                params = json.load(f)
+            params[target.split("/")[-2] + "_" + target.split("/")[-1]] = {
+                "min_mcd": min_mcd,
+                "params": best_params,
+            }
+            with open("tts-lab/voice-conversion/praat/params.json", "w") as f:
+                json.dump(params, f)
+
         # Save the generated voice
-        sound = parselmouth.Sound(source).resample(new_frequency=41000)
+        sound = parselmouth.Sound(source).resample(
+            new_frequency=sampling_frequency
+        )
 
         # Tune according to min MCD params
         tuned_audio, *params = change_gender(
-            np.array(sound.values.T), 41000, 75, 600, *best_params, 1
+            np.array(sound.values.T),
+            sampling_frequency,
+            75,
+            600,
+            *best_params,
+            1,
         )
 
         # Save the tuned audio
@@ -254,5 +271,5 @@ if __name__ == "__main__":
                 target.split("/")[-2] + "_" + target.split("/")[-1]
             ),
             tuned_audio,
-            41000,
+            sampling_frequency,
         )
