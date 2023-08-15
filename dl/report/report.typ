@@ -57,6 +57,23 @@ The MPD is designed to identify the diverse periodic patterns present in speech 
 
 The MSD is employed to capture consecutive patterns and long-term dependencies within the audio data. The idea behind the MSD is to evaluate audio samples at different levels of granularity. This is achieved by consecutively processing the audio samples with multiple scales, enabling the discriminator to analyze the audio signal at varying resolutions. The MSD technique is inspired by the multi-scale discriminator introduced in the MelGAN paper (Kumar et al., 2019).
 
+= Implementation of HiFi-GAN
+
+== Generator
+
+== MPD
+
+== MSD
+
+= Dataset
+
+#figure(
+  image("bahnaric_dataset.jpeg", width: 100%),
+  caption: [Dataset for Bahnaric Language],
+)
+
+Our dataset for improving Bahnaric language voice generation was meticulously crafted. We downloaded Bahnaric news videos from VTV5 and extracted the audio. Using power analysis, we split the audio into 15-second clips containing human speech, filtering out non-speech parts. This resulted in a substantial dataset of 316 hours of diverse Bahnaric speech. This dataset forms the foundation for training our voice enhancement model, ensuring authenticity and linguistic richness for improved voice generation.
+
 = References
 
 Kong, J., Kim, J. and Bae, J. (2020) HiFi-Gan: Generative adversarial networks for efficient and high fidelity speech synthesis, arXiv.org. Available at: https://arxiv.org/abs/2010.05646.
