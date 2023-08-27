@@ -30,6 +30,7 @@ def main():
     st.write("2. One audio file which is the true recording.")
     st.write("Please listen to all of them and then select the ranking.")
     st.write("1 means best, 4 means worst")
+    st.write("Please select the ranking from top to bottom:")
 
     # Google Authentication
     st.subheader("Google Authentication")

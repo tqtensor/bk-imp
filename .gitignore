@@ -55,3 +55,6 @@ voh/service-account.json
 
 # Ignore certs
 certs
+
+# Ignore pgdata
+pgdata
