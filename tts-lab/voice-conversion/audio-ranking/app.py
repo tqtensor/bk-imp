@@ -14,15 +14,22 @@ GOOGLE_REDIRECT_URI = os.environ["GOOGLE_REDIRECT_URI"]
 
 
 # Function to insert data into the PostgreSQL database
-def insert_ranking_data(conn, question_num, url, ranking):
-    sql = "INSERT INTO audio_rankings (question_num, url, ranking) VALUES (%s, %s, %s);"
+def insert_ranking_data(conn, question_id, url, ranking, user_id):
+    sql = "INSERT INTO audio_ranking (question_id, url, ranking, user_id) VALUES (%s, %s, %s, %s);"
     cur = conn.cursor()
-    cur.execute(sql, (question_num, url, ranking))
+    cur.execute(sql, (question_id, url, ranking, user_id))
     conn.commit()
 
 
 def main():
-    st.title("Audio Rating Website")
+    st.title("Audio Ranking")
+
+    # Adding the guideline text
+    st.write("In each question, there will be 4 audio files:")
+    st.write("1. Three audio files from our models.")
+    st.write("2. One audio file which is the true recording.")
+    st.write("Please listen to all of them and then select the ranking.")
+    st.write("1 means best, 4 means worst")
 
     # Google Authentication
     st.subheader("Google Authentication")
@@ -118,7 +125,9 @@ def main():
             block_rankings.append(ranking)
 
             # Persist data to PostgreSQL database
-            insert_ranking_data(conn, question_num, url, ranking)
+            insert_ranking_data(
+                conn, question_num, url, ranking, st.session_state.user_id
+            )
 
         if None not in block_rankings:
             rankings[f"Question {question_num}"] = block_rankings
