@@ -19,8 +19,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: streamlit_app
-    ports:
-      - '8080:8080'
+    expose:
+      - '8501'  # Expose Streamlit app on this port
     depends_on:
       - postgres
     environment:
@@ -29,6 +29,18 @@ services:
       - DATABASE_NAME=your_database_name
       - DATABASE_USER=your_database_user
       - DATABASE_PASSWORD=your_database_password
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_reverse_proxy
+    ports:
+      - '80:80'
+      - '443:443'  # Add HTTPS port
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro  # Mount your SSL certificates
+    depends_on:
+      - streamlit_app
 
 volumes:
   pgdata:

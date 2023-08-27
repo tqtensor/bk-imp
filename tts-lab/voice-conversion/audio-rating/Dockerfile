@@ -18,7 +18,7 @@ COPY app.py /app/main.py
 COPY .env /app/.env
 
 # Expose the Streamlit port
-EXPOSE 8080
+EXPOSE 8501
 
 # Command to run the Streamlit app
-CMD ["streamlit", "run", "main.py", "--server.port", "8080"]
+CMD ["streamlit", "run", "main.py", "--server.port", "8501"]

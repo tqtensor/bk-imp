@@ -52,3 +52,6 @@ voh/service-account.json
 
 # Ignore generated PDF files
 *.pdf
+
+# Ignore certs
+certs
