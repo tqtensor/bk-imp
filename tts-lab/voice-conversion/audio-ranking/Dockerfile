@@ -17,6 +17,9 @@ COPY app.py /app/main.py
 # Copy the environment file into the container
 COPY .env /app/.env
 
+# Copy audio files into the container
+COPY audios /app/audios
+
 # Expose the Streamlit port
 EXPOSE 8501
 

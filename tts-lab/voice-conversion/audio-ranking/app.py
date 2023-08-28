@@ -2,7 +2,6 @@ import os
 from io import BytesIO
 
 import psycopg2
-import requests
 import streamlit as st
 import streamlit_google_oauth as oauth
 from dotenv import load_dotenv
@@ -14,23 +13,22 @@ GOOGLE_REDIRECT_URI = os.environ["GOOGLE_REDIRECT_URI"]
 
 
 # Function to insert data into the PostgreSQL database
-def insert_ranking_data(conn, question_id, url, ranking, user_id):
-    sql = "INSERT INTO audio_ranking (question_id, url, ranking, user_id) VALUES (%s, %s, %s, %s);"
+def insert_scoring_data(conn, question_id, filename, score, user_id):
+    sql = "INSERT INTO audio_scoring (question_id, filename, score, user_id) VALUES (%s, %s, %s, %s);"
     cur = conn.cursor()
-    cur.execute(sql, (question_id, url, ranking, user_id))
+    cur.execute(sql, (question_id, filename, score, user_id))
     conn.commit()
 
 
 def main():
-    st.title("Audio Ranking")
+    st.title("Audio Scoring App")
 
     # Adding the guideline text
     st.write("In each question, there will be 4 audio files:")
     st.write("1. Three audio files from our models.")
     st.write("2. One audio file which is the true recording.")
-    st.write("Please listen to all of them and then select the ranking.")
-    st.write("1 means best, 4 means worst")
-    st.write("Please select the ranking from top to bottom:")
+    st.write("Please listen to all of them and then select the score.")
+    st.write("-1 means unrealistic, 100 means perfect")
 
     # Google Authentication
     st.subheader("Google Authentication")
@@ -62,33 +60,27 @@ def main():
             st.warning("Please click 'Authenticate' to log in and proceed.")
             return
 
-    # Initialize the rankings dictionary
-    rankings = {}
-
     # Define audio data
-    audio_data = {
-        "urls": [
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0001.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0002.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0003.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0004.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0005.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0006.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0007.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0008.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0009.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0010.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0011.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0012.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0013.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0014.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0015.wav",
-            "https://storage.googleapis.com/thaitang-sharing/audio-ranking/MBD1_KTXH_02_0016.wav",
-        ],
-    }
-
-    urls = audio_data["urls"]
-    num_blocks = len(urls) // 4
+    audio_data = [
+        {
+            "question_id": "1",
+            "paths": [
+                "MBD1_KTXH_02_0001.wav",
+                "MBD1_KTXH_02_0002.wav",
+                "MBD1_KTXH_02_0003.wav",
+                "MBD1_KTXH_02_0004.wav",
+            ],
+        },
+        {
+            "question_id": "2",
+            "paths": [
+                "MBD1_KTXH_02_0005.wav",
+                "MBD1_KTXH_02_0006.wav",
+                "MBD1_KTXH_02_0007.wav",
+                "MBD1_KTXH_02_0008.wav",
+            ],
+        },
+    ]
 
     # Connect to the PostgreSQL database using environment variables
     conn = psycopg2.connect(
@@ -99,39 +91,38 @@ def main():
         password=os.environ.get("DATABASE_PASSWORD"),
     )
 
-    for block in range(num_blocks):
-        question_num = block + 1
-        st.write(f"Question {question_num}")
+    for audio_info in audio_data:
+        question_id = audio_info["question_id"]
+        st.write(f"Question {question_id}")
         st.write("Rankings:")
 
-        block_urls = urls[block * 4 : (block + 1) * 4]
-        block_rankings = []
+        block_paths = audio_info["paths"]
+        block_scores = []
 
-        for i, url in enumerate(block_urls):
-            response = requests.get(url)
-            audio_bytes = BytesIO(response.content)
+        for i, path in enumerate(block_paths):
+            audio_bytes = BytesIO(
+                open(os.path.join("audios", path), "rb").read()
+            )
             st.audio(audio_bytes, format="audio/wav")
 
-            options = [1, 2, 3, 4]
-            if i > 0:
-                options = [
-                    option
-                    for option in options
-                    if option not in block_rankings
-                ]
-
-            ranking = st.selectbox(
-                f"Ranking for URL {i+1}:", options=options, key=url
+            score = st.slider(
+                f"Score for audio file {i+1}:",
+                min_value=-1,
+                max_value=100,
+                value=50,
+                key=path,
             )
-            block_rankings.append(ranking)
+
+            block_scores.append(score)
 
             # Persist data to PostgreSQL database
-            insert_ranking_data(
-                conn, question_num, url, ranking, st.session_state.user_id
+            insert_scoring_data(
+                conn, question_id, path, score, st.session_state.user_id
             )
 
-        if None not in block_rankings:
-            rankings[f"Question {question_num}"] = block_rankings
+        if None not in block_scores:
+            # You can use the block_scores list as needed
+            pass
 
         st.write("---")
 
