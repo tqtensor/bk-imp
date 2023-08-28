@@ -191,7 +191,7 @@ def main():
     # Adding the guideline text
     st.write("In each question, there will be 3 audio files:")
     st.write("1. Two audio files from our models.")
-    st.write("2. One audio file which is the true recording.")
+    st.write("2. One audio file is the true recording.")
     st.write("Please listen to all of them and then select the score.")
     st.write("-1 means unrealistic, 100 means perfect")
 
