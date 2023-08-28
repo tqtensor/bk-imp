@@ -12,6 +12,171 @@ GOOGLE_CLIENT_SECRET = os.environ["GOOGLE_CLIENT_SECRET"]
 GOOGLE_REDIRECT_URI = os.environ["GOOGLE_REDIRECT_URI"]
 
 
+# Define audios for scoring
+audio_data = [
+    {
+        "question_id": "1",
+        "paths": [
+            "original/FGL1.KTXH_07_0016.wav",
+            "stargan_best_x/FGL1.KTXH_07_0016.wav",
+            "stargan_best_y/FGL1.KTXH_07_0016.wav",
+        ],
+    },
+    {
+        "question_id": "2",
+        "paths": [
+            "stargan_best_y/FGL1.KTXH_05_0006.wav",
+            "stargan_best_x/FGL1.KTXH_05_0006.wav",
+            "original/FGL1.KTXH_05_0006.wav",
+        ],
+    },
+    {
+        "question_id": "3",
+        "paths": [
+            "stargan_best_y/MGL1.KTXH_07_0016.wav",
+            "original/MGL1.KTXH_07_0016.wav",
+            "stargan_best_x/MGL1.KTXH_07_0016.wav",
+        ],
+    },
+    {
+        "question_id": "4",
+        "paths": [
+            "original/MKT1.TTCS_03_0001.wav",
+            "stargan_best_x/MKT1.TTCS_03_0001.wav",
+            "stargan_best_y/MKT1.TTCS_03_0001.wav",
+        ],
+    },
+    {
+        "question_id": "5",
+        "paths": [
+            "stargan_best_x/MKT1.TTCS_03_0003.wav",
+            "stargan_best_y/MKT1.TTCS_03_0003.wav",
+            "original/MKT1.TTCS_03_0003.wav",
+        ],
+    },
+    {
+        "question_id": "6",
+        "paths": [
+            "stargan_best_y/FBD1.KTXH_02_0001.wav",
+            "original/FBD1.KTXH_02_0001.wav",
+            "stargan_best_x/FBD1.KTXH_02_0001.wav",
+        ],
+    },
+    {
+        "question_id": "7",
+        "paths": [
+            "stargan_best_y/FKT1.TTCS_03_0001.wav",
+            "stargan_best_x/FKT1.TTCS_03_0001.wav",
+            "original/FKT1.TTCS_03_0001.wav",
+        ],
+    },
+    {
+        "question_id": "8",
+        "paths": [
+            "stargan_best_x/FBD1.KTXH_06_0002.wav",
+            "original/FBD1.KTXH_06_0002.wav",
+            "stargan_best_y/FBD1.KTXH_06_0002.wav",
+        ],
+    },
+    {
+        "question_id": "9",
+        "paths": [
+            "stargan_best_x/MKT1.TTCS_03_0004.wav",
+            "stargan_best_y/MKT1.TTCS_03_0004.wav",
+            "original/MKT1.TTCS_03_0004.wav",
+        ],
+    },
+    {
+        "question_id": "10",
+        "paths": [
+            "stargan_best_x/MKT1.TTCS_03_0002.wav",
+            "original/MKT1.TTCS_03_0002.wav",
+            "stargan_best_y/MKT1.TTCS_03_0002.wav",
+        ],
+    },
+    {
+        "question_id": "11",
+        "paths": [
+            "original/FKT1.TTCS_03_0004.wav",
+            "stargan_best_y/FKT1.TTCS_03_0004.wav",
+            "stargan_best_x/FKT1.TTCS_03_0004.wav",
+        ],
+    },
+    {
+        "question_id": "12",
+        "paths": [
+            "stargan_best_y/MGL1.KTXH_05_0006.wav",
+            "original/MGL1.KTXH_05_0006.wav",
+            "stargan_best_x/MGL1.KTXH_05_0006.wav",
+        ],
+    },
+    {
+        "question_id": "13",
+        "paths": [
+            "stargan_best_y/FGL1.TTCS_01_0005.wav",
+            "original/FGL1.TTCS_01_0005.wav",
+            "stargan_best_x/FGL1.TTCS_01_0005.wav",
+        ],
+    },
+    {
+        "question_id": "14",
+        "paths": [
+            "stargan_best_y/MGL1.KTXH_02_0021.wav",
+            "stargan_best_x/MGL1.KTXH_02_0021.wav",
+            "original/MGL1.KTXH_02_0021.wav",
+        ],
+    },
+    {
+        "question_id": "15",
+        "paths": [
+            "original/MGL1.TTCS_01_0005.wav",
+            "stargan_best_x/MGL1.TTCS_01_0005.wav",
+            "stargan_best_y/MGL1.TTCS_01_0005.wav",
+        ],
+    },
+    {
+        "question_id": "16",
+        "paths": [
+            "stargan_best_y/FKT1.TTCS_03_0002.wav",
+            "original/FKT1.TTCS_03_0002.wav",
+            "stargan_best_x/FKT1.TTCS_03_0002.wav",
+        ],
+    },
+    {
+        "question_id": "17",
+        "paths": [
+            "stargan_best_y/FBD1.KTXH_08_0006.wav",
+            "original/FBD1.KTXH_08_0006.wav",
+            "stargan_best_x/FBD1.KTXH_08_0006.wav",
+        ],
+    },
+    {
+        "question_id": "18",
+        "paths": [
+            "stargan_best_y/FGL1.KTXH_02_0021.wav",
+            "original/FGL1.KTXH_02_0021.wav",
+            "stargan_best_x/FGL1.KTXH_02_0021.wav",
+        ],
+    },
+    {
+        "question_id": "19",
+        "paths": [
+            "stargan_best_x/FKT1.TTCS_03_0003.wav",
+            "original/FKT1.TTCS_03_0003.wav",
+            "stargan_best_y/FKT1.TTCS_03_0003.wav",
+        ],
+    },
+    {
+        "question_id": "20",
+        "paths": [
+            "original/FBD1.KTXH_09_0023.wav",
+            "stargan_best_x/FBD1.KTXH_09_0023.wav",
+            "stargan_best_y/FBD1.KTXH_09_0023.wav",
+        ],
+    },
+]
+
+
 # Function to insert data into the PostgreSQL database
 def insert_scoring_data(conn, question_id, filename, score, user_id):
     sql = "INSERT INTO audio_scoring (question_id, filename, score, user_id) VALUES (%s, %s, %s, %s);"
@@ -24,8 +189,8 @@ def main():
     st.title("Audio Scoring App")
 
     # Adding the guideline text
-    st.write("In each question, there will be 4 audio files:")
-    st.write("1. Three audio files from our models.")
+    st.write("In each question, there will be 3 audio files:")
+    st.write("1. Two audio files from our models.")
     st.write("2. One audio file which is the true recording.")
     st.write("Please listen to all of them and then select the score.")
     st.write("-1 means unrealistic, 100 means perfect")
@@ -60,28 +225,6 @@ def main():
             st.warning("Please click 'Authenticate' to log in and proceed.")
             return
 
-    # Define audio data
-    audio_data = [
-        {
-            "question_id": "1",
-            "paths": [
-                "MBD1_KTXH_02_0001.wav",
-                "MBD1_KTXH_02_0002.wav",
-                "MBD1_KTXH_02_0003.wav",
-                "MBD1_KTXH_02_0004.wav",
-            ],
-        },
-        {
-            "question_id": "2",
-            "paths": [
-                "MBD1_KTXH_02_0005.wav",
-                "MBD1_KTXH_02_0006.wav",
-                "MBD1_KTXH_02_0007.wav",
-                "MBD1_KTXH_02_0008.wav",
-            ],
-        },
-    ]
-
     # Connect to the PostgreSQL database using environment variables
     conn = psycopg2.connect(
         host=os.environ.get("DATABASE_HOST"),
@@ -94,7 +237,7 @@ def main():
     for audio_info in audio_data:
         question_id = audio_info["question_id"]
         st.write(f"Question {question_id}")
-        st.write("Rankings:")
+        st.write("Scorings:")
 
         block_paths = audio_info["paths"]
         block_scores = []
