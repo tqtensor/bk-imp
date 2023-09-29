@@ -22,19 +22,19 @@
 #let assignment_class(title, author, course_id, professor_name, semester, body) = {
   set document(title: title, author: author)
   set page(
-    paper:"us-letter", 
-    header: locate( 
+    paper:"us-letter",
+    header: locate(
         loc => if (
-            counter(page).at(loc).first()==1) { none } 
-        else if (counter(page).at(loc).first()==2) { align(right, 
+            counter(page).at(loc).first()==1) { none }
+        else if (counter(page).at(loc).first()==2) { align(right,
               [*#author* | *#course_id: #title* | *Problem 1*]
             ) }
-        else { 
-            align(right, 
+        else {
+            align(right,
               [*#author* | *#course_id: #title* | *Problem #problem_counter.at(loc).first()*]
-            ) 
+            )
         }
-    ), 
+    ),
     footer: locate(loc => {
       let page_number = counter(page).at(loc).first()
       let total_pages = counter(page).final(loc).last()
@@ -46,10 +46,10 @@
   align(center, [_Prof. #professor_name _, #semester])
   block(height:35%,fill:none)
   align(center)[*#author*]
-  
+
   pagebreak(weak: false)
   body
-  
+
     // locate(loc => {
     //   let i = counter(page).at(loc).first()
     //   if i == 1 { return }
