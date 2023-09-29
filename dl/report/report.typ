@@ -1,5 +1,5 @@
 #import "template.typ": *
-#let title = "Project: Training HiFi-GAN on Bahnaric Language"
+#let title = "Assignment: Training HiFi-GAN on Bahnaric Language"
 #let author = "Tang Quoc Thai"
 #let course_id = "CO5255"
 #let instructor = "Le Thanh Sach"
@@ -9,6 +9,8 @@
 #set par(justify: true)
 #set text(lang:"en", hyphenate:true)
 #show: assignment_class.with(title, author, course_id, instructor, semester)
+
+*Source code*: https://github.com/tqtensor/hifi-gan
 
 = Project Description
 
@@ -37,7 +39,7 @@ Pretraining a vocoder with an ethnic language like Bahnaric offers several advan
 = Background Theory
 
 #figure(
-  image("hifigan_model.png", width: 80%),
+  image("hifigan_model.jpg", width: 80%),
   caption: [Model Architecture of HiFi-GAN],
 )
 
@@ -57,14 +59,6 @@ The MPD is designed to identify the diverse periodic patterns present in speech 
 
 The MSD is employed to capture consecutive patterns and long-term dependencies within the audio data. The idea behind the MSD is to evaluate audio samples at different levels of granularity. This is achieved by consecutively processing the audio samples with multiple scales, enabling the discriminator to analyze the audio signal at varying resolutions. The MSD technique is inspired by the multi-scale discriminator introduced in the MelGAN paper (Kumar et al., 2019).
 
-= Implementation of HiFi-GAN
-
-== Generator
-
-== MPD
-
-== MSD
-
 = Dataset
 
 #figure(
@@ -73,6 +67,49 @@ The MSD is employed to capture consecutive patterns and long-term dependencies w
 )
 
 Our dataset for improving Bahnaric language voice generation was meticulously crafted. We downloaded Bahnaric news videos from VTV5 and extracted the audio. Using power analysis, we split the audio into 15-second clips containing human speech, filtering out non-speech parts. This resulted in a substantial dataset of 316 hours of diverse Bahnaric speech. This dataset forms the foundation for training our voice enhancement model, ensuring authenticity and linguistic richness for improved voice generation.
+
+= Modification of HiFi-GAN
+
+The forked repository for this project can be located at https://github.com/tqtensor/hifi-gan. In this repository, the code for preparing the Baharic dataset has been added. Modifications have also been made to the training code to enable the model's training on the Bahnaric dataset. The training process utilizes two GPUs and reaches the similar loss as compared with the original model, concluding after 1,000,000 iterations.
+
+```python
+import glob
+from collections import defaultdict
+
+if __name__ == "__main__":
+    # Collect all the original videos
+    file_paths = sorted(glob.glob("BahnaricSpeech/wavs/*.wav"))
+    original_videos = defaultdict(list)
+    for file_path in file_paths:
+        video_id = file_path[:-8]
+        original_videos[video_id].append(file_path)
+
+    # Use the original videos to split the data into train, val
+    train_videos = list(original_videos.keys())[: int(len(original_videos) * 0.95)]
+    val_videos = list(original_videos.keys() - set(train_videos))
+
+    train_audios = sum([original_videos[video_id] for video_id in train_videos], [])
+    val_audios = sum([original_videos[video_id] for video_id in val_videos], [])
+
+    # Save the split into a file
+    with open("BahnaricSpeech/training.txt", "w") as f:
+        f.write("\n".join(train_audios))
+    with open("BahnaricSpeech/validation.txt", "w") as f:
+        f.write("\n".join(val_audios))
+```
+
+= Validation Loss
+== Original HiFi-GAN
+#figure(
+  image("validation_loss_original.png", width: 80%),
+  caption: [Validation Loss of Original HiFi-GAN],
+)
+
+== Bahnaric HiFi-GAN
+#figure(
+  image("validation_loss_bahnaric.png", width: 80%),
+  caption: [Validation Loss of Bahnaric HiFi-GAN],
+)
 
 = References
 
