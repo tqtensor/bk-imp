@@ -3,7 +3,7 @@
 #let author = "Tang Quoc Thai"
 #let course_id = "CO5255"
 #let instructor = "Le Thanh Sach"
-#let semester = "Spring 2023"
+#let semester = "1st Semester - 2023"
 #set enum(numbering: "a)")
 #set heading(numbering: "1.1)")
 #set par(justify: true)
