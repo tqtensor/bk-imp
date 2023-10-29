@@ -1,7 +1,9 @@
-from xgboost import XGBClassifier
+import os
+
 import pandas as pd
 from sklearn.metrics import average_precision_score
 from sklearn.model_selection import GridSearchCV
+from xgboost import XGBClassifier
 
 if __name__ == "__main__":
     # Read the file
@@ -30,7 +32,12 @@ if __name__ == "__main__":
 
     # Create GridSearchCV instance for hyperparameter tuning
     grid_search = GridSearchCV(
-        model, param_grid, scoring="average_precision", cv=5, verbose=2
+        model,
+        param_grid,
+        scoring="average_precision",
+        cv=5,
+        verbose=2,
+        n_jobs=-1,
     )
 
     # Fit GridSearchCV to find the best hyperparameters
@@ -53,4 +60,6 @@ if __name__ == "__main__":
     print(f"PR AUC on validation set: {pr_auc:.4f}")
 
     # Save the model
+    if not os.path.exists("./jobs/model"):
+        os.makedirs("./jobs/model")
     best_model.save_model("./jobs/model/xgb_model.json")
