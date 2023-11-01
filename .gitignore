@@ -58,3 +58,6 @@ certs
 
 # Ignore pgdata
 pgdata
+
+# Ignore Praat files
+*.TextGrid
