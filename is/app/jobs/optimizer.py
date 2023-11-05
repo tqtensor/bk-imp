@@ -11,9 +11,24 @@ def expected_total_profit(x, gamma, alpha, P):
 
 
 def run(
-    budget: int,
+    budget: float,
     convincing_factor: dict,
 ):
+    """
+    Runs the optimization model to determine the optimal allocation of a budget
+    to minimize customer churn.
+
+    :param float budget: The percentage of the total customer spend to allocate
+    to the campaign.
+    :param dict convincing_factor: A dictionary containing the upper and lower
+    bounds for the churn probability, and the gamma value for customers outside
+    these bounds.
+
+    :return: A tuple containing the expected total profit with the optimal
+    campaign, the expected total profit with no campaign, and the expected
+    total profit with a uniform campaign.
+    """
+    ...
     # Load test dataset
     test_dataset = pd.read_csv("./jobs/data/test.csv")
 
@@ -24,7 +39,7 @@ def run(
     # Predict churn probability
     test_dataset["Churn Probability"] = model.predict_proba(
         test_dataset.drop(columns=["Total Customer Spend", "Churn?_True."])
-    )[:, 1]
+    )[:, 0]
 
     # Formulate the optimization problem
     # P: vector of the total customer spend
@@ -34,7 +49,7 @@ def run(
     alpha = test_dataset["Churn Probability"].values
 
     # C: budget
-    C = budget
+    C = budget * P.sum()
 
     # N: number of customers
     N = len(P)
@@ -77,19 +92,6 @@ def run(
 
     # Gekko returns an array of arrays so transforming to array
     x = np.array([a[0] for a in x])
-    print(
-        "Total spend is",
-        "${:,.2f}".format(np.sum(x)),
-        "compared to our budget of",
-        "${:,.2f}".format(C),
-    )
-    print(
-        "Total customer spend is",
-        "${:,.2f}".format(test_dataset["Total Customer Spend"].sum()),
-        "for",
-        len(test_dataset),
-        "customers.",
-    )
 
     # Evaluate the expected total profit
     expected_total_profit_no_campaign = expected_total_profit(
@@ -99,36 +101,28 @@ def run(
     expected_total_profit_uniform_campaign = expected_total_profit(
         (C / N) * np.ones(N), gamma, alpha, P
     )
-    print(
-        "Expected total profit compared to no campaign:  %.0f%%"
-        % (
-            100
-            * (
-                expected_total_profit_optimal
-                - expected_total_profit_no_campaign
-            )
-            / expected_total_profit_no_campaign
-        )
-    )
-    print(
-        "Expected total profit compared to uniform discount allocation:  %.0f%%"
-        % (
-            100
-            * (
-                expected_total_profit_optimal
-                - expected_total_profit_uniform_campaign
-            )
-            / expected_total_profit_uniform_campaign
-        )
+    return (
+        expected_total_profit_optimal,
+        expected_total_profit_no_campaign,
+        expected_total_profit_uniform_campaign,
     )
 
 
 if __name__ == "__main__":
-    run(
-        budget=100,
+    optimal, no_campaign, uniform_campaign = run(
+        budget=0.02,
         convincing_factor={
             "lower_bound": 0.55,
             "upper_bound": 0.95,
             "gamma": 100,
         },
+    )
+
+    print(
+        "Expected total profit compared to no campaign:  %.0f%%"
+        % (100 * (optimal - no_campaign) / no_campaign)
+    )
+    print(
+        "Expected total profit compared to uniform discount allocation:  %.0f%%"
+        % (100 * (optimal - uniform_campaign) / uniform_campaign)
     )
