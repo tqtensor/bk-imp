@@ -93,10 +93,6 @@ async def run(
     m.Obj(-sum(ival))
 
     # Minimize objective
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 98aa223 (chore: add try catch for gekko)
     try:
         m.solve()
     except Exception as e:
@@ -105,12 +101,6 @@ async def run(
             "Optimization failed. Please try again.",
             status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-<<<<<<< HEAD
-=======
-    m.solve()
->>>>>>> 388421f (feat: add docker deployment)
-=======
->>>>>>> 98aa223 (chore: add try catch for gekko)
 
     # Gekko returns an array of arrays so transforming to array
     x = np.array([a[0] for a in x])
