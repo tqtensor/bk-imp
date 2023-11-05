@@ -93,7 +93,14 @@ async def run(
     m.Obj(-sum(ival))
 
     # Minimize objective
-    m.solve()
+    try:
+        m.solve()
+    except Exception as e:
+        print(e)
+        return (
+            "Optimization failed. Please try again.",
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
 
     # Gekko returns an array of arrays so transforming to array
     x = np.array([a[0] for a in x])
