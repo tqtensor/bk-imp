@@ -15,6 +15,7 @@ version = "0.1.0"
 [tool.poetry.dependencies]
 pandas = "^2.1.2"
 python = "3.10.10"
+scikit-learn = "^1.3.2"
 xgboost = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
@@ -25,4 +26,6 @@ pre-commit = "^2.20.0"
 toml-sort = "^0.23.0"
 
 [tool.poetry.group.is.dependencies]
+fastapi = "^0.104.1"
 gekko = "^1.0.6"
+uvicorn = "^0.24.0"

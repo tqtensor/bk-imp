@@ -1,19 +1,34 @@
+import asyncio
+
 import numpy as np
-import pandas as pd
+from fastapi import APIRouter, status
 from gekko import GEKKO
-from xgboost import XGBClassifier
+from jobs.inference import run as run_inference
+from pydantic import BaseModel
+
+router = APIRouter()
 
 
-def expected_total_profit(x, gamma, alpha, P):
+class ConvincingFactor(BaseModel):
+    lower_bound: float = 0.55
+    upper_bound: float = 0.95
+    gamma: int = 100
+
+
+def _expected_total_profit(x, gamma, alpha, P):
     # beta: vector of probabilities customer will accept the offer
     beta = 1 - np.exp(-gamma * (x))
     return np.sum(P * (1 - alpha)) + np.sum(beta * (alpha * P - x))
 
 
-def run(
+@router.post(
+    path="/optimizations",
+    status_code=status.HTTP_200_OK,
+)
+async def run(
     budget: float,
-    convincing_factor: dict,
-):
+    convincing_factor: ConvincingFactor,
+) -> tuple:
     """
     Runs the optimization model to determine the optimal allocation of a budget
     to minimize customer churn.
@@ -28,18 +43,9 @@ def run(
     campaign, the expected total profit with no campaign, and the expected
     total profit with a uniform campaign.
     """
-    ...
-    # Load test dataset
-    test_dataset = pd.read_csv("./jobs/data/test.csv")
-
-    # Load model
-    model = XGBClassifier()
-    model.load_model("./jobs/model/xgb_model.json")
-
     # Predict churn probability
-    test_dataset["Churn Probability"] = model.predict_proba(
-        test_dataset.drop(columns=["Total Customer Spend", "Churn?_True."])
-    )[:, 0]
+    test_dataset = await asyncio.gather(run_inference("./jobs/data/test.csv"))
+    test_dataset = test_dataset[0]
 
     # Formulate the optimization problem
     # P: vector of the total customer spend
@@ -57,10 +63,10 @@ def run(
     # gamma: convincing factor for each customer
     gamma = np.ones(N)
     indices_gamma_eq_zero = np.union1d(
-        np.where(alpha > convincing_factor["upper_bound"])[0],
-        np.where(alpha < convincing_factor["lower_bound"])[0],
+        np.where(alpha > convincing_factor.upper_bound)[0],
+        np.where(alpha < convincing_factor.lower_bound)[0],
     )
-    gamma[indices_gamma_eq_zero] = convincing_factor["gamma"]
+    gamma[indices_gamma_eq_zero] = convincing_factor.gamma
 
     # Create GEKKO model
     m = GEKKO(remote=False)
@@ -88,41 +94,20 @@ def run(
 
     # Minimize objective
     m.solve()
-    print(x)
 
     # Gekko returns an array of arrays so transforming to array
     x = np.array([a[0] for a in x])
 
     # Evaluate the expected total profit
-    expected_total_profit_no_campaign = expected_total_profit(
+    expected_total_profit_no_campaign = _expected_total_profit(
         0, gamma, alpha, P
     )
-    expected_total_profit_optimal = expected_total_profit(x, gamma, alpha, P)
-    expected_total_profit_uniform_campaign = expected_total_profit(
+    expected_total_profit_optimal = _expected_total_profit(x, gamma, alpha, P)
+    expected_total_profit_uniform_campaign = _expected_total_profit(
         (C / N) * np.ones(N), gamma, alpha, P
     )
     return (
         expected_total_profit_optimal,
         expected_total_profit_no_campaign,
         expected_total_profit_uniform_campaign,
-    )
-
-
-if __name__ == "__main__":
-    optimal, no_campaign, uniform_campaign = run(
-        budget=0.02,
-        convincing_factor={
-            "lower_bound": 0.55,
-            "upper_bound": 0.95,
-            "gamma": 100,
-        },
-    )
-
-    print(
-        "Expected total profit compared to no campaign:  %.0f%%"
-        % (100 * (optimal - no_campaign) / no_campaign)
-    )
-    print(
-        "Expected total profit compared to uniform discount allocation:  %.0f%%"
-        % (100 * (optimal - uniform_campaign) / uniform_campaign)
     )
