@@ -30,6 +30,9 @@ toml-sort = "^0.23.0"
 fastapi = "^0.104.1"
 gekko = "^1.0.6"
 uvicorn = "^0.24.0"
+<<<<<<< HEAD
 
 [tool.poetry.group.tts.dependencies]
 librosa = "^0.10.1"
+=======
+>>>>>>> 388421f (feat: add docker deployment)
