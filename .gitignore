@@ -46,8 +46,21 @@ voh/service-account.json
 *.tsv
 
 # Ignore data files
+*.csv
 *.parquet
 *.zip
 
 # Ignore generated PDF files
 *.pdf
+
+# Ignore certs
+certs
+
+# Ignore pgdata
+pgdata
+
+# Ignore Praat files
+*.TextGrid
+
+# Ignore pycache
+__pycache__
