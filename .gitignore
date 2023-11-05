@@ -61,3 +61,6 @@ pgdata
 
 # Ignore Praat files
 *.TextGrid
+
+# Ignore pycache
+__pycache__
