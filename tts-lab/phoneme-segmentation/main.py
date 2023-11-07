@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import parselmouth
 from acoustic_features import extract_feature_means
+from praatio.utilities import textgrid_io
 
 # --------------------------------------------------------------------------- #
 # Generate acoustic features
@@ -53,16 +54,12 @@ from acoustic_features import extract_feature_means
 
 # --------------------------------------------------------------------------- #
 # Parse TextGrid
-textgrid_data = textgrid = parselmouth.Data.read(
-    "bahnaric/dataset/pham/KT_Bana_F1_part2_pham_2_pham.TextGrid"
-)
 
-# Save the TextGrid data to text file
-textgrid_data.save_as_text_file(
-    os.path.join(
-        "bahnaric",
-        os.path.basename(
-            "bahnaric/dataset/pham/KT_Bana_F1_part2_pham_2_pham.TextGrid"
-        ).replace(".TextGrid", ".txt"),
-    )
+textgrid_data = parselmouth.Data.read(
+    "/home/terrabot/bk-imp/tts-lab/phoneme-segmentation/bahnaric/dataset/pham/KT_Bana_F1_part1_pham_2_pham.TextGrid"
+)
+textgrid_data.save_as_text_file("/tmp/textgrid.txt")
+
+textgrid_data = textgrid_io.parseTextgridStr(
+    open("/tmp/textgrid.txt", "r").read(), includeEmptyIntervals=False
 )
