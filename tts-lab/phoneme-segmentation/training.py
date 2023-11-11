@@ -65,9 +65,9 @@ def gen_dataset(subset: pd.DataFrame, label: str) -> pd.DataFrame:
             timestamps=timestamps,
             target=row["start"] if label == "ov" else row["end"],
         )
-        # Relax the condition by allowing the label to be within 5 frames
+        # Relax the condition by allowing the label to be within 15 frames
         label_index = np.arange(
-            max(label_index - 5, 0), min(label_index + 5, len(timestamps))
+            max(label_index - 15, 0), min(label_index + 15, len(timestamps))
         )
         features.loc[features.index[label_index], label] = 1
 
@@ -87,7 +87,7 @@ def gen_dataset(subset: pd.DataFrame, label: str) -> pd.DataFrame:
 # --------------------------------------------------------------------------- #
 # Training
 
-label = "ov"
+label = "op"
 training_set = gen_dataset(train, label)
 testing_set = gen_dataset(test, label)
 
