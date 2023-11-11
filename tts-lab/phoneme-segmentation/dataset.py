@@ -141,6 +141,6 @@ for file_name in tqdm(file_names, total=len(file_names)):
     features.to_parquet(
         os.path.join(
             "bahnaric/features",
-            file_name.split("/")[-1].replace(".TextGrid", ".parquet"),
+            file_name.split("/")[-1].replace("TextGrid", "parquet"),
         )
     )
