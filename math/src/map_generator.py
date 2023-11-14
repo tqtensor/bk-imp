@@ -47,6 +47,49 @@ for element in data["elements"]:
                 {"id": element["id"], "name": element["tags"]["name"]}
             )
 
-for node_id in nodes:
-    if len(nodes[node_id]) > 1:
-        print(nodes[node_id])
+
+# 4. Build a graph from the nodes (vertices).
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = defaultdict(list)
+
+    def addEdge(self, u, v):
+        self.graph[u].append(v)
+
+    def printAllPathsUtil(self, u, d, visited, path):
+        visited[u] = True
+        path.append(u)
+
+        if u == d:
+            print(path)
+        else:
+            for i in self.graph[u]:
+                if visited[i] == False:
+                    self.printAllPathsUtil(i, d, visited, path)
+
+        path.pop()
+        visited[u] = False
+
+    def printAllPaths(self, s, d):
+        visited = [False] * (self.V)
+        path = []
+        self.printAllPathsUtil(s, d, visited, path)
+
+
+# Build the graph
+graph = Graph(len(nodes))
+for element in data["elements"]:
+    if (
+        (element["type"] == "way")
+        & (
+            element["tags"]["highway"]
+            in ["trunk", "primary", "secondary", "tertiary", "residential"]
+        )
+        & ("name" in element["tags"])
+    ):
+        for i in range(len(element["nodes"]) - 1):
+            graph.addEdge(element["nodes"][i], element["nodes"][i + 1])
+
+
+Graph.printAllPaths(graph, 6766658627, 473382796)
