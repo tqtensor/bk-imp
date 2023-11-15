@@ -37,3 +37,6 @@ uvicorn = "^0.24.0"
 librosa = "^0.10.1"
 lightgbm = "^4.1.0"
 praat-parselmouth = "^0.4.3"
+
+[tool.poetry.group.math.dependencies]
+osmnx = "^1.7.1"
