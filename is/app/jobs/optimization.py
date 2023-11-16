@@ -8,6 +8,8 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+import pandas as pd
+
 
 class ConvincingFactor(BaseModel):
     lower_bound: float = 0.55
@@ -44,8 +46,8 @@ async def run(
     total profit with a uniform campaign.
     """
     # Predict churn probability
-    test_dataset = await asyncio.gather(run_inference("./jobs/data/test.csv"))
-    test_dataset = test_dataset[0]
+    test_dataset = await asyncio.gather(run_inference("test"))
+    test_dataset = pd.read_csv(test_dataset[0]["file_path"])
 
     # Formulate the optimization problem
     # P: vector of the total customer spend

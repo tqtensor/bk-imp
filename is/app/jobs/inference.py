@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 import pandas as pd
 from fastapi import APIRouter, status
 from xgboost import XGBClassifier
@@ -21,7 +24,14 @@ async def run(dataset: str):
     customer, and the XGBClassifier model used to make the predictions.
     """
     # Load dataset
-    dataset = pd.read_csv(dataset)
+    if dataset == "test":
+        dataset = pd.read_csv("./jobs/data/test.csv")
+    elif dataset == "validation":
+        dataset = pd.read_csv("./jobs/data/validation.csv")
+    else:
+        raise ValueError(
+            f"Dataset {dataset} not found. Must be 'test' or 'validation'."
+        )
 
     # Load model
     model = XGBClassifier()
@@ -31,4 +41,15 @@ async def run(dataset: str):
     dataset["Churn Probability"] = model.predict_proba(
         dataset.drop(columns=["Total Customer Spend", "Churn?_True."])
     )[:, 0]
-    return dataset
+
+    # Get current UTC time and format it as a string
+    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+
+    # Include timestamp in filename
+    file_path = f"/tmp/predictions_{timestamp}.csv"
+
+    # Save DataFrame to CSV file in tmp folder
+    dataset.to_csv(file_path, index=False)
+
+    # Return file path
+    return {"file_path": os.path.abspath(file_path)}
