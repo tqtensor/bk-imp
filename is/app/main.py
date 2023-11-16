@@ -1,31 +1,26 @@
-import logging
+import os
+from typing import Annotated
 
-from fastapi import FastAPI
+from dotenv import load_dotenv
+from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi.security import HTTPBearer
 from jobs.api import api_router
 
+load_dotenv()
 
-# Define the filter
-class EndpointFilter(logging.Filter):
-    def filter(self, record: logging.LogRecord) -> bool:
-        return (
-            record.args
-            and len(record.args) >= 3
-            and record.args[2] != "/healthcheck"
-        )
-
-
-logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
+http_bearer = HTTPBearer()
 
 app = FastAPI(
     title="Customer Churn Prevention",
 )
 
 
-@app.get("/healthcheck", include_in_schema=False)
-async def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
+async def verify_token(api_token: Annotated[str, Header()]):
+    if api_token != os.getenv("API_TOKEN"):
+        raise HTTPException(status_code=400, detail="API Token header invalid")
 
 
 app.include_router(
     router=api_router,
+    dependencies=[Depends(verify_token)],
 )
