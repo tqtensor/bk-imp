@@ -40,4 +40,5 @@ lightgbm = "^4.1.0"
 praat-parselmouth = "^0.4.3"
 
 [tool.poetry.group.math.dependencies]
+geopy = "^2.4.0"
 osmnx = "^1.7.1"
