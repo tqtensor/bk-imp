@@ -1,10 +1,8 @@
-import asyncio
-
 import numpy as np
 from fastapi import APIRouter, status
 from gekko import GEKKO
-from jobs.inference import run as run_inference
 from pydantic import BaseModel
+
 
 router = APIRouter()
 
@@ -46,7 +44,7 @@ async def run(
     total profit with a uniform campaign.
     """
     # Predict churn probability
-    test_dataset = await asyncio.gather(run_inference("test"))
+    # test_dataset = await asyncio.gather(run_inference("test"))
     test_dataset = pd.read_csv(test_dataset[0]["file_path"])
 
     # Formulate the optimization problem
@@ -115,6 +113,7 @@ async def run(
     expected_total_profit_uniform_campaign = _expected_total_profit(
         (C / N) * np.ones(N), gamma, alpha, P
     )
+
     return (
         expected_total_profit_optimal,
         expected_total_profit_no_campaign,

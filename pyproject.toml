@@ -27,6 +27,7 @@ nbconvert = "^7.11.0"
 nbqa = {extras = ["toolchain"], version = "^1.7.0"}
 pre-commit = "^2.20.0"
 toml-sort = "^0.23.0"
+poetry-plugin-export = "^1.6.0"
 
 [tool.poetry.group.is.dependencies]
 fastapi = "^0.104.1"
