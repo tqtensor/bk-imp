@@ -1,9 +1,11 @@
-
 # Use the official Python image as the base image
 FROM python:3.10.10-slim-buster
 
 # Set the working directory to /app
 WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y libgomp1
 
 # Copy the requirements file into the container
 COPY requirements.txt .

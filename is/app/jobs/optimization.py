@@ -1,14 +1,14 @@
 import asyncio
+import json
 
 import numpy as np
+import pandas as pd
 from fastapi import APIRouter, status
 from gekko import GEKKO
-from jobs.inference import run as run_inference
+from jobs.model import inference as run_inference
 from pydantic import BaseModel
 
 router = APIRouter()
-
-import pandas as pd
 
 
 class ConvincingFactor(BaseModel):
@@ -28,9 +28,10 @@ def _expected_total_profit(x, gamma, alpha, P):
     status_code=status.HTTP_200_OK,
 )
 async def run(
+    gdrive_id: str,
     budget: float,
     convincing_factor: ConvincingFactor,
-) -> tuple:
+) -> dict:
     """
     Runs the optimization model to determine the optimal allocation of a budget
     to minimize customer churn.
@@ -46,15 +47,15 @@ async def run(
     total profit with a uniform campaign.
     """
     # Predict churn probability
-    test_dataset = await asyncio.gather(run_inference("test"))
-    test_dataset = pd.read_csv(test_dataset[0]["file_path"])
+    await asyncio.gather(run_inference(gdrive_id=gdrive_id))
+    predictions = pd.read_csv(f"/tmp/{gdrive_id}_predictions.csv")
 
     # Formulate the optimization problem
     # P: vector of the total customer spend
-    P = test_dataset["Total Customer Spend"].values
+    P = predictions["profit"].values
 
     # alpha: vector of churn probabilities
-    alpha = test_dataset["Churn Probability"].values
+    alpha = predictions["proba"].values
 
     # C: budget
     C = budget * P.sum()
@@ -115,8 +116,12 @@ async def run(
     expected_total_profit_uniform_campaign = _expected_total_profit(
         (C / N) * np.ones(N), gamma, alpha, P
     )
-    return (
-        expected_total_profit_optimal,
-        expected_total_profit_no_campaign,
-        expected_total_profit_uniform_campaign,
-    )
+
+    return {
+        status.HTTP_200_OK: "Optimization completed successfully.",
+        "data": {
+            "expected_total_profit_optimal": expected_total_profit_optimal,
+            "expected_total_profit_no_campaign": expected_total_profit_no_campaign,
+            "expected_total_profit_uniform_campaign": expected_total_profit_uniform_campaign,
+        },
+    }
