@@ -75,24 +75,29 @@ graph = ox.truncate.truncate_graph_bbox(
     graph, north, south, east, west, retain_all=True
 )
 
+# Filter the edges in the graph
+edges = [
+    (u, v, k)
+    for u, v, k, data in graph.edges(data=True, keys=True)
+    if data["highway"] in ["primary", "secondary", "tertiary"]
+]
+
+# Create a new graph from the filtered edges
+sub_graph = graph.edge_subgraph(edges)
+
 # Create adjacency matrix
 adjacency_matrix = defaultdict(dict)
-for u, v, data in graph.edges(data=True):
-    if data["highway"] in [
-        "trunk",
-        "primary",
-        "secondary",
-        "tertiary",
-        "residential",
-    ]:
-        adjacency_matrix[u][v] = data["length"]
+for u, v, data in sub_graph.edges(data=True):
+    adjacency_matrix[u][v] = data["length"]
 print("Number of nodes:", len(adjacency_matrix))
 
 # Find the nodes nearest to the start and end coordinates
 start_node = ox.distance.nearest_nodes(
-    G=graph, Y=start_coords[0], X=start_coords[1]
+    G=sub_graph, Y=start_coords[0], X=start_coords[1]
 )
-end_node = ox.distance.nearest_nodes(G=graph, Y=end_coords[0], X=end_coords[1])
+end_node = ox.distance.nearest_nodes(
+    G=sub_graph, Y=end_coords[0], X=end_coords[1]
+)
 
 # Store data for further analysis
 data = {
