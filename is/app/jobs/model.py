@@ -31,7 +31,7 @@ async def train(gdrive_id: str):
     df = pd.read_csv(f"/tmp/{gdrive_id}_features.csv")
     train, _ = train_test_split(df, test_size=0.2, random_state=42)
     X_train, y_train = (
-        train.drop(columns=["label", "entity_id"]),
+        train.drop(columns=["label", "entity_id", "profit"]),
         train["label"],
     )
 
@@ -59,7 +59,10 @@ async def train(gdrive_id: str):
     # Save the model
     model.save_model(f"/tmp/{gdrive_id}_model.json")
 
-    return {"roc_auc": roc_auc, "f1_score": f1}
+    return {
+        status.HTTP_200_OK: "Model trained successfully.",
+        "data": {"roc_auc": roc_auc, "f1": f1},
+    }
 
 
 @router.post(
@@ -75,14 +78,14 @@ async def inference(gdrive_id: str):
     :param gdrive_id: The Google Drive ID of the dataset to run the inference model on.
     :type gdrive_id: str
 
-    :return: None. The function saves the predictions to a CSV file.
-    :rtype: None
+    :return: A dictionary containing the HTTP status code and a success message.
+    :rtype: dict
     """
 
     # Split dataset into train and test sets
     df = pd.read_csv(f"/tmp/{gdrive_id}_features.csv")
     _, test = train_test_split(df, test_size=0.2, random_state=42)
-    X_test = test.drop(columns=["label", "entity_id"])
+    X_test = test.drop(columns=["label", "entity_id", "profit"])
 
     # Load model
     model = XGBClassifier()
@@ -95,3 +98,7 @@ async def inference(gdrive_id: str):
     pd.concat([test, X_test["proba"]], axis=1).to_csv(
         f"/tmp/{gdrive_id}_predictions.csv", index=False
     )
+
+    return {
+        status.HTTP_200_OK: "Inference completed successfully.",
+    }
