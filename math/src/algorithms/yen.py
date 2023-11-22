@@ -5,8 +5,7 @@ import os
 import gdown
 
 
-def yen_dijkstra(src, dst):
-    G = g
+def yen_dijkstra(G, src, dst):
     V = G.V
     all_nodes = set(G.nodes)
     for edge in G.graph:
@@ -44,15 +43,15 @@ def yen_dijkstra(src, dst):
     return float("inf"), []
 
 
-def algorithm(G, src, dst, k) -> float:
+def algorithm(G, src, dst, k=4) -> float:
     edges = G.graph
-    potential_paths = [yen_dijkstra(src, dst)]
+    potential_paths = [yen_dijkstra(G, src, dst)]
     path_cost = potential_paths[0][0]
     path = potential_paths[0][1]
     shortest_paths = []
     shortest_paths.append((path_cost, path))
     for _ in range(1, k):
-        print("Times", _)
+        print("K", _)
         if not potential_paths:
             break
         potential_paths.sort()
@@ -82,7 +81,7 @@ def algorithm(G, src, dst, k) -> float:
                         edges.remove(list(edge))
                     except:
                         pass
-            run_paths = [yen_dijkstra(spur_node, dst)]
+            run_paths = [yen_dijkstra(G, spur_node, dst)]
             spur_path_cost = run_paths[0][0]
             spur_path = run_paths[0][1]
 
@@ -95,7 +94,7 @@ def algorithm(G, src, dst, k) -> float:
             for edge in edges_removed:
                 edges.append(list(edge))
 
-    return shortest_paths[-1][0]
+    return shortest_paths[1][0]
 
 
 def main():
