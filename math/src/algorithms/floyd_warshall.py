@@ -8,9 +8,17 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def algorithm(G, src: str, dst: str) -> float:
+    # Create a set of all nodes, including those in the graph
+    all_nodes = set(G.nodes)
+    for edge in G.graph:
+        all_nodes.update(edge[:2])  # Add source and destination nodes
+
     # Map nodes to integer indices
-    node_to_index = {node: i for i, node in enumerate(G.nodes)}
-    V = len(G.nodes)
+    node_to_index = {node: i for i, node in enumerate(all_nodes)}
+
+    # Calculate V
+    V = len(all_nodes)
+
     dist = [[float("Inf") for _ in range(V)] for _ in range(V)]
 
     # Initialize distances with edge weights
