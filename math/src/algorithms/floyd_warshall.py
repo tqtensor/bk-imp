@@ -1,4 +1,3 @@
-# Floyd Warshall Algorithm
 import json
 import os
 

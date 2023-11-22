@@ -1,4 +1,3 @@
-# Bellman Ford Algorithm
 import json
 import os
 
