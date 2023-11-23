@@ -4,6 +4,8 @@ import os
 
 import gdown
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 def yen_dijkstra(G, src, dst):
     V = G.V
@@ -153,7 +155,9 @@ if __name__ == "__main__":
     profiler.enable()
     main()
     profiler.disable()
-    stats = pstats.Stats(profiler).sort_stats("tottime")
 
-    # Save stats to file
-    stats.dump_stats("profiling_results.pstats")
+    # Save profiling stats to a file
+    stats = pstats.Stats(
+        profiler, stream=open("yen_report.txt", "w")
+    ).sort_stats("tottime")
+    stats.print_stats()
