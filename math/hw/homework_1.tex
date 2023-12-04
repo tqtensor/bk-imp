@@ -1,0 +1,235 @@
+\documentclass{article}
+\author{}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm,amssymb,scrextend}
+\usepackage{fancyhdr}
+\begin{document}
+
+\title{Homework 1 - Dr. Nguyen An Khuong}
+\maketitle
+\section{Team members}
+\begin{itemize}
+    \item Ngo Trieu Long
+    \item Tang Quoc Thai
+    \item Nguyen Trung Thuan
+    \item Do Vo Hoang Hung
+    \item Nguyen Dinh Khuong
+\end{itemize}
+
+\section{Exercises}
+\subsection{Exercise 1}
+Assuming we have a generic 2x2 matrix as below.
+\[
+    \begin{bmatrix}
+        a & b \\
+        c & d
+    \end{bmatrix}
+\]
+
+To find the eigenvalues of the matrix \( A = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \), we solve the characteristic equation obtained from the determinant of \( A - \lambda I \), where \( I \) is the identity matrix:
+
+\[
+    \text{det}(A - \lambda I) = \begin{vmatrix} a - \lambda & b \\ c & d - \lambda \end{vmatrix} = (\lambda^2 - (a+d)\lambda + (ad-bc))
+\]
+
+So, finding the eigenvalues is equivalent to solving the following equation: \( \lambda^2 - (a+d)\lambda + (ad-bc) = 0 \).
+
+Once we have the eigenvalues \( \lambda_1, \lambda_2 \), we can find the corresponding eigenvectors \( x_1, x_n \) by solving the system of linear equations \( (A - \lambda_i I)x_i = 0 \) for each \( i \):
+
+\[
+    (A - \lambda_i I)x_i = \begin{bmatrix} a - \lambda_i & b \\ c & d - \lambda_i \end{bmatrix} \begin{bmatrix} x_{i1} \\ x_{i2} \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\]
+
+If \(c\) is not zero, and the eigenvalues are \(\lambda_1\) and \(\lambda_2\), the corresponding eigenvectors can be expressed as:
+
+For \(\lambda_1\):
+\[
+    x_1 = \begin{bmatrix} \lambda_1 - d \\ c \end{bmatrix}
+\]
+
+For \(\lambda_2\):
+\[
+    x_2 = \begin{bmatrix} \lambda_2 - d \\ c \end{bmatrix}
+\]
+
+If \( b \) is not zero, and the eigenvalues are \( \lambda_1 \) and \( \lambda_2 \), the corresponding eigenvectors can be expressed as:
+
+For \( \lambda_1 \):
+\[
+    x_1 = \begin{bmatrix} b \\ \lambda_1 - a \end{bmatrix}
+\]
+
+For \( \lambda_2 \):
+\[
+    x_2 = \begin{bmatrix} b \\ \lambda_2 - a \end{bmatrix}
+\]
+
+If both \( b \) and \( c \) are zero, and the eigenvalues are \( \lambda_1 \) and \( \lambda_2 \), the corresponding eigenvectors are:
+
+For \( \lambda_1 \):
+\[
+    x_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+\]
+
+For \( \lambda_2 \):
+\[
+    x_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\]
+
+Finally, the formula for an inverse matrix is as follows:
+
+\[
+    A^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
+\]
+
+\subsubsection{Exercise 1.a}
+Applying the formulas above.
+
+- For \( A = \begin{bmatrix} 1 & 2 \\ 0 & 3 \end{bmatrix} \), \( \lambda^2 - 4\lambda + 3 = 0 \)
+
+\[
+    \begin{aligned}
+        \lambda_1 & = 1
+        \lambda_2 & = 3
+    \end{aligned}
+\]
+
+Since b is not zero so \( X = \begin{bmatrix} 2 & 2 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \)
+
+\[
+    X^{-1} = \frac{1}{(1)(1) - (1)(0)} \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}
+\]
+
+- For \( A = \begin{bmatrix} 1 & 1 \\ 3 & 3 \end{bmatrix} \), \( \lambda^2 - 4\lambda = 0 \)
+
+\[
+    \begin{aligned}
+        \lambda_1 & = 0
+        \lambda_2 & = 4
+    \end{aligned}
+\]
+
+Since b is not zero so \( X = \begin{bmatrix} 1 & 1 \\ -1 & 3 \end{bmatrix} \)
+
+\[
+    X^{-1} = \frac{1}{(1)(3) - (-1)(1)} \begin{bmatrix} 3 & -1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 3/4 & -1/4 \\ 1/4 & 1/4 \end{bmatrix}
+\]
+
+\subsubsection{Exercise 1.b}
+\[
+    A^{3} = X\Lambda^{3}X^{-1}
+\]
+
+\[ A^{-1} = X \Lambda^{-1} X^{-1} \], because \[ A^{-1} A = X \Lambda^{-1} X^{-1} X \Lambda X^{-1} = X \Lambda^{-1} I \Lambda X^{-1} = X I X^{-1} = I \]
+
+\subsection{Exercise 3}
+
+We can replace the fact that \( A = X \Lambda X^{-1} \) and \( I = X X^{-1} \) into \( A + 2I \), we will have:
+
+\[
+    A + 2I = X \Lambda X^{-1} + 2 X X^{-1}
+    = X (\Lambda + 2I) X^{-1}
+\]
+
+So, the eigenvalue matrix is \( \Lambda + 2I \), the eigenvector matrix is \( X \).
+
+\subsection{Exercise 4}
+(a) False. Even if all eigenvectors of \(A\) are linearly independent, some still can correspond to eigenvalue \(\lambda = 0\). Because the determinant of the matrix \(A\) is the product of its eigenvalues, we have \(\det(A) = 0\), which implies that \(A\) cannot be invertible.
+
+(b) True. Because we have \(n\) independent eigenvectors that can form a basis \(\mathbb{R}^n\) for matrix \(A \in \mathbb{R}^{n \times n}\), it follows that \(A\) is diagonalizable.
+
+(c) True. Because all the columns of \(X\) are independent, \(X\) is a full-rank matrix, which implies that \(X\) can be inverted.
+
+(d) False. Not enough to draw a conclusion, because there are invertible matrices can not be diagonalize.
+
+\subsection{Exercise 6}
+\[
+    A=
+    \begin{bmatrix}
+        4 & 0 \\
+        1 & 2
+    \end{bmatrix}
+\]
+$\det(\lambda I-A) = 0$
+$\Rightarrow \det\left(
+    \begin{bmatrix}
+            1 & 0 \\
+            0 & 1
+        \end{bmatrix} -
+    \begin{bmatrix}
+            4 & 0 \\
+            1 & 2
+        \end{bmatrix}\right) =
+    \begin{bmatrix}
+        \lambda - 4 & 0          \\
+        0           & \lambda -2
+    \end{bmatrix} = 0.$
+So there are two roots:
+$\lambda = 2$ or $\lambda = 4$.
+
+Find eigenvectors for $\lambda = 4$. Find all vectors $X \neq 0$ such that $AX = 4X$.
+
+We have:
+$(4I - A) X = 0 \Rightarrow X =
+    \begin{bmatrix}
+        4 & 0 \\
+        1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y
+    \end{bmatrix} = \begin{bmatrix}
+        0 \\
+        0
+    \end{bmatrix} \Rightarrow y = 0 \Rightarrow x = \begin{bmatrix}
+        2i \\
+        i
+    \end{bmatrix}$
+
+
+Find eigenvectors for $\lambda = 2$. Find all vectors $X \neq 0$ such that $AX = 2X$.
+
+We have:
+$(2I - A) X = 0 \Rightarrow X =
+    \begin{bmatrix}
+        2 & 0 \\
+        1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y
+    \end{bmatrix} = \begin{bmatrix}
+        0 \\
+        0
+    \end{bmatrix} \Rightarrow y = 0 \Rightarrow x = \begin{bmatrix}
+        i \\
+        0
+    \end{bmatrix}$
+
+$\Rightarrow S = \begin{bmatrix}
+        2 & 0 \\
+        1 & 1
+    \end{bmatrix}$.
+Having that $A = X \Lambda X^{-1} = X^{-1} \Lambda (X^{-1})^{-1}.$
+We can conclude that all the matrices are diagonal. $A^{-1}$ are the inverse matrices $X^{-1}$ of matrix $X$.
+
+\subsection{Exercise 11}
+(a) True. $\det(A) = \lambda_1 \lambda_2 \lambda_3 = 2 \times 2 \times 5 \neq 0 \Rightarrow$ can be invertible.
+
+(b) False. Because 2 eigenvalues have the same values $\Rightarrow$ we lack of independent eigenvector to form the basis $R^n$
+
+(c) True.
+
+\subsection{Exercise 12}
+(a) False. Multiples of $(1,4)$ eigenvector could respond to a nonzero eigenvalue $\Rightarrow$ $\det(A) \neq 0$ $\Rightarrow$ $A$ is invertible.
+
+(b) True. If not, we would have distinct (independent) eigenvectors.
+
+(c) True, since there are not enough independent eigenvectors $\Rightarrow$ eigenvector matrix $X$ is not invertible $\Rightarrow$ $A$ is not diagonalizable.
+
+\subsection{Exercise 26}
+If matrix a has distinct eigenvalues $\Rightarrow$ each corresponding eigenvector is linear independent  $\Rightarrow$ we can have n linearly independent eigenvectors.
++ In the case of $\lambda \neq 0$ $\Rightarrow$ $\lambda$ might be repeated eigenvalues $\Rightarrow$ matrix A might have too few independent eigenvector to from basis R$^n$
+\end{document}

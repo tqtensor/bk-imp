@@ -100,7 +100,9 @@ if __name__ == "__main__":
     profiler.enable()
     main()
     profiler.disable()
-    stats = pstats.Stats(profiler).sort_stats("tottime")
 
-    # Save stats to file
-    stats.dump_stats("profiling_results.pstats")
+    # Save profiling stats to a file
+    stats = pstats.Stats(
+        profiler, stream=open("floyd_warshall_report.txt", "w")
+    ).sort_stats("tottime")
+    stats.print_stats()

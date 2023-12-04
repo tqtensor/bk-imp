@@ -64,3 +64,11 @@ pgdata
 
 # Ignore pycache
 __pycache__
+
+# TeX files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz

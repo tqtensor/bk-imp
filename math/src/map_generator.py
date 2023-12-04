@@ -1,5 +1,6 @@
 import json
 import os
+import random
 from collections import defaultdict
 
 import geopy
@@ -99,7 +100,7 @@ paths = ox.distance.k_shortest_paths(
     orig=start_node,
     dest=end_node,
     weight="length",
-    k=20,
+    k=100,
 )
 
 # Collect nodes of these paths
@@ -108,14 +109,33 @@ for path in paths:
     path_nodes.update(path)
 
 # Remove nodes that are not in the paths
-edges = [
+non_connected_nodes = [
     (u, v, k)
-    for u, v, k, data in graph.edges(data=True, keys=True)
+    for u, v, k, _ in graph.edges(data=True, keys=True)
+    if (u not in path_nodes) and (v not in path_nodes)
+]
+connected_edges = [
+    (u, v, k)
+    for u, v, k, _ in graph.edges(data=True, keys=True)
     if u in path_nodes and v in path_nodes
 ]
 
+# Shuffle non_connected_nodes
+random.shuffle(non_connected_nodes)
+
+# Take 20% of non_connected_nodes
+half_non_connected_nodes = non_connected_nodes[
+    : int(len(non_connected_nodes) * 0.20)
+]
+
+# Combine half_non_connected_nodes with connected_edges
+edges = half_non_connected_nodes + connected_edges
+
 # Create a new graph from the filtered edges
 sub_graph = graph.edge_subgraph(edges)
+
+# Store subgraph
+ox.save_graphml(sub_graph, filepath="sub_graph.graphml")
 
 # Create adjacency matrix
 adjacency_matrix = defaultdict(dict)
