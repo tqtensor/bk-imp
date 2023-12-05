@@ -118,6 +118,13 @@ async def preprocess(
     with open(f"/tmp/{gdrive_id}_features_metadata.json", "w") as f:
         json.dump(features_metadata, f)
 
+    # Read the first row of the CSV file
+    features_head = pd.read_csv(f"/tmp/{gdrive_id}_features.csv", nrows=1)
+
+    # Convert the DataFrame to a JSON string
+    features_head_json = features_head.to_json(orient="records")
+
     return {
-        status.HTTP_200_OK: "Dataset preprocessed successfully.",
+        status.HTTP_200_OK: "Generated {} features".format(len(feature_names)),
+        "data": features_head_json,
     }
