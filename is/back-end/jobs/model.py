@@ -1,9 +1,7 @@
-import os
-
 import pandas as pd
 from fastapi import APIRouter, status
-from sklearn.metrics import f1_score, roc_auc_score
-from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import roc_auc_score, roc_curve
+from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 
 router = APIRouter()
@@ -35,33 +33,37 @@ async def train(gdrive_id: str):
         train["label"],
     )
 
-    # Define a hyperparameter grid for GridSearchCV
-    param_grid = {
-        "max_depth": [3, 5, 7],
-        "eta": [0.1, 0.2, 0.3],
-        "gamma": [0, 1, 2, 4],
-        "min_child_weight": [1, 3, 6],
-        "subsample": [0.7, 0.8, 0.9],
-        "objective": ["binary:logistic"],
-    }
-
     # Create the XGBoost model instance with default parameters
     model = XGBClassifier(use_label_encoder=False)
 
     # Fit the model to the training data
     model.fit(X_train, y_train)
 
-    # Calculate ROC AUC and F1-score on train set
-    train_pred = model.predict(X_train)
-    roc_auc = roc_auc_score(y_train, train_pred)
-    f1 = f1_score(y_train, train_pred)
+    # Get the predicted probabilities
+    train_pred_proba = model.predict_proba(X_train)
+
+    # Use the probabilities of the positive class
+    train_pred_proba_pos = train_pred_proba[:, 1]
+
+    # Calculate false positive rates, true positive rates, and thresholds
+    fpr, tpr, thresholds = roc_curve(y_train, train_pred_proba_pos)
+
+    # Calculate AUC
+    auc = roc_auc_score(y_train, train_pred_proba_pos)
 
     # Save the model
     model.save_model(f"/tmp/{gdrive_id}_model.json")
 
     return {
         status.HTTP_200_OK: "Model trained successfully.",
-        "data": {"roc_auc": roc_auc, "f1": f1},
+        "data": {
+            "roc_curve": {
+                "fpr": fpr.tolist()[1:],
+                "tpr": tpr.tolist()[1:],
+                "thresholds": thresholds.tolist()[1:],
+                "auc": auc,
+            },
+        },
     }
 
 
