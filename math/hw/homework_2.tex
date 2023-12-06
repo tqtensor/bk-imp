@@ -21,6 +21,22 @@
 \end{itemize}
 
 \section{Exercises}
+\subsection{Exercise 2}
+The non-zero singular values are the square roots of the eigenvalues of $A^{T}A$. Whereas, $I^{T}I = I$, and the only eigenvalue of $I$ is 1, therefore, the singular value of $I$ is 1. As we know that compression is done by removing the small singular values, and the singular value of $I$ is 1, therefore, $I$ is not compressible.
+
+One possible rank 5 flag with a 3 by 3 cross of zeros is
+\[
+    A =
+    \begin{bmatrix}
+        1 & 0   & 1 & 0   & 0   \\
+        0 & 0   & 0 & 1   & 1   \\
+        1 & 0   & 1 & 1   & 1   \\
+        1 & 1/2 & 1 & 1   & 1   \\
+        1 & 1/2 & 1 & 1/2 & 1/2
+    \end{bmatrix}
+\]
+
+
 \subsection{Exercise 3}
 We can solve this problem using the technique of 'Rank factorization' with the following steps:
 
