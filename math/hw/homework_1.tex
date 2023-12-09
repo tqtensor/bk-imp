@@ -7,20 +7,17 @@
 \usepackage{fancyhdr}
 \begin{document}
 
-\title{Homework 1 - Dr. Nguyen An Khuong}
+\title{Homework 1 \- Dr.\ Nguyen An Khuong}
 \maketitle
-\section{Team members}
+\section{Student Information}
 \begin{itemize}
-    \item Ngo Trieu Long
-    \item Tang Quoc Thai
-    \item Nguyen Trung Thuan
-    \item Do Vo Hoang Hung
-    \item Nguyen Dinh Khuong
+    \item \bf{Student Name:} Tang Quoc Thai
+    \item \bf{Student ID:} 2270376
 \end{itemize}
 
 \section{Exercises}
 \subsection{Exercise 1}
-Assuming we have a generic 2x2 matrix as below.
+Assuming we have a generic $2\times2$ matrix as below.
 \[
     \begin{bmatrix}
         a & b \\
@@ -136,13 +133,12 @@ We can replace the fact that \( A = X \Lambda X^{-1} \) and \( I = X X^{-1} \) i
 So, the eigenvalue matrix is \( \Lambda + 2I \), the eigenvector matrix is \( X \).
 
 \subsection{Exercise 4}
-(a) False. Even if all eigenvectors of \(A\) are linearly independent, some still can correspond to eigenvalue \(\lambda = 0\). Because the determinant of the matrix \(A\) is the product of its eigenvalues, we have \(\det(A) = 0\), which implies that \(A\) cannot be invertible.
-
-(b) True. Because we have \(n\) independent eigenvectors that can form a basis \(\mathbb{R}^n\) for matrix \(A \in \mathbb{R}^{n \times n}\), it follows that \(A\) is diagonalizable.
-
-(c) True. Because all the columns of \(X\) are independent, \(X\) is a full-rank matrix, which implies that \(X\) can be inverted.
-
-(d) False. Not enough to draw a conclusion, because there are invertible matrices can not be diagonalize.
+\begin{itemize}
+    \item (a) False. Even if all eigenvectors of \(A\) are linearly independent, some still can correspond to eigenvalue \(\lambda = 0\). Because the determinant of the matrix \(A\) is the product of its eigenvalues, we have \(\det(A) = 0\), which implies that \(A\) cannot be invertible.
+    \item (b) True. Because we have \(n\) independent eigenvectors that can form a basis \(\mathbb{R}^n\) for matrix \(A \in \mathbb{R}^{n \times n}\), it follows that \(A\) is diagonalizable.
+    \item (c) True. Because all the columns of \(X\) are independent, \(X\) is a full-rank matrix, which implies that \(X\) can be inverted.
+    \item (d) False. Not enough to draw a conclusion, because there are invertible matrices can not be diagonalized.
+\end{itemize}
 
 \subsection{Exercise 6}
 \[
@@ -165,17 +161,18 @@ $\Rightarrow \det\left(
     \begin{bmatrix}
         \lambda - 4 & 0          \\
         0           & \lambda -2
-    \end{bmatrix} = 0.$
+    \end{bmatrix} = 0$
+
 So there are two roots:
-$\lambda = 2$ or $\lambda = 4$.
+$\lambda = 2$ and $\lambda = 4$.
 
 Find eigenvectors for $\lambda = 4$. Find all vectors $X \neq 0$ such that $AX = 4X$.
 
 We have:
-$(4I - A) X = 0 \Rightarrow X =
+$(4I - A) X = 0 \Rightarrow
     \begin{bmatrix}
-        4 & 0 \\
-        1 & 0
+        0 & 0 \\
+        -1 & 2
     \end{bmatrix}
     \begin{bmatrix}
         x \\
@@ -183,19 +180,21 @@ $(4I - A) X = 0 \Rightarrow X =
     \end{bmatrix} = \begin{bmatrix}
         0 \\
         0
-    \end{bmatrix} \Rightarrow y = 0 \Rightarrow x = \begin{bmatrix}
-        2i \\
-        i
+    \end{bmatrix}
+    \Rightarrow -x + 2y = 0
+    \Rightarrow X = \begin{bmatrix}
+        2k \\
+        k
     \end{bmatrix}$
 
 
 Find eigenvectors for $\lambda = 2$. Find all vectors $X \neq 0$ such that $AX = 2X$.
 
 We have:
-$(2I - A) X = 0 \Rightarrow X =
+$(2I - A) X = 0 \Rightarrow
     \begin{bmatrix}
-        2 & 0 \\
-        1 & 0
+        -2 & 0 \\
+        -1 & 0
     \end{bmatrix}
     \begin{bmatrix}
         x \\
@@ -203,33 +202,171 @@ $(2I - A) X = 0 \Rightarrow X =
     \end{bmatrix} = \begin{bmatrix}
         0 \\
         0
-    \end{bmatrix} \Rightarrow y = 0 \Rightarrow x = \begin{bmatrix}
-        i \\
-        0
+    \end{bmatrix}
+    \Rightarrow x = 0
+    \Rightarrow X = \begin{bmatrix}
+        0 \\
+        k
     \end{bmatrix}$
 
-$\Rightarrow S = \begin{bmatrix}
-        2 & 0 \\
-        1 & 1
-    \end{bmatrix}$.
-Having that $A = X \Lambda X^{-1} = X^{-1} \Lambda (X^{-1})^{-1}.$
-We can conclude that all the matrices are diagonal. $A^{-1}$ are the inverse matrices $X^{-1}$ of matrix $X$.
+The columns of S are nonzero multiples of $(2, 1)$ and $(0, 1)$.
+
+The same eigenvector matrices diagonalize $A$ and $A^{-1}$.
 
 \subsection{Exercise 11}
-(a) True. $\det(A) = \lambda_1 \lambda_2 \lambda_3 = 2 \times 2 \times 5 \neq 0 \Rightarrow$ can be invertible.
-
-(b) False. Because 2 eigenvalues have the same values $\Rightarrow$ we lack of independent eigenvector to form the basis $R^n$
-
-(c) True.
+\begin{itemize}
+    \item (a) True. $\det(A) = \lambda_1 \lambda_2 \lambda_3 = 2 \times 2 \times 5 \neq 0 \Rightarrow$ can be invertible.
+    \item (b) False. Repeated $\lambda = 2$ so lack of independent eigenvectors to form the basis $R^n$
+    \item (c) False. Repeated $\lambda$ may have a full set of eigenvectors.
+\end{itemize}
 
 \subsection{Exercise 12}
-(a) False. Multiples of $(1,4)$ eigenvector could respond to a nonzero eigenvalue $\Rightarrow$ $\det(A) \neq 0$ $\Rightarrow$ $A$ is invertible.
+\begin{itemize}
+    \item (a) False. Multiples of $(1,4)$ eigenvector could respond to a nonzero eigenvalue $\Rightarrow$ $\det(A) \neq 0$ $\Rightarrow$ $A$ is invertible.
+    \item (b) True. If not, we would have distinct (independent) eigenvectors.
+    \item (c) True, since there are not enough independent eigenvectors $\Rightarrow$ eigenvector matrix $X$ is not invertible $\Rightarrow$ $A$ is not diagonalizable.
+\end{itemize}
 
-(b) True. If not, we would have distinct (independent) eigenvectors.
+\subsection{Exercise 13}
+With $A =
+    \begin{bmatrix}
+        8 & x \\
+        y & 2
+    \end{bmatrix}$, since we know $\det(A) = 25 \Rightarrow 16 - xy = 25 \Rightarrow xy = -9$.
+One possible solution is x = 3 and y = -3,
+$A = \begin{bmatrix}
+        8 & 3 \\
+        -3 & 2
+    \end{bmatrix}$
+\\
+With $A =
+    \begin{bmatrix}
+        9 & 4 \\
+        x & 1
+    \end{bmatrix}$, since we know $\det(A) = 25 \Rightarrow 9 - 4x = 25 \Rightarrow x = -4$
+Solution is
+$A = \begin{bmatrix}
+        9 & 4   \\
+        -4 & 1
+    \end{bmatrix}$
+\\
+With $A =
+    \begin{bmatrix}
+        10 & 5 \\
+        -5 & x
+    \end{bmatrix}$, since we know $\det(A) = 25 \Rightarrow 10x + 25 = 25 \Rightarrow x = 0$
+Solution is
+$A = \begin{bmatrix}
+        10 & 5   \\
+        -5 & 0
+    \end{bmatrix}$
+\\
+Consider the case when $A =
+    \begin{bmatrix}
+        10 & 5 \\
+        -5 & 0
+    \end{bmatrix}$,
+    $Ax = 5x \Rightarrow
+    \begin{bmatrix}
+        10 & 5 \\
+        -5 & 0
+    \end{bmatrix} \begin{bmatrix}
+        x_1 \\
+        x_2
+    \end{bmatrix}  = 5\begin{bmatrix}
+        x_1 \\
+        x_2
+    \end{bmatrix}$,
+    $\Rightarrow 10x_1 + 5x_2 = 5x_1, -5x_1 = 5x_2$,
+    $\Rightarrow x_1 = -x_2$
+\\
+Conclusion: only eigenvectors are $x = (c, -c)$.
 
-(c) True, since there are not enough independent eigenvectors $\Rightarrow$ eigenvector matrix $X$ is not invertible $\Rightarrow$ $A$ is not diagonalizable.
+\subsection{Exercise 14}
+We have,
+$A - 3I =
+\begin{bmatrix}
+    3 & 1 \\
+    0 & 3
+\end{bmatrix} -
+\begin{bmatrix}
+    3 & 0 \\
+    0 & 3
+\end{bmatrix} =
+\begin{bmatrix}
+    0 & 1 \\
+    0 & 0
+\end{bmatrix}$, hence this matrix has rank of 1.
+\\
+Assuming we can modify the matrix $A$ to $A'$,
+$\begin{bmatrix}
+    3 + x & 1 + y \\
+    z & 3 + t
+\end{bmatrix}$, finding eigenvalues of $A'$, we have to solve the following equation:
+\\
+$\det(A' - \lambda I) = 0 \Rightarrow {\lambda}^2 - (6 + x + t)\lambda + (3 + x)(3 + t) -z(1 + y) = 0$,
+\\
+$\Delta = {(6 + x + t)}^2 - 4(9 + 3x + 3t + xt - z - yz)$
+\\
+On the other hand, to make matrix $A'$ diagonalizable, we have to find two distinct eigenvalues, which means $\Delta > 0$.
+\\
+We only can modify one element of the matrix $A$ so we will consider 4 cases:
+\begin{itemize}
+    \item Case 1: $x = y = z = 0, \Delta = {(6 + t)}^2 - 4(9 + 3t)$. With $t = -10$, $\Delta = 20$ so $A'$ is diagonalizable.
+    \item Case 2: $y = z = t = 0, \Delta = {(6 + x)}^2 - 4(9 + 3x)$. With $x = -10$, $\Delta = 20$ so $A'$ is diagonalizable.
+    \item Case 3: $z = t = x = 0, \Delta = 36 - 36$. We cannot find any value of $y$ to make $\Delta > 0$ so $A'$ is not diagonalizable.
+    \item Case 4: $x = y = t = 0, \Delta = 36 + 4z$. With $z = 10$, $\Delta = 76$ so $A'$ is diagonalizable.
+\end{itemize}
+Conclusion: we can modify the matrix $A$ to make it diagonalizable in 3 cases.
+
+\subsection{Exercise 15}
+$A^{k} = X{\Lambda}^{k} X^{-1}$ approaches the zero matrix as $k \rightarrow \infty$ if and only if all the eigenvalues of $A$ are less than 1 in absolute value.
+\\
+With $A =
+    \begin{bmatrix}
+        .6 & .9 \\
+        .4 & .1
+    \end{bmatrix}$, has the eigenvalues $\lambda_1 = 1$ and $\lambda_2 = -0.3$. So the $\lambda_1$ is not less than 1 in absolute value, hence $A^{k}$ does not approach the zero matrix as $k \rightarrow \infty$.
+\\
+With $A =
+    \begin{bmatrix}
+        .6 & .9 \\
+        .1 & .6
+    \end{bmatrix}$, has the eigenvalues $\lambda_1 = 0.9$ and $\lambda_2 = 0.3$. So the $\lambda_1$ and $\lambda_2$ are less than 1 in absolute value, hence $A^{k}$ approaches the zero matrix as $k \rightarrow \infty$.
+
+\subsection{Exercise 21}
+$X =
+\begin{bmatrix}
+    a & b \\
+    c & d
+\end{bmatrix}$
+,$Y =
+\begin{bmatrix}
+    q & r \\
+    s & t
+\end{bmatrix}$
+$\Rightarrow XY =
+\begin{bmatrix}
+    aq + bs & ar + bt \\
+    cq + ds & cr + dt
+\end{bmatrix}$
+\\
+$\Rightarrow trace(XY) = aq + bs + cr + dt$
+\\
+$YX =
+\begin{bmatrix}
+    qa + rc & qb + rd \\
+    sa + tc & sb + td
+\end{bmatrix}$
+\\
+$\Rightarrow trace(YX) = aq + bs + cr + dt = trace(XY)$
+\\
+Let $Y = \Lambda X^{-1} \Rightarrow XY  = X \Lambda X^{-1}$,
+and $YX = \Lambda X^{-1} X = \Lambda$.
+\\
+We have $trace(XY) = trace(YX) \Rightarrow trace(X \Lambda X^{-1}) = trace(\Lambda)$ = sum of the eigenvalues
 
 \subsection{Exercise 26}
-If matrix a has distinct eigenvalues $\Rightarrow$ each corresponding eigenvector is linear independent  $\Rightarrow$ we can have n linearly independent eigenvectors.
-+ In the case of $\lambda \neq 0$ $\Rightarrow$ $\lambda$ might be repeated eigenvalues $\Rightarrow$ matrix A might have too few independent eigenvector to from basis R$^n$
+If matrix a has distinct eigenvalues $\Rightarrow$ each corresponding eigenvector is linearly independent  $\Rightarrow$ we can have n linearly independent eigenvectors.
+In the case of $\lambda \neq 0$ $\Rightarrow$ $\lambda$ might be repeated eigenvalues $\Rightarrow$ matrix $A$ might have too few independent eigenvectors to form the basis R$^n$
 \end{document}
