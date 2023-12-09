@@ -9,15 +9,12 @@
 \usepackage{hyperref}
 \begin{document}
 
-\title{Homework 2 - Dr. Nguyen An Khuong}
+\title{Homework 2 \- Dr.\ Nguyen An Khuong}
 \maketitle
-\section{Team members}
+\section{Student Information}
 \begin{itemize}
-    \item Ngo Trieu Long
-    \item Tang Quoc Thai
-    \item Nguyen Trung Thuan
-    \item Do Vo Hoang Hung
-    \item Nguyen Dinh Khuong
+    \item \bf{Student Name:} Tang Quoc Thai
+    \item \bf{Student ID:} 2270376
 \end{itemize}
 
 \section{Exercises}
@@ -43,22 +40,35 @@ We can solve this problem using the technique of 'Rank factorization' with the f
 \begin{itemize}
     \item Transform the matrix $A$ into its reduced row echelon form $R$ (using Gaussian Elimination).
     \item Choose the pivot columns of $A$ based on the first non-zero entry in each row of $R$.
-    \item Choose the non-zero rows of $R$.
+    \item Choose the corresponding rows of $R$.
 \end{itemize}
 
-\[A_{Sweden} =
-    \begin{bmatrix}
-        1 & 2 & 1 & 1 \\
-        2 & 2 & 2 & 2 \\
-        1 & 2 & 1 & 1
-    \end{bmatrix}
-    \equiv
-    \begin{bmatrix}
-        1 & 0 & 1 & 1 \\
-        0 & 1 & 0 & 0 \\
-        0 & 0 & 0 & 0
-    \end{bmatrix}
-\]
+\begin{align*}
+    A_{Sweden} &=
+        \begin{bmatrix}
+            1 & 2 & 1 & 1 \\
+            2 & 2 & 2 & 2 \\
+            1 & 2 & 1 & 1
+        \end{bmatrix} \\
+    &\xrightarrow{r2 := r2 - 2r1}
+        \begin{bmatrix}
+            1 & 2 & 1 & 1 \\
+            0 & 2 & 0 & 0 \\
+            0 & 0 & 0 & 0
+        \end{bmatrix} \\
+    &\xrightarrow{r2 := r2/2}
+        \begin{bmatrix}
+            1 & 2 & 1 & 1 \\
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & 0
+        \end{bmatrix} \\
+    &\xrightarrow{r1 := r1 - 2r2}
+        \begin{bmatrix}
+            1 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & 0
+        \end{bmatrix}
+\end{align*}
 
 The pivot columns are the first and the second columns, and the non-zero rows are the first and the second rows.
 
@@ -75,17 +85,23 @@ The pivot columns are the first and the second columns, and the non-zero rows ar
     \end{bmatrix}
 \]
 
-\[A_{Benin} =
-    \begin{bmatrix}
-        1 & 2 & 2 \\
-        1 & 3 & 3
-    \end{bmatrix}
-    \equiv
-    \begin{bmatrix}
-        1 & 0 & 0 \\
-        0 & 1 & 1
-    \end{bmatrix}
-\]
+\begin{align*}
+    A_{Benin} &=
+        \begin{bmatrix}
+            1 & 2 & 2 \\
+            1 & 3 & 3
+        \end{bmatrix} \\
+    &\xrightarrow{r2 := r2 - r1}
+        \begin{bmatrix}
+            1 & 2 & 2 \\
+            0 & 1 & 1
+        \end{bmatrix} \\
+    &\xrightarrow{r1 := r1 - 2r2}
+        \begin{bmatrix}
+            1 & 0 & 0 \\
+            0 & 1 & 1
+        \end{bmatrix} \\
+\end{align*}
 
 The pivot columns are the first and the second columns, and the non-zero rows are the first and the second rows.
 
@@ -124,7 +140,7 @@ The pivot columns are the first and the second columns, and the non-zero rows ar
 \]
 
 \[
-    Det(BB^{T}) = 9 * 19 - 13 * 13 = 2
+    \det(BB^{T}) = 9 * 19 - 13 * 13 = 2
 \]
 
 \[
@@ -150,7 +166,7 @@ The pivot columns are the first and the second columns, and the non-zero rows ar
 \]
 
 \[
-    Det(B^{T}B) = 2 * Det(\begin{bmatrix} 13 & 13 \\ 13 & 13 \end{bmatrix}) - 5 * Det(\begin{bmatrix} 5 & 13 \\ 5 & 13 \end{bmatrix}) + 5 * Det(\begin{bmatrix} 5 & 13 \\ 5 & 13 \end{bmatrix}) = 0
+    B^{T}B = 2 * \det(\begin{bmatrix} 13 & 13 \\ 13 & 13 \end{bmatrix}) - 5 * \det(\begin{bmatrix} 5 & 13 \\ 5 & 13 \end{bmatrix}) + 5 * \det(\begin{bmatrix} 5 & 13 \\ 5 & 13 \end{bmatrix}) = 0
 \]
 
 With a small singular value $\sigma_{2} \equiv \sqrt{\frac{1}{14}}$, B is compressible.
@@ -166,7 +182,7 @@ With a small singular value $\sigma_{2} \equiv \sqrt{\frac{1}{14}}$, B is compre
 \]
 
 \[
-    Det(AA^{T} - \lambda I) = -\lambda^{3} + 30 \lambda^{2} - 24\lambda
+    \det(AA^{T} - \lambda I) = -\lambda^{3} + 30 \lambda^{2} - 24\lambda
 \]
 
 We have $\lambda_{1} = 0$ as the first eigenvalue of $AA^{T}$.
@@ -199,7 +215,9 @@ By using Python we can compute the singular values of $A$ as follows:
     \end{bmatrix}
     \begin{bmatrix}
         -0.362 & 0.778 & -0.362 & -0.362
-    \end{bmatrix}\]
+    \end{bmatrix}
+\]
+$+$
 \[
     5.402
     \begin{bmatrix}
@@ -213,7 +231,7 @@ By using Python we can compute the singular values of $A$ as follows:
 \]
 
 \subsection{Exercise 7}
-Multiply both sides of $A = U \Sigma V^{T}$ by the matrix $V$ to get $AV = U \Sigma$.
+Multiply both sides of $A = U \Sigma V^{T}$ by the matrix $V$ we get $AV = U \Sigma V^{T}V$. And since $V$ is an orthogonal matrix, $V^{T}V = I$, therefore, $AV = U \Sigma$.
 
 \subsection{Exercise 9}
 \begin{verbatim}
