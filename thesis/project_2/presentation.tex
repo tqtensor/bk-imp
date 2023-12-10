@@ -17,6 +17,7 @@
 \usepackage{multirow}
 \usepackage{xcolor}
 \usepackage{algorithm,algorithmic}
+\usepackage[font=scriptsize]{caption}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \usepackage{lipsum}
@@ -104,89 +105,105 @@ University of Technology % your institution for the title page
 \section{Introduction}
 \begin{frame}[allowframebreaks]
 \frametitle{Current challenges in Large Language Models (LLMs)}
-\begin{itemize}
-  \item \textbf{Reduce and measure hallucinations.}~\cite{kaddour2023challenges}
   \begin{itemize}
-      \item Hallucination occurs when an AI model generates fabricated information.
+    \item \textbf{Reduce and measure hallucinations.}~\cite{kaddour2023challenges}
+    \begin{itemize}
+        \item Hallucination occurs when an AI model generates fabricated information.
+    \end{itemize}
+    \item Optimize context length and context construction.~\cite{kaddour2023challenges}
+    \begin{itemize}
+      \item The actual effectiveness of the model depends not only on the quantity of context but also on how efficiently it utilizes that context.
+      \item Efforts to enhance model context should be accompanied by endeavors to optimize its contextual utilization.
+    \end{itemize}
+    \item Build LLMs for non-English languages.~\cite{kaddour2023challenges}
+    \begin{itemize}
+      \item Current English-first language models exhibit limitations when applied to languages other than English, impacting their performance, response time, and speed.
+    \end{itemize}
   \end{itemize}
-  \item Optimize context length and context construction.~\cite{kaddour2023challenges}
-  \begin{itemize}
-    \item The actual effectiveness of the model depends not only on the quantity of context but also on how efficiently it utilizes that context.
-    \item Efforts to enhance model context should be accompanied by endeavors to optimize its contextual utilization.
-  \end{itemize}
-  \item Build LLMs for non-English languages.~\cite{kaddour2023challenges}
-  \begin{itemize}
-    \item Current English-first language models exhibit limitations when applied to languages other than English, impacting their performance, response time, and speed.
-  \end{itemize}
-\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
 \frametitle{Current approaches to reduce hallucinations}
 A variety of strategies exist to mitigate hallucinations, spanning from simple techniques to comprehensive research:
-\begin{itemize}
-  \item Enhance the prompts, for instance: request the LLMs to justify its provided response.
-  \item Combine the LLMs with a knowledge repository like a Vector Database or a Graph Database.~\cite{yao2023exploring}
-  \item Implement self-correction through a strategically \textbf{structured thought process}.~\cite{wei2022chain,yao2023tree}
-\end{itemize}
+  \begin{itemize}
+    \item Enhance the prompts, for instance: request the LLMs to justify its provided response.
+    \item Combine the LLMs with a knowledge repository like a Vector Database or a Graph Database.~\cite{yao2023exploring}
+    \item Implement self-correction through a strategically \textbf{structured thought process}.~\cite{wei2022chain,yao2023tree}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
 \frametitle{Current approaches to reduce hallucinations}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{img/chain_of_thoughts.png}
-  \caption{Schematic illustrating various approaches to problem solving with LLMs. Each rectangle box represents a thought, which is a coherent language sequence that serves as an intermediate step toward problem solving.~\cite{yao2023tree}}\label{fig:chain_of_thoughts}
-\end{figure}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/chain_of_thoughts.png}
+    \caption{Schematic illustrating various approaches to problem solving with LLMs. Each rectangle box represents a thought, which is a coherent language sequence that serves as an intermediate step toward problem solving.~\cite{yao2023tree}}
+  \end{figure}
 \end{frame}
 
 %-------------------------------
 \section{Methodology}
 \begin{frame}[allowframebreaks]
 \frametitle{Problem definition}
-\begin{itemize}
-  \item Generating code has consistently posed a significant challenge with numerous applications, including creating code from natural languages, programming based on examples, and translating code. Nonetheless, for numerous programming tasks, \textbf{producing accurate code in a single try can be difficult}.~\cite{chen2023teaching}
-  \item As per a study, average developers are expected to see a moderate increase in productivity, with the \textbf{overall productivity gain projected to be 32\% with the support of LLMs}.~\cite{eloundou2023gpts}
-\end{itemize}
+  \begin{itemize}
+    \item Generating code has consistently posed a significant challenge with numerous applications, including creating code from natural languages, programming based on examples, and translating code. Nonetheless, for numerous programming tasks, \textbf{producing accurate code in a single try can be difficult}.~\cite{chen2023teaching}
+    \item As per a study, average developers are expected to see a moderate increase in productivity, with the \textbf{overall productivity gain projected to be 32\% with the support of LLMs}.~\cite{eloundou2023gpts}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-\frametitle{Approach}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Autonomous debugger}
+\frametitle{$\lambda$utonomousDebugger}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.50\textwidth]{img/autonomous_debugger.png}
+    \caption{An overview of $\lambda$utonomousDebugger. 1. Summarize the bug for initial information $\rightarrow$ 2. Create Chain-of-Thoughts prompts $\rightarrow$ 3. Generate and execute code $\rightarrow$ 4. Collect traceback information$\rightarrow$ 5. Extract related modules from source code $\looparrowright$ 2.}
+  \end{figure}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
 \frametitle{Dataset}
-\begin{itemize}
-  \item MBPP \href{https://huggingface.co/datasets/mbpp}{Mostly Basic Python Programming}. The benchmark consists of around 1,000 crowd-sourced Python programming problems, designed to be solvable by entry-level programmers.~\cite{austin2021program}
-  \item GHRB:~\href{https://github.com/coinse/GHRB}{GitHub Recent Bugs}~\cite{lee2023github}
-  \item The MBPP dataset, renowned for code generation tasks, and the GHRB dataset, used for code debugging tasks, are two key resources in this field.
-  \item The team behind GHRB has developed a method to gather recent bugs from GitHub, ensuring that this data has not been previously used in training LLMs.~$\rightarrow$~\textbf{This research will use the provided method to create a data science related bugs dataset for evaluation.}
-\end{itemize}
+  \begin{itemize}
+    \item MBPP \href{https://huggingface.co/datasets/mbpp}{Mostly Basic Python Programming}. The benchmark consists of around 1,000 crowd-sourced Python programming problems, designed to be solvable by entry-level programmers.~\cite{austin2021program}
+    \item GHRB:~\href{https://github.com/coinse/GHRB}{GitHub Recent Bugs}~\cite{lee2023github}
+    \item The MBPP dataset, renowned for code generation tasks, and the GHRB dataset, used for code debugging tasks, are two key resources in this field.
+    \item The team behind GHRB has developed a method to gather recent bugs from GitHub, ensuring that this data has not been previously used in training LLMs.~$\rightarrow$~\textbf{This research will use the provided method to create a data science related bugs dataset for evaluation.}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
 \frametitle{Application}
 This research will develop a plugin based on the open-sourced \href{https://github.com/jupyterlab/jupyter-ai?tab=readme-ov-file}{Jupyter AI} to assist data scientists in debugging their code.
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{img/jupyter_ai_screenshot.png}
-  \caption{Jupyter AI connects generative AI with Jupyter notebooks.}\label{fig:jupyter_ai_screenshot}
-\end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-  \frametitle{Timeline}
-  This research will develop a plugin based on the open-sourced \href{https://github.com/jupyterlab/jupyter-ai?tab=readme-ov-file}{Jupyter AI} to assist data scientists in debugging their code.
   \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{img/jupyter_ai_screenshot.png}
-    \caption{Jupyter AI connects generative AI with Jupyter notebooks.}\label{fig:jupyter_ai_screenshot}
+    \caption{Jupyter AI connects generative AI with Jupyter notebooks.}
   \end{figure}
-  \end{frame}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Novelty}
+This research has the following novel contributions:
+  \begin{itemize}
+    \item A novel dataset to evaluate the performance of LLMs in debugging tasks, specifically in the data science domain.
+    \item A novel approach to build CoT prompts using modularization technique based on traceback information.
+    \item An open-sourced plugin for Jupyter Notebook to assist data scientists in debugging their code*.
+  \end{itemize}
+  * \textit{The plugin will be open-sourced if the research is successful.}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Tentative timeline}
+  \begin{itemize}
+    \item \textbf{Stage 1} Literature review.
+    \item \textbf{Stage 2} Dataset preparation.
+    \item \textbf{Stage 3} CoT prompts generator.
+    \item \textbf{Stage 4} Code executor.
+    \item \textbf{Stage 5} Code modules extractor.
+    \item \textbf{Stage 6} Evaluation and improvement.
+    \item \textbf{Stage 7} Report.
+    \item \textbf{Stage 8} Plugin development.
+  \end{itemize}
+\end{frame}
 
 %-------------------------------
 \section{References}
