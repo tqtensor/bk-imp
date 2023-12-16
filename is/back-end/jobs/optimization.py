@@ -100,10 +100,14 @@ async def run(
         m.solve()
     except Exception as e:
         print(e)
-        return (
-            "Optimization failed. Please try again.",
-            status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+        return {
+            status.HTTP_500_INTERNAL_SERVER_ERROR: "Optimization failed.",
+            "data": {
+                "expected_total_profit_optimal": None,
+                "expected_total_profit_no_campaign": None,
+                "expected_total_profit_uniform_campaign": None,
+            },
+        }
 
     # Gekko returns an array of arrays so transforming to array
     x = np.array([a[0] for a in x])
