@@ -1,0 +1,81 @@
+\documentclass{article}
+\author{}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm,amssymb,scrextend}
+\usepackage{fancyhdr}
+\begin{document}
+
+\title{Graph Community Detection}
+\maketitle
+
+\section{Algorithms}
+\subsection{Modularity Maximization Greedy Algorithm (Newman)}
+\subsubsection{Intuition}
+A good division of a network into communities is not merely one in which there are few edges between communities; it is one in which there are fewer than expected edges between communities. If the number of edges between two groups is only what one would expect on the basis of random chance, then few thoughtful observers would claim this constitutes evidence of meaningful community structure. On the other hand, if the number of edges between groups is significantly less than we expect by chance, or equivalent if the number within groups is significantly more, then it is reasonable to conclude that something interesting is going on.\\
+This idea, that true community structure in a network corresponds to a statistically surprising arrangement of edges, can be quantified by using the measure known as modularity. The modularity is, up to a multiplicative constant, the number of edges falling within groups minus the expected number in an equivalent network with edges placed at random.
+\subsubsection{Definition}
+To test whether a particular division is meaningful we define a quality function or `modularity' $Q$ as follows.\\
+Let $e_{ij}$ be the fraction of edges in the network that connect vertices in group i to those in group j and let $a_{i} = \sum_{j}{e_{ij}}$. Then, $Q = \sum_{i} (e_{ii} - a_{i}^{2})$ is the fraction of edges that fall within communities, minus the expected value of the same quantity if edges fall at random without regard to community structure.
+\begin{itemize}
+    \item Calculating $e_{ii}$: count how many edges are connecting only nodes within group $i$.
+    \item Calculating $a_{i}^{2}$: summarize the degrees of all vertices in group $i$, and bring to the $2^{nd}$ power.
+\end{itemize}
+\subsubsection{Pseudocode}
+For a graph with $n$ vertices and $m$ edges:
+\begin{enumerate}
+    \item Define $n$ singleton communities.
+    \item While not all nodes belong to a single community:
+    \begin{enumerate}
+        \item For each edge $m$, if adding $m$ will connect disconnected components, calculate the $\Delta Q$ of $m$'s addition.
+        \item For the highest $\Delta Q$ calculated, join the two communities.
+    \end{enumerate}
+\end{enumerate}
+The result is a dendrogram, a tree that shows the order of the joins. Cuts through this dendrogram at different levels give divisions of the network into larger or smaller numbers of communities and we can select the best cut by looking for the maximal value of $Q$.
+\subsubsection{Complexity}
+Since the joining of a pair of communities between which there are no edges at all can never result in an increase in Q, we need only consider those pairs between which there are edges, of which there will at any time be at most m, where m is again the number of edges in the graph. The change in Q upon joining two communities is given by $\Delta Q = e_{ij} + e_{ji} - 2a_{i}a_{j} = 2(e_{ij} - a_{i}a_{j})$, which can clearly be calculated in constant time. Following a join, some of the matrix elements $e_{ij}$ must be updated by adding together the rows and columns corresponding to the joined communities, which takes worst-case time $O(n)$. Thus each step of the algorithm takes worst-case time $O(m + n)$. There are a maximum of $n - 1$ join operations necessary to construct the complete dendrogram and hence the entire algorithm runs in time $O((m + n)n)$, or $O(n^{2})$ on a sparse graph. The algorithm has the added advantage of calculating the value of $Q$ as it goes along, making it especially simple to find the optimal community structure.\\
+Each step: worst-case time $O(m + n)$.\\
+A maximum of $(n - 1)$ steps to join $n$ communities.\\
+Thus: $O((m + n)n)$ or $O(n^{2})$ for sparse graphs.
+\subsubsection{Pros and Cons}
+\paragraph{Pros}
+\begin{itemize}
+    \item Ease of implementation: Modularity Maximization (MM) is conceptually simple and can be implemented with relative ease compared to other algorithms. Several open-source libraries and software packages readily implement MM, making it accessible to a wide range of users.
+    \item Scalability: MM efficiently scales to handle large networks with millions of nodes and edges. This makes it suitable for analyzing real-world networks like social media graphs, citation networks, and protein-protein interaction networks.
+\end{itemize}
+\paragraph{Cons}
+\begin{itemize}
+    \item Resolution limit: MM is sensitive to the resolution parameter, which controls the granularity of the detected communities. Choosing an appropriate resolution parameter can be challenging, as it can significantly impact the community structure. Small values tend to result in many small communities, while large values lead to a few large communities, potentially missing finer-grained structures.
+    \item Merging similar clusters: MM can be biased towards merging similar clusters, even if they are not well-connected, to maximize the modularity score. This can lead to communities that are not cohesive or representative of the underlying network structure.
+\end{itemize}
+
+\subsection{Label Propagation Algorithm}
+\subsubsection{Intuition}
+As we will show, the advantage of this algorithm over the other methods is its simplicity and time efficiency. The algorithm uses the network structure to guide its progress and does not optimize any specific chosen measure of community strengths.
+\subsubsection{Pseudocode}
+\begin{enumerate}
+    \item Initialize the labels at all nodes in the network. For a given node $x$, $C_{x}(0) = x$.
+    \item Initialize $t = 1$.
+    \item Arrange the nodes in the network in a random order and set it to $X$.
+    \item For each $x$ in $X$ chosen in that specific order,\\
+         let $C_{x}(t) = f(C_{x_{i1}}(t),\ldots,C_{x_{im}}(t),C_{x_{i(m+1)}}(t-1),\ldots,C_{x_{ik}}(t-1))$.\\
+         $f$ here returns the label occurring with the highest frequency among neighbors and ties are broken uniformly randomly.
+    \item If every node has a label that the maximum number of their neighbors have, then stop the algorithm. Else, increment $t$ and go to 3.
+\end{enumerate}
+\subsubsection{Complexity}
+It takes a near-linear time for the algorithm to run to its completion Initializing every node with unique labels requires $O(n)$ time. Each iteration of the label propagation algorithm takes linear time in the number of edges $O(m)$.\\
+At each node $x$, we first group the neighbors according to their labels $O(d_{x})$. We then pick the group of maximum size and assign its label to $x$, requiring a worst-case time of $O(d_{x})$. This process is repeated at all nodes and hence an overall time is $O(m)$ for each iteration.
+\subsubsection{Pros and Cons}
+\paragraph{Pros}
+\begin{itemize}
+    \item Efficiency: Label propagation is computationally efficient, making it suitable for large networks. Its running time is generally faster compared to some other community detection algorithms.
+    \item Low A Priori Information Requirement: One of its notable strengths is its low dependency on prior information about the network structure. You don't need to specify parameters beforehand, which can be advantageous in scenarios where the network characteristics are not well-known.
+\end{itemize}
+\paragraph{Cons}
+\begin{itemize}
+    \item Lack of Unique Solutions: As you mentioned, the algorithm doesn't guarantee a unique solution. This can be a drawback if you're looking for a single, definitive community structure. The results can vary across different runs of the algorithm.
+    \item Aggregate Solutions: The algorithm provides an aggregate of multiple solutions, leading to a lack of specificity. This might be undesirable in situations where a precise and unique community structure is crucial.
+\end{itemize}
+
+\end{document}
