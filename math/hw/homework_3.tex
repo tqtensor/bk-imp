@@ -1,0 +1,90 @@
+\documentclass{article}
+\author{}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm,amssymb,scrextend}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\begin{document}
+
+\title{Homework 3 \- Dr.\ Nguyen An Khuong}
+\maketitle
+\section{Student Information}
+\begin{itemize}
+    \item \bf{Student Name:} Tang Quoc Thai
+    \item \bf{Student ID:} 2270376
+\end{itemize}
+
+\section{Exercises}
+\subsection{Exercise 1}
+The row averages of $A_{0}$ are 3 and 0, therefore, $A = \begin{bmatrix} 2 & 1 & 0 & -1 & -2 \\ -1 & 1 & 0 & 1 & -1 \end{bmatrix}$.
+And $S = \frac{AA^{T}}{4} = \begin{bmatrix}
+    2.5 & 0 \\
+    0 & 1
+\end{bmatrix}$.
+The eigenvalues of $S$ are $\lambda_{1} = 2.5 \text{ and } \lambda_{2} = 1$.
+\\
+A vertical line is closer to the five points in the columns of A than any other line through the origin (0, 0).
+
+
+\subsection{Exercise 3}
+$A_{0} = \begin{bmatrix}
+    1 & 2 & 3 \\
+    5 & 2 & 2
+\end{bmatrix}$ has row averages of 2 and 3, therefore, $A = \begin{bmatrix}
+    -1 & 0 & 1 \\
+    2 & -1 & -1
+\end{bmatrix}$.
+Then $S = \frac{AA^{T}}{2} = \frac{1}{2} \begin{bmatrix}
+    2 & -3 \\
+    -3 & 6
+\end{bmatrix}$.\\
+The eigenvalues of $S$ are roots of the equation $(2 - \lambda)(6 - \lambda) - 9 = 0$. $\lambda_{1} = 4 + \sqrt{13}$ and $\lambda_{2} = 4 - \sqrt{13}$ and $\sigma_{1} = \sqrt{\lambda_{1}} = \sqrt{4 + \sqrt{13}}$ and $\sigma_{2} = \sqrt{\lambda_{2}} = \sqrt{4 - \sqrt{13}}$.
+
+\subsection{Exercise 5}
+Assume $D = \begin{bmatrix}
+    x & & \\
+    & y & \\
+    & & z
+\end{bmatrix}$, and $DS = \begin{bmatrix}
+    x & & \\
+    & y & \\
+    & & z
+\end{bmatrix}
+\begin{bmatrix}
+    4 & 2 & 0 \\
+    2 & 4 & 1 \\
+    0 & 1 & 1
+\end{bmatrix} =
+\begin{bmatrix}
+    4x & 2x & 0 \\
+    2y & 4y & y \\
+    0 & z & z
+\end{bmatrix}$\\
+Therefore, $DSD = \begin{bmatrix}
+    4x & 2x & 0 \\
+    2y & 4y & y \\
+    0 & z & z
+\end{bmatrix}
+\begin{bmatrix}
+    x & & \\
+    & y & \\
+    & & z
+\end{bmatrix} =
+\begin{bmatrix}
+    4x^{2} & 2xy & 0 \\
+    2xy & 4y^{2} & yz \\
+    0 & yz & z^{2}
+\end{bmatrix}$\\
+Since this matrix has 1's on the diagonal so $x = 1/2, y = 1/2, z = 1$, $D = \begin{bmatrix}
+    1/2 & & \\
+    & 1/2 & \\
+    & & 1
+\end{bmatrix}$.
+
+\subsection{Exercise 7}
+Subtract the average grade of each course (each row in $A_{0}$) from the 10 grades in that row to create the centered matrix $A$. The sample covariance matrix is then calculated as $S = \frac{1}{9} AA^{T}$. The primary eigenvector of the $5 \times 5$ matrix $S$ provides the weights for the 5 courses to generate the `eigencourse'. This represents the course with the highest variance in grades, hence containing the most information.\\
+If a course awards an A to every student, it has zero variance and is therefore not factored into the eigencourse. The goal is to find the course with the most information, not necessarily the highest grade.
+\end{document}
