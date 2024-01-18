@@ -1,0 +1,366 @@
+\documentclass[a4paper,oneside]{book}
+
+\usepackage[english]{babel}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage[square,numbers]{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage{a4wide}
+\usepackage{amsbsy}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{footnote}
+\usepackage{geometry}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hhline}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage{lastpage}
+\usepackage{latexsym}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{pgfplots}
+\usepackage{pictex}
+\usepackage{pifont}
+\usepackage{rotating}
+\usepackage{scrextend}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{tikz-timing}[2014/10/29]
+\usepackage{tikz}
+\usepackage{tocloft}
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+\changefontsizes[12pt]{12pt}
+
+\definecolor{lightgray}{gray}{0.9}
+
+\bibliographystyle{ieeetr}
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{.5em}
+
+\usetikztiminglibrary[rising arrows]{clockarrows}
+\usetikzlibrary{arrows,backgrounds,patterns,snakes}
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc}
+
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+\captionsetup[figure]{labelfont={small,bf},textfont={small,it},belowskip=-1pt,aboveskip=7pt}
+% space remove between caption, figure, and text
+\captionsetup[table]{labelfont={small,bf},textfont={small,it},belowskip=-1pt,aboveskip=7pt}
+% space remove between caption, table, and text
+\newcommand{\myarrow}[1][1cm]{\mathrel{%
+		\vcenter{\hbox{\rule[-1.5\fontdimen8\textfont3]{#1}{\fontdimen8\textfont3}}}%
+		\mkern-4mu\hbox{\usefont{U}{lasy}{m}{n}\symbol{41}}}}
+\newcommand{\inlinecode}[2]{\colorbox{lightgray}{\lstinline[language=#1] $#2$}}
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
+
+% the following is needed for syntax highlighting
+\fboxsep=3\fboxsep
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{01,0,0.82}
+
+\lstset{ %
+    language=[Sharp]C,              % the language of the code
+    basicstyle=\tt\footnotesize,    % the size of the fonts that are used for the code
+    numbers=left,                   % where to put the line-numbers
+    numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+    stepnumber=2,                   % the step between two line-numbers. If it's 1, each line
+                                                                    % will be numbered
+    numbersep=5pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    frame=single,                   % adds a frame around the code
+    rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=2,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    breaklines=true,                % sets automatic line breaking
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                    % also try caption instead of title
+    keywordstyle=\color{blue},      % keyword style
+    commentstyle=\color{dkgreen},   % comment style
+    stringstyle=\color{mauve},      % string literal style
+    morekeywords={*, \ldots},       % if you want to add more keywords to the set
+}
+
+
+\newcommand*\colourcheck[1]{%
+    \expandafter\newcommand\csname #1check\endcsname{\textcolor{#1}{\ding{51}}}%
+}
+\colourcheck{blue}
+\colourcheck{green}
+\colourcheck{red}
+
+\NewDocumentCommand{\busref}{som}{\texttt{%
+    #3%
+    \IfValueTF{#2}{[#2]}{}%
+    \IfBooleanTF{#1}{\#}{}%
+}}
+
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+\addtolength{\oddsidemargin}{0.6cm}
+\addtolength{\evensidemargin}{1.25cm}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[L]{
+\begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{img/hcmut.png}}
+    %\put(0,-8){\epsfig{width=10mm,figure=hcmut.eps}}
+    \end{picture}&
+	%\includegraphics[width=8mm, height=8mm]{hcmut.png} & %
+	\begin{tabular}{l}
+		\textbf{\bf \ttfamily Ho Chi Minh University of Technology}\\
+		\textbf{\bf \ttfamily Faculty of Computer Science and Engineering}
+	\end{tabular}
+\end{tabular}
+}
+\fancyhead[R]{
+	\begin{tabular}{l}
+		\tiny \bf \\
+		\tiny \bf
+	\end{tabular}  }
+\fancyfoot{} % clear all footer fields
+
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\renewcommand{\baselinestretch}{1.5}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\makeatletter
+\newcounter {subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection .\@alph\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+                                    {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                    {1.5ex \@plus .2ex}%
+                                    {\normalfont\normalsize\bfseries}}
+\newcommand*\l@subsubsubsection{\@dottedtocline{3}{10.0em}{4.1em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+\makeatother
+
+\newcommand{\fancyfootnotetext}[2]{%
+    \fancypagestyle{dingens}{%
+    \fancyfoot[LO,RE]{\parbox{12cm}{\footnotemark[#1]\footnotesize #2}}%
+    }%
+    \thispagestyle{dingens}%
+}
+
+\newcommand{\listhistogramname}{\large{List of chart}}
+\newlistof{histogram}{exp}{\listhistogramname}
+\newcommand{\histogram}[1]{%
+\refstepcounter{histogram}
+\par\noindent\textbf{Histogram \thehistogram. #1}
+\addcontentsline{exp}{histogram}
+{\protect\numberline{\thehistogram}#1}\par}
+
+\begin{document}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\usetikzlibrary{calc}
+\begin{tikzpicture}[overlay,remember picture]
+    \draw [line width=3pt]
+        ($ (current page.north west) + (2.0cm,-2.0cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.5cm,1.8cm) $);
+    \draw [line width=1pt]
+        ($ (current page.north west) + (2.15cm,-2.15cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.65cm,1.95cm) $);
+\end{tikzpicture}
+
+\begin{center}
+	\begin{large}
+        {\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}} \\
+		\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
+		\textbf{Faculty of Computer Science and Engineering}
+	\end{large} \\
+	\textbf{--------------------  *  ---------------------}\\
+
+	\vspace{0.8cm}
+	\includegraphics[scale=.35]{img/hcmut.png}\\
+	\vspace{0.8cm}
+    {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
+	\vspace{0.8cm}
+	{\fontsize{14.4pt}{1}\selectfont \textbf{Internship 2 Report}}\\[.75cm]
+	{\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}
+\end{center}
+\vspace{4cm}
+
+\hspace{.5cm}
+\begin{center}
+    {\fontsize{15pt}{1} Ho Chi Minh City, January 2024}
+\end{center}
+\end{titlepage}
+\newpage
+
+\begin{titlepage}
+\thispagestyle{empty}
+\usetikzlibrary{calc}
+\begin{tikzpicture}[overlay,remember picture]
+    \draw [line width=3pt]
+        ($ (current page.north west) + (2.0cm,-2.0cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.5cm,1.8cm) $);
+    \draw [line width=1pt]
+        ($ (current page.north west) + (2.15cm,-2.15cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.65cm,1.95cm) $);
+\end{tikzpicture}
+
+\begin{center}
+	\begin{large}
+		{\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}}
+		\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
+		\textbf{Faculty of Computer Science and Engineering}
+	\end{large} \\
+	\textbf{--------------------  *  ---------------------}\\
+
+	\vspace{0.8cm}
+	\includegraphics[scale=.35]{img/hcmut.png}\\
+	\vspace{0.8cm}
+	{\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
+	\vspace{0.8cm}
+	{\fontsize{14.4pt}{1}\selectfont \textbf{Internship 2 Report}}\\[.75cm]
+	{\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}
+\end{center}
+\vspace{.4cm}
+
+\begin{center}
+	{\fontsize{14.4pt}{1} MAJOR: COMPUTER SCIENCE}\\[.2cm]
+    {\fontsize{14.4pt}{1}
+    \textbf{INSTRUCTOR:}\\[.2cm]
+    \textbf{Assoc. Prof. QUAN THANH THO}\\[.2cm]
+    {\fontsize{14.4pt}{1} Ho Chi Minh City, January 2024}}
+\end{center}
+\end{titlepage}
+
+\newpage
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+    \begin{large}
+        \textbf{Internship 2 Signature Page}
+    \end{large}
+\end{center}
+\vspace{1.2cm}
+\begin{itemize}
+    \item[] \textbf{Project Title:} Application of Large Language Models in Software Error Debugging
+    \vspace{1cm}
+
+    The Internship 2 Report is submitted in partial fulfillment of the requirements for the degree of Master of Science in Computer Science.
+    \vspace{2cm}
+
+    \begin{minipage}{0.5\textwidth}
+        \textbf{Student:} \\[2cm]
+        Tang Quoc Thai\\[0.25cm]
+        \hrulefill
+        \rule{7cm}{0.4pt}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \begin{flushright}
+            \textbf{Instructor:} \\[2cm]
+            Assoc. Prof. Quan Thanh Tho\\[0.25cm]
+            \hrulefill
+            \rule{7cm}{0.4pt}
+        \end{flushright}
+    \end{minipage}
+    \vspace{1cm}
+\end{itemize}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+\listoffigures
+
+\newpage
+\listoftables
+
+\newpage
+\chapter{Topic Introduction}
+\section{General Introduction}
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+The progression in the field of natural language processing has been significantly accelerated with the advent of large language models (LLMs). Models like GPT-3, BERT, and their successors have drastically improved our proficiency in processing, understanding, and generating text that is remarkably human-like. These models have been meticulously trained on vast collections of text, which has endowed them with a nuanced understanding of language. This breakthrough has laid a foundation for pioneering applications in several linguistic tasks, representing a formidable leap in technology that has transformed the way we interact with machines.
+
+SQL's role in managing and analyzing data within relational databases is indisputably vital in our modern data-centric world. The ubiquity of SQL across various sectors underscores its importance for organizing and retrieving critical data.According to the yearly survey conducted by StackOverflow, SQL maintains its status as one of the globally dominant languages. It is observed that among the technologies professionals most frequently utilize, JavaScript, HTML/CSS, and SQL emerge as the top three, with JavaScript and HTML/CSS nearly reaching parity as the leading languages for coding novices
+The task of converting natural language into SQL commands, known as Text-to-SQL, has gained prominence. It grants non-experts the ability to access database information, significantly broadening the scope of data utility and facilitating informed decision-making across diverse user groups.
+
+While LLMs hold the potential to simplify the interaction between natural language and SQL queries, the task of Text-to-SQL generation comes with distinct challenges. LLMs need to acquire a profound semantic understanding of the queries, efficiently generate SQL commands, and interpret the users' intent with high accuracy. The intricacies involved in SQL's structure and the variable nature of natural language queries add layers of complexity to this task. Integrating LLMs into Text-to-SQL systems is a complex endeavor that goes beyond technical challenges. It requires the selection of suitable models, rigorous experimental design, and the development of reliable metrics to gauge performance. In addition, it is imperative to consider the wider implications on user experience and database functionality, striving towards a solution that is not only seamless and efficient but also scalable.
+
+\end{document}
