@@ -1,2 +1,7 @@
 \babel@toc {english}{}\relax
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Distribution of time to completion between treated and control groups~\cite {peng2023impact}.\relax }}{6}{figure.caption.1}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces A prevalent approach for iterative debugging employing a large language model involves multiple steps~\cite {chen2023teaching}.\relax }}{7}{figure.caption.2}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces A conceptual framework for self-correcting LLMs with automated feedback.\relax }}{12}{figure.caption.3}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Focus areas of the current research.\relax }}{29}{figure.caption.4}%
