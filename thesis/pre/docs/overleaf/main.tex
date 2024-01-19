@@ -360,11 +360,11 @@ The debugging process concludes either when the feedback message confirms the co
 
 \textbf{Simple feedback}: a straightforward form of automatic feedback is a sentence indicating code correctness without additional detailed information, omitting the Explanation step in a complete Self-Debugging turn. For example, in text-to-SQL generation, the few-shot prompt issues the feedback message `The SQL prediction above is correct' for accurate SQL queries and `The SQL prediction above is wrong. Please fix the SQL' for incorrect predictions.
 
-\textbf{Unit test feedback}: is applicable to code generation tasks where the problem description includes unit tests. In addition to using code execution to assess correctness, feedback can incorporate execution results, providing richer debugging information. Figure 5 presents a sample unit test feedback message. Intuitively, examining runtime errors and execution results of failed unit tests enhances the effectiveness of human programmers in debugging. Our experiments will illustrate that leveraging unit tests whenever available consistently enhances the performance of self-correcting LLMs.
+\textbf{Unit test feedback}: is applicable to code generation tasks where the problem description includes unit tests. In addition to using code execution to assess correctness, feedback can incorporate execution results, providing richer debugging information. Intuitively, examining runtime errors and execution results of failed unit tests enhances the effectiveness of human programmers in debugging. Our experiments will illustrate that leveraging unit tests whenever available consistently enhances the performance of self-correcting LLMs.
 
 \textbf{Code explanation feedback}: remains an unexplored area in the context of model-generated feedback on code generation. Despite the promising progress demonstrated by large language models in generating critiques to avoid harmful model outputs and improving performance on certain natural language tasks, the effectiveness of such feedback on code generation tasks has not been established in prior work. Conversely, large language models have exhibited proficiency in describing their generated problem solutions in both textual and code formats.
 
-\textbf{Execution trace feedback}: extends beyond explaining the code itself, as human programmers often comprehend the semantic meaning of code through simulating the execution process. Previous work on code repair has indicated that training repair models on execution traces enhances debugging performance. Thus, when unit tests are available, an alternative explanation feedback format is examined, wherein the LLM explains the intermediate execution steps line-by-line. It is noteworthy that both the execution trace and the line-by-line explanation originate from model generation rather than code execution. Therefore, trace feedback does not necessitate more information than pure code explanation feedback, specifically no access to intermediate execution states.
+\textbf{Execution trace feedback}: extends beyond explaining the code itself, as human programmers often comprehend the semantic meaning of code through simulating the execution process. Previous work on code repair has indicated that training repair models on execution traces enhances debugging performance. Thus, when unit tests are available, an alternative explanation feedback format is examined, wherein the LLMs explains the intermediate execution steps line-by-line. It is noteworthy that both the execution trace and the line-by-line explanation originate from model generation rather than code execution. Therefore, trace feedback does not necessitate more information than pure code explanation feedback, specifically no access to intermediate execution states.
 
 \section{Research Objectives}
 TBD
@@ -373,7 +373,6 @@ TBD
 TBD
 
 \chapter{Related Works}
-
 
 \section{A Taxonomy for Self-Correcting LLMs with Automated Feedback}
 For the sake of clean exposition, this research first presents a conceptual framework outlining the overall process of correcting LLMs with feedback, thereby establishing the scope. It then proceeds to identify five primary dimensions that serve as classification criteria for existing works: 1. What gets corrected, 2. What is the source of the feedback, 3. What is the format of the feedback, 4. When the feedback is used, and 5. How to correct the model with feedback.
@@ -537,6 +536,246 @@ Furthermore, the domain of software error debugging poses a challenging and intr
     \includegraphics[width=0.90\textwidth]{img/direction_of_research.png}
     \caption{Focus areas of the current research.}\label{fig:direction_of_research}
 \end{figure}
+
+\chapter{Theoretical Background}
+This section provides the relevant background to understand the fundamentals related to LLMs. Aligned with the objective of providing a comprehensive overview of this direction, this section offers a comprehensive yet concise outline of the basic concepts. The focus is more on the intuitive aspects and interested readers are referred to the original works for details.
+
+\section{Tokenization}
+LLMs are trained on text to predict text, and similar to other natural language processing systems, they use tokenization~\cite{webster1992tokenization} as the essential preprocessing step. It aims to parse the text into non-decomposing units called tokens. Tokens can be characters, subwords~\cite{kudo2018subword}, symbols~\cite{sennrich2015neural}, or words, depending on the size and type of the model. Some of the commonly used tokenization schemes in LLMs are briefed here. Readers are encouraged to refer to~\cite{mielke2021between} for a detailed survey.
+
+\begin{enumerate}
+    \item WordPiece~\cite{schuster2012japanese}: It was introduced in~\cite{schuster2012japanese} as a novel text segmentation technique for Japanese and Korean languages to improve the language model for voice search systems. WordPiece selects tokens that increase the likelihood of an n-grambased language model trained on the vocabulary composed of tokens.
+
+    \item BPE~\cite{sennrich2015neural}: Byte Pair Encoding (BPE) has its origin in compression algorithms. It is an iterative process of generating tokens where pairs of adjacent symbols are replaced by a new symbol, and the occurrences of the most occurring symbols in the input text are merged.
+
+    \item UnigramLM~\cite{kudo2018subword}: In this tokenization, a simple unigram LM is trained using an initial vocabulary of subword units. The vocabulary is pruned iteratively by removing the lowest probability items from the list, which are the worst performing on the unigram LM.
+\end{enumerate}
+
+\section{Attention in LLMs}
+The attention mechanism computes a representation of the input sequences by relating different positions (tokens) of these sequences. There are various approaches to calculating and implementing attention, out of which some famous types are given below.
+
+\begin{enumerate}
+    \item \textbf{Self-Attention}~\cite{vaswani2017attention}: Self-attention, also known as intra-attention, connects all the sequence positions with $O(1)$ space complexity, which is highly desirable for learning long-range dependencies in the input. In self-attention, all the queries, keys, and values come from the same block (encoder or decoder).
+
+    \item \textbf{Cross Attention}: In encoder-decoder architectures, the outputs of the encoder blocks act as the queries to the intermediate representation of the decoder, which provides the keys and values to calculate a representation of the decoder conditioned on the encoder. This attention is called cross-attention.
+
+    \item \textbf{Full Attention}: The naive implementation of calculating self-attention is known as full attention.
+
+    \item \textbf{Sparse Attention}~\cite{child2019generating}: Self-attention has a time complexity of $O(n^2)$, which becomes prohibitive when scaling the LLMs to large context windows. An approximation to self-attention was proposed in~\cite{child2019generating}, which greatly enhanced the capacity of GPT series LLMs to process a greater number of input tokens in a reasonable time.
+
+    \item \textbf{Flash Attention}~\cite{dao2022flashattention}: The bottleneck for calculating attention using GPUs lies in memory access rather than computational speed. Flash Attention uses classical input tiling to process input blocks in GPU on-chip SRAM rather than doing IO for every token from the High Bandwidth Memory (HBM). An extension of this approach to sparse attention follows the speed gains of the full attention implementation. This trick allows even greater context-length windows in the LLMs as compared to those LLMs with sparse attention.
+\end{enumerate}
+
+\section{Encoding Positions}
+The attention modules do not consider the order of processing by design. Transformer~\cite{vaswani2017attention} introduced `positional encodings' to feed information about the position of the tokens in input sequences. Several variants of positional encoding have been proposed~\cite{press2021train, su2024roformer}. Interestingly, a recent study [67] suggests that adding this information may not matter for the state-of-the-art decoder-only Transformers.
+
+\begin{enumerate}
+    \item \textbf{Absolute}: This is the most straightforward approach to adding the sequence order information by assigning a unique identifier to each position of the sequence before passing it to the attention module.
+
+    \item \textbf{Relative}: To pass the information on the relative dependencies of different tokens appearing at different locations in the sequence, a relative positional encoding is calculated by some kind of learning. Two famous types of relative encodings are:
+\end{enumerate}
+
+Alibi~\cite{press2021train}: In this approach, a scalar bias is subtracted from the attention score calculated using two tokens which increases with the distance between the positions of the tokens. This learned approach effectively favors using recent tokens for attention.
+
+RoPE~\cite{su2024roformer}: Keys, queries, and values are all vectors in the LLMs. RoPE involves the rotation of the query and key representations at an angle proportional to their absolute positions of the tokens in the input sequence. This step results in a relative positional encoding scheme which decays with the distance between the tokens.
+
+\section{Activation Functions}
+The activation functions serve a crucial role in the curvefitting abilities of the neural networks, as proved in~\cite{hornik1989multilayer}. The modern activation functions used in LLMs are different from the earlier squashing functions but are critical to the success of LLMs. The activation functions are discussed in this section.
+
+\begin{enumerate}
+    \item ReLU~\cite{nair2010rectified}: Rectified linear unit (ReLU) is defined as \[ReLU(x)=\max(0, x).\]
+
+    \item GeLU~\cite{hendrycks2016gaussian}: Gaussian Error Linear Unit (GeLU) is the combination of ReLU, dropout~\cite{srivastava2014dropout} and zoneout~\cite{krueger2016zoneout}. It is the most widely used activation function in contemporary LLMs literature.
+
+    \item GLU variants~\cite{shazeer2020glu}: Gated Linear Unit~\cite{dauphin2017language} is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as \[GLU(x, W, V, b, c)=(xW + b) \otimes \sigma(xV + c),\] where $X$ is the input of layer and $l, W, b, V$ and $c$ are learned parameters.
+
+    GLU was modified in~\cite{shazeer2020glu} to evaluate the effect of different variations in the training and testing of transformers, resulting in better empirical results. Here are the different GLU variations introduced in~\cite{shazeer2020glu} and used in LLMs:
+
+    \[
+        \begin{aligned}
+        ReGLU(x, W, V, b, c) & = \max (0, xW + b) \otimes, \\
+        GEGLU(x, W, V, b, c) & = GELU(xW + b) \otimes(xV + c), \\
+        SwiGLU(x, W, V, b, c, \beta) & = Swish \beta(xW + b) \otimes(xV + c) .
+        \end{aligned}
+    \]
+\end{enumerate}
+
+\section{Layer Normalization}
+Layer normalization leads to faster convergence and is a widely used component in transformers. Different normalization techniques widely used in LLMs literature are provided in this section.
+
+\begin{enumerate}
+    \item LayerNorm: Layer norm computes statistics over all the hidden units in a layer $(l)$ as follows:
+
+    \[
+    u^{l} = \frac{1}{n} \sum_{i}^{n} a_{i}^{l} \quad \sigma^{l} = \sqrt{\frac{1}{n} \sum_{i}^{n}\left(a_{i}^{l}-u^{l}\right)^{2}}
+    \]
+
+    where $n$ is the number of neurons in layer $l$ and $a_{i}^{l}$ is the summed input of neuron $i$ in layer $l$. LayerNorm provides invariance to rescaling of the weights and re-centering of the distribution.
+
+    \item RMSNorm:~\cite{zhang2019root} proposed that the invariance properties of LayerNorm are spurious, and computationally efficient normalization achieving the same performance benefits as LayerNorm can be obtained by trading off re-centering invariance with speed. LayerNorm gives the normalized summed input to layer $l$ as follows:
+
+    \[
+    \overline{a_{i}^{l}} = \frac{a_{i}^{l}-u^{l}}{\sigma} g_{i}^{l}
+    \]
+
+    where $g_{i}^{l}$ is the gain parameter. RMSNorm~\cite{zhang2019root} modifies $\overline{a_{i}^{l}}$ as:
+
+    \[
+    \overline{a_{i}^{l}} = \frac{a_{i}^{l}}{\operatorname{RMS}\left(\mathbf{a}^{l}\right)} g_{i}^{l} \text {, where } \operatorname{RMS}\left(\mathbf{a}^{l}\right) = \sqrt{\frac{1}{n} \sum_{i}^{n}\left(a_{i}^{l}\right)^{2}}.
+    \]
+
+    \item Pre-Norm and Post-Norm: LLMs use the transformer~\cite{vaswani2017attention} architecture with some variations. The original implementation~\cite{vaswani2017attention} used layer normalization after the residual connection, commonly called post-LN, concerning the order of Multihead attention - Residual - LN. Another order of normalization, referred to as pre-LN~\cite{baevski2018adaptive}, places normalization before the self-attention layer as in LN - Multihead attention - Residual. Pre-LN is known to provide more stability in training~\cite{shleifer2021normformer}.
+
+    \item DeepNorm: While pre-LN has certain benefits over post-LN training, pre-LN training has an unwanted effect on the gradients~\cite{shleifer2021normformer}. The earlier layers have larger gradients than those at the bottom. DeepNorm~\cite{wang2022deepnet} mitigates these adverse gradient effects. It is given as:
+
+    \[
+    \mathbf{x}^{l_{f}} = LN\left(\alpha \mathbf{x}^{l_{p}}+G^{l_{p}}\left(\mathbf{x}^{l_{p}}, \theta^{l_{p}}\right),\right.
+    \]
+
+    where $\alpha$ is a constant and $\theta^{l_{p}}$ represents the parameters of layer $l_{p}$. These parameters are scaled by another constant $\beta$. Both constants depend only on the architecture.
+\end{enumerate}
+
+\section{Architectures}
+Variants of the transformer architectures arising from differences in attention patterns and connection of transformer blocks are discussed here. Figure~\ref{fig:attention_patterns} illustrates the attention patterns of these architectures.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/attention_patterns.png}
+    \caption{Attention patterns in a causal decoder, non-causal
+    decoder, and encoder-decoder.~\cite{wang2022language}.}\label{fig:attention_patterns}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Encoder Decoder}: Transformers were originally designed as sequence transduction models following prevalent model architectures for machine translation. They utilized an encoder-decoder architecture to train on human language translation tasks. This architecture is adopted by~\cite{raffel2020exploring, tay2022unifying}. In this scheme, an encoder encodes input sequences into variable length context vectors, which a decoder then processes to maximize a joint objective of minimizing the gap between predicted token labels and actual target token labels.
+
+    \item \textbf{Causal Decoder}: The underlying objective of an LLMs is to predict the next token based on the input sequence. Although additional encoder information strongly binds the prediction to context, in practice LLMs can perform well lacking an encoder~\cite{liu2018generating}, relying solely on the decoder. Like the original encoder-decoder's decoder block, this decoder restricts backward information flow, i.e. predicted token $t_k$ depends only on preceding tokens up to $t_{k-1}$. This is the most widely used variant in state-of-the-art LLMs.
+
+    \item \textbf{Prefix Decoder}: The causally masked attention is reasonable in encoder-decoder architectures where the encoder can attend to all sentence tokens from every position via self-attention. This means the encoder can also attend to tokens $t_{k+1}$ to $t_n$ in addition to $t_1$ to $t_{k-1}$ when calculating the representation for $t_k$. But dropping the encoder also loses this attention flexibility. A decoder-only architecture variation changes the mask from strictly causal to fully visible on a portion of the input. The prefix decoder is also known as a non-causal decoder architecture.
+\end{enumerate}
+
+\section{Model Adaptation}
+LLMs adaptation stage fundamentals, from pre-training to fine-tuning for downstream tasks and utilization, are discussed here.
+
+\begin{enumerate}
+    \item Pre-Training: Initially, the model is trained self-supervised on a large corpus to predict next tokens given the input. LLMs design choices vary for architectures, building blocks, and loss functions.
+
+    \item Fine-Tuning: There are different LLMs fine-tuning approaches, briefly discussed here.
+\end{enumerate}
+
+\textbf{Transfer Learning}: Pre-trained LLMs perform well for various tasks~\cite{brown2020language, chowdhery2023palm}. But to improve performance for a downstream task, pre-trained models are fine-tuned with task-specific data~\cite{raffel2020exploring, xue2020mt5}, known as transfer learning.
+
+\textbf{Instruction-tuning}: To enable effective model response to user queries, the pre-trained model is fine-tuned on instruction formatted data, i.e. an instruction and input-output pair. Instructions generally comprise multi-task data in plain natural language, guiding the model to respond according to the prompt and input. This fine-tuning improves zero-shot generalization and downstream task performance. Details on instruction data formatting and styles are available in~\cite{chung2022scaling},~\cite{zhao2023survey},~\cite{iyer2022opt}.
+
+\textbf{Alignment-tuning}: LLMs are prone to generate false, biased, and harmful text. To develop helpful, honest, and harmless models, alignment with human feedback is used. Alignment involves asking LLMs to generate unexpected responses, then updating parameters to avoid such responses~\cite{ouyang2022training},~\cite{touvron2023llama},~\cite{sun2023principle}. This ensures LLMs operate according to human intentions and values. A model is considered `aligned' if it meets the three criteria of being helpful, honest, and harmless or `HHH'~\cite{askell2021general}.
+
+Researchers employ reinforcement learning with human feedback~\cite{ziegler2019fine} for model alignment. In RLHF, a fine-tuned model on demonstrations is further trained with reward modeling (RM) and reinforcement learning (RL). RM and RL pipelines in RLHF are briefly discussed below.
+
+Reward modeling trains a model to rank generated responses by human preferences using a classification objective. To train the classifier, humans annotate LLMs generated responses based on HHH criteria.
+
+Reinforcement learning combines the reward model for alignment in the next stage. The trained reward model ranks LLM-generated responses into preferred vs. dispreferred, which alignment uses via proximal policy optimization (PPO). This process repeats iteratively until convergence.
+
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item Prompting/Utilization: Prompting queries trained LLMs to generate responses. LLMs can be prompted in various setups, either adapting to instructions without fine-tuning or with fine-tuning containing different prompt styles~\cite{chung2022scaling},~\cite{kim2023cot},~\cite{liu2023zero}. A good prompt engineering guide is available at~\cite{saravia2022prompt}. Various widely used prompt setups are discussed below.
+\end{enumerate}
+
+\textbf{Zero-Shot Prompting}: LLMs are zero-shot learners and capable of answering queries never seen before. This prompting style requires LLMs to answer user questions without any examples in the prompt.
+
+\textbf{In-context Learning}: Also known as few-shot learning, here multiple input-output demonstration pairs are provided to the model to generate the desired response. This adaptation style is also called few-shot learning. Discussions on formatting in-context learning (ICL) templates are available in~\cite{dong2022survey},~\cite{zhao2023survey},~\cite{wang2022super},~\cite{chung2022scaling}.
+
+\textbf{Reasoning in LLMs}: LLMs are zero-shot reasoners and can be provoked to generate answers to logical problems, task planning, critical thinking, etc. with reasoning. Generating reasons is only possible using different prompting styles, while to further improve LLMs on reasoning tasks many methods~\cite{chung2022scaling},~\cite{iyer2022opt} train them on reasoning datasets. Various prompting techniques for reasoning are discussed below.
+
+\textbf{Chain-of-Thought}: A special prompting case where demonstrations contain reasoning information aggregated with inputs and outputs so the model generates outcomes with step-by-step reasoning. More CoT prompt details are in~\cite{huang2022towards},~\cite{wei2022chain},~\cite{kim2023cot}.
+
+\textbf{Self-Consistency}: Improves CoT performance by generating multiple responses and selecting the most frequent answer~\cite{wang2022self}.
+
+\textbf{Tree-of-Thought}: Explores multiple reasoning paths with possibilities to look ahead and backtrack for problem-solving~\cite{yao2023tree}.
+
+\textbf{Single-Turn Instructions}: In this prompting setup, LLMs are queried only once with all relevant information in the prompt. LLMs generate responses by understanding the context either zero-shot or few-shot.
+
+\textbf{Multi-Turn Instructions}: Solving complex tasks requires multiple LLMs interactions, where feedback and responses from other tools are next round LLMs inputs. This style of using LLMs in the loop is common in autonomous agents.
+
+\chapter{Referenced Works}
+This section discusses two major works referenced in this thesis: the Chain-of-Thought framework for facilitating reasoning in language models, and a modular code analysis framework for improving code generation. Both claim state-of-the-art results in their domains. Their key ideas, results, and potential for further improvement are examined.
+
+\section{CoT Prompting}
+Humans often solve complex reasoning tasks by decomposing them into intermediate steps. For example, when solving multi-step math word problems, people break the problem down into smaller steps, solving each sub-problem sequentially. The CoT paper aims to enable language models to mimic this reasoning process by generating coherent chains of thought.
+
+The authors demonstrate that with the right few-shot prompting, large language models can produce chains of thought leading to correct solutions for problems they initially failed. As shown in Figure~\ref{fig:cot_prompting}, a model generates a step-by-step reasoning chain to solve a math problem it previously answered incorrectly. Although resembling a solution, these reasoning chains are called chains of thought to emphasize they mimic human step-by-step reasoning.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/cot_prompting.jpg}
+    \caption{Example of CoT reasoning processes.~\cite{wei2023chainofthought}.}\label{fig:cot_prompting}
+\end{figure}
+
+Chain-of-thought prompting has several key advantages:
+
+\begin{enumerate}
+    \item It allows dynamic computation allocation, with more steps for harder problems needing more reasoning.
+    \item It provides interpretability into model reasoning, aiding debugging.
+    \item It is widely applicable to language-based reasoning tasks.
+    \item It only requires including reasoning chain examples in few-shot prompts.
+\end{enumerate}
+
+In summary, chain-of-thought prompting is a promising approach to improve reasoning and interpretability in language models.
+
+\section{Modular Code Analysis}
+Experienced programmers solve problems by decomposing them into modular sub-tasks and iteratively refining solutions. The modular code analysis paper proposes CodeChain~\cite{le2023codechain}, which mimics this process to improve code generation in language models.
+
+Specifically, CodeChain first elicits modular solutions using chain-of-thought prompting. It then recursively revises generated code by conditioning on representative sub-module code snippets sampled from previous outputs. This iterative refinement with reusable code `legs up' future generations.
+
+Experiments demonstrate CodeChain significantly improves performance on challenging benchmarks like APPS~\cite{hendrycks2021measuring} and CodeContests~\cite{Li_2022}, achieving state-of-the-art results. For example, on APPS it increases pass@1 by over 35\% on average. Ablations provide insights into the drivers of CodeChain's effectiveness.
+
+In summary, CodeChain is a novel way to incorporate modularity and iterative refinement to boost code generation in language models, inspired by experienced programmers' problem solving process. The gains on benchmark datasets are promising.
+
+\section{Evaluation Results}
+On the APPS benchmark, CodeChain with GPT-3.5 and WizardCoder~\cite{luo2023wizardcoder} models achieves new state-of-the-art pass@1 results. With test case filtering, CodeChain+GPT-3.5 further improves to over 35\% average pass@1 across difficulty levels. This demonstrates the efficacy of CodeChain's iterative refinement approach on challenging code generation tasks.
+
+\begin{table}[H]
+    \caption{APPS test results: results with $\dagger$ are for models finetuned on APPS training data. Performance by pass@ 1 (\%)}\label{tab:apps_results}
+    \begin{center}
+        \begin{tabular}{lccccc}
+            \hline
+            Model & Size & Introductory & Interview & Competition & All \\
+            \hline
+            Codex & 12B & 4.14 & 0.14 & 0.02 & 0.92 \\
+            CodeT5 $\dagger$ & 770M & 6.60 & 1.03 & 0.30 & 2.00 \\
+            CodeRL+CodeT5 $\dagger$ & 770M & 7.08 & 1.86 & 0.75 & 2.69 \\
+            text-davinci-002 & - & - & - & - & 7.48 \\
+            Self-edit+text-davinci-002 & - & - & - & - & 7.94 \\
+            code-davinci-002 & - & 29.30 & 6.40 & 2.50 & 10.20 \\
+            \hline
+            WizardCoder & 15B & 26.04 & 4.21 & 0.81 & 7.90 \\
+            CodeChain+WizardCoder & 15B & 26.29 & 7.49 & 3.75 & 10.50 \\
+            \hline
+            GPT3.5 & - & 48.00 & 19.42 & 5.42 & 22.33 \\
+            CodeChain+GPT3.5 & - & $\mathbf{5 4 . 5 0}$ & $\mathbf{2 8 . 1 1}$ & $\mathbf{1 2 . 3 8}$ & $\mathbf{3 0 . 2 4}$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\section{Conclusion}
+While the CodeChain framework has achieved strong results on competitive programming benchmarks, there are opportunities to improve its applicability to real-world tasks:
+
+\begin{enumerate}
+    \item CodeChain has focused on synthetic competitive programming problems, which may not translate to performance on real-world code generation.
+
+    \item The modular analysis in CodeChain concentrates on code generation alone, without considering dependencies on external libraries. However, bugs in real applications often arise from misalignments between code logic and library usage.
+\end{enumerate}
+
+This research aims to enhance CodeChain by incorporating modular analysis of code logic alongside library dependencies. The goal is to build external knowledge sources that language models can reference in a modular, targeted way when generating code.
+
+Additionally, this work shifts the evaluation domain from competitive programming to more practical data science tasks, using the DS-1000~\cite{pmlr-v202-lai23b} benchmark. DS-1000 contains 1,000 diverse, real-world data science problems from StackOverflow spanning multiple Python libraries. It has high-fidelity automatic evaluation, ensuring functional correctness and appropriate API usage. Problem statements are modified from the original posts to prevent memorization. The best current model, Codex-002~\cite{madaan2022language}, achieves only 43.3\% accuracy, providing ample room for improvement.
+
+In summary, this research proposes to augment CodeChain with logic/library modularity and demonstrate gains on practical data science problems. By tackling real-world tasks and dependencies, the enhanced framework could better support applied code generation compared to solely tackling competitive programming.
+
+\chapter{Tentative Plan}
+
+\chapter{Tentative Research Contents}
+
+\chapter{Conclusion}
 
 \newpage
 \renewcommand{\bibname}{References}
