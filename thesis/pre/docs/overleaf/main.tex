@@ -583,21 +583,35 @@ RoPE~\cite{su2024roformer}: Keys, queries, and values are all vectors in the LLM
 The activation functions serve a crucial role in the curvefitting abilities of the neural networks, as proved in~\cite{hornik1989multilayer}. The modern activation functions used in LLMs are different from the earlier squashing functions but are critical to the success of LLMs. The activation functions are discussed in this section.
 
 \begin{enumerate}
-    \item ReLU~\cite{nair2010rectified}: Rectified linear unit (ReLU) is defined as \[ReLU(x)=\max(0, x).\]
+    \item ReLU~\cite{nair2010rectified}: Rectified linear unit (ReLU) is defined as
+
+    \begin{equation}
+        ReLU(x)=\max(0, x).
+    \end{equation}
 
     \item GeLU~\cite{hendrycks2016gaussian}: Gaussian Error Linear Unit (GeLU) is the combination of ReLU, dropout~\cite{srivastava2014dropout} and zoneout~\cite{krueger2016zoneout}. It is the most widely used activation function in contemporary LLMs literature.
 
-    \item GLU variants~\cite{shazeer2020glu}: Gated Linear Unit~\cite{dauphin2017language} is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as \[GLU(x, W, V, b, c)=(xW + b) \otimes \sigma(xV + c),\] where $X$ is the input of layer and $l, W, b, V$ and $c$ are learned parameters.
+    \item GLU variants~\cite{shazeer2020glu}: Gated Linear Unit~\cite{dauphin2017language} is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as
+
+    \begin{equation}
+        GLU(x, W, V, b, c)=(xW + b) \otimes \sigma(xV + c),
+    \end{equation}
+
+    where $X$ is the input of layer and $l, W, b, V$ and $c$ are learned parameters.
 
     GLU was modified in~\cite{shazeer2020glu} to evaluate the effect of different variations in the training and testing of transformers, resulting in better empirical results. Here are the different GLU variations introduced in~\cite{shazeer2020glu} and used in LLMs:
 
-    \[
-        \begin{aligned}
-        ReGLU(x, W, V, b, c) & = \max (0, xW + b) \otimes, \\
-        GEGLU(x, W, V, b, c) & = GELU(xW + b) \otimes(xV + c), \\
-        SwiGLU(x, W, V, b, c, \beta) & = Swish \beta(xW + b) \otimes(xV + c) .
-        \end{aligned}
-    \]
+    \begin{equation}
+        ReGLU(x, W, V, b, c) = \max (0, xW + b) \otimes,
+    \end{equation}
+
+    \begin{equation}
+        GEGLU(x, W, V, b, c) = GELU(xW + b) \otimes(xV + c),
+    \end{equation}
+
+    \begin{equation}
+        SwiGLU(x, W, V, b, c, \beta) = Swish \beta(xW + b) \otimes(xV + c).
+    \end{equation}
 \end{enumerate}
 
 \section{Layer Normalization}
@@ -606,31 +620,31 @@ Layer normalization leads to faster convergence and is a widely used component i
 \begin{enumerate}
     \item LayerNorm: Layer norm computes statistics over all the hidden units in a layer $(l)$ as follows:
 
-    \[
-    u^{l} = \frac{1}{n} \sum_{i}^{n} a_{i}^{l} \quad \sigma^{l} = \sqrt{\frac{1}{n} \sum_{i}^{n}\left(a_{i}^{l}-u^{l}\right)^{2}}
-    \]
+    \begin{equation}
+        u^{l} = \frac{1}{n} \sum_{i}^{n} a_{i}^{l} \quad \sigma^{l} = \sqrt{\frac{1}{n} \sum_{i}^{n}{a_{i}^{l}-u^{l}}^{2}}
+    \end{equation}
 
     where $n$ is the number of neurons in layer $l$ and $a_{i}^{l}$ is the summed input of neuron $i$ in layer $l$. LayerNorm provides invariance to rescaling of the weights and re-centering of the distribution.
 
     \item RMSNorm:~\cite{zhang2019root} proposed that the invariance properties of LayerNorm are spurious, and computationally efficient normalization achieving the same performance benefits as LayerNorm can be obtained by trading off re-centering invariance with speed. LayerNorm gives the normalized summed input to layer $l$ as follows:
 
-    \[
-    \overline{a_{i}^{l}} = \frac{a_{i}^{l}-u^{l}}{\sigma} g_{i}^{l}
-    \]
+    \begin{equation}
+        \overline{a_{i}^{l}} = \frac{a_{i}^{l}-u^{l}}{\sigma} g_{i}^{l}
+    \end{equation}
 
     where $g_{i}^{l}$ is the gain parameter. RMSNorm~\cite{zhang2019root} modifies $\overline{a_{i}^{l}}$ as:
 
-    \[
-    \overline{a_{i}^{l}} = \frac{a_{i}^{l}}{\operatorname{RMS}\left(\mathbf{a}^{l}\right)} g_{i}^{l} \text {, where } \operatorname{RMS}\left(\mathbf{a}^{l}\right) = \sqrt{\frac{1}{n} \sum_{i}^{n}\left(a_{i}^{l}\right)^{2}}.
-    \]
+    \begin{equation}
+        \overline{a_{i}^{l}} = \frac{a_{i}^{l}}{\operatorname{RMS}\left(\mathbf{a}^{l}\right)} g_{i}^{l} \text {, where } \operatorname{RMS}\left(\mathbf{a}^{l}\right) = \sqrt{\frac{1}{n} \sum_{i}^{n}{a_{i}^{l}}^{2}}.
+    \end{equation}
 
     \item Pre-Norm and Post-Norm: LLMs use the transformer~\cite{vaswani2017attention} architecture with some variations. The original implementation~\cite{vaswani2017attention} used layer normalization after the residual connection, commonly called post-LN, concerning the order of Multihead attention - Residual - LN. Another order of normalization, referred to as pre-LN~\cite{baevski2018adaptive}, places normalization before the self-attention layer as in LN - Multihead attention - Residual. Pre-LN is known to provide more stability in training~\cite{shleifer2021normformer}.
 
     \item DeepNorm: While pre-LN has certain benefits over post-LN training, pre-LN training has an unwanted effect on the gradients~\cite{shleifer2021normformer}. The earlier layers have larger gradients than those at the bottom. DeepNorm~\cite{wang2022deepnet} mitigates these adverse gradient effects. It is given as:
 
-    \[
-    \mathbf{x}^{l_{f}} = LN\left(\alpha \mathbf{x}^{l_{p}}+G^{l_{p}}\left(\mathbf{x}^{l_{p}}, \theta^{l_{p}}\right),\right.
-    \]
+    \begin{equation}
+        \mathbf{x}^{l_{f}} = LN\left(\alpha \mathbf{x}^{l_{p}}+G^{l_{p}}\left(\mathbf{x}^{l_{p}}, \theta^{l_{p}}\right)\right),
+    \end{equation}
 
     where $\alpha$ is a constant and $\theta^{l_{p}}$ represents the parameters of layer $l_{p}$. These parameters are scaled by another constant $\beta$. Both constants depend only on the architecture.
 \end{enumerate}
@@ -664,9 +678,9 @@ LLMs adaptation stage fundamentals, from pre-training to fine-tuning for downstr
 
 \textbf{Transfer Learning}: Pre-trained LLMs perform well for various tasks~\cite{brown2020language, chowdhery2023palm}. But to improve performance for a downstream task, pre-trained models are fine-tuned with task-specific data~\cite{raffel2020exploring, xue2020mt5}, known as transfer learning.
 
-\textbf{Instruction-tuning}: To enable effective model response to user queries, the pre-trained model is fine-tuned on instruction formatted data, i.e. an instruction and input-output pair. Instructions generally comprise multi-task data in plain natural language, guiding the model to respond according to the prompt and input. This fine-tuning improves zero-shot generalization and downstream task performance. Details on instruction data formatting and styles are available in~\cite{chung2022scaling},~\cite{zhao2023survey},~\cite{iyer2022opt}.
+\textbf{Instruction-tuning}: To enable effective model response to user queries, the pre-trained model is fine-tuned on instruction formatted data, i.e. an instruction and input-output pair. Instructions generally comprise multi-task data in plain natural language, guiding the model to respond according to the prompt and input. This fine-tuning improves zero-shot generalization and downstream task performance. Details on instruction data formatting and styles are available in~\cite{chung2022scaling, zhao2023survey, iyer2022opt}.
 
-\textbf{Alignment-tuning}: LLMs are prone to generate false, biased, and harmful text. To develop helpful, honest, and harmless models, alignment with human feedback is used. Alignment involves asking LLMs to generate unexpected responses, then updating parameters to avoid such responses~\cite{ouyang2022training},~\cite{touvron2023llama},~\cite{sun2023principle}. This ensures LLMs operate according to human intentions and values. A model is considered `aligned' if it meets the three criteria of being helpful, honest, and harmless or `HHH'~\cite{askell2021general}.
+\textbf{Alignment-tuning}: LLMs are prone to generate false, biased, and harmful text. To develop helpful, honest, and harmless models, alignment with human feedback is used. Alignment involves asking LLMs to generate unexpected responses, then updating parameters to avoid such responses~\cite{ouyang2022training, touvron2023llama, sun2023principle}. This ensures LLMs operate according to human intentions and values. A model is considered `aligned' if it meets the three criteria of being helpful, honest, and harmless or `HHH'~\cite{askell2021general}.
 
 Researchers employ reinforcement learning with human feedback~\cite{ziegler2019fine} for model alignment. In RLHF, a fine-tuned model on demonstrations is further trained with reward modeling (RM) and reinforcement learning (RL). RM and RL pipelines in RLHF are briefly discussed below.
 
@@ -676,16 +690,16 @@ Reinforcement learning combines the reward model for alignment in the next stage
 
 \begin{enumerate}
     \setcounter{enumi}{2}
-    \item Prompting/Utilization: Prompting queries trained LLMs to generate responses. LLMs can be prompted in various setups, either adapting to instructions without fine-tuning or with fine-tuning containing different prompt styles~\cite{chung2022scaling},~\cite{kim2023cot},~\cite{liu2023zero}. A good prompt engineering guide is available at~\cite{saravia2022prompt}. Various widely used prompt setups are discussed below.
+    \item Prompting/Utilization: Prompting queries trained LLMs to generate responses. LLMs can be prompted in various setups, either adapting to instructions without fine-tuning or with fine-tuning containing different prompt styles~\cite{chung2022scaling, kim2023cot, liu2023zero}. A good prompt engineering guide is available at~\cite{saravia2022prompt}. Various widely used prompt setups are discussed below.
 \end{enumerate}
 
 \textbf{Zero-Shot Prompting}: LLMs are zero-shot learners and capable of answering queries never seen before. This prompting style requires LLMs to answer user questions without any examples in the prompt.
 
-\textbf{In-context Learning}: Also known as few-shot learning, here multiple input-output demonstration pairs are provided to the model to generate the desired response. This adaptation style is also called few-shot learning. Discussions on formatting in-context learning (ICL) templates are available in~\cite{dong2022survey},~\cite{zhao2023survey},~\cite{wang2022super},~\cite{chung2022scaling}.
+\textbf{In-context Learning}: Also known as few-shot learning, here multiple input-output demonstration pairs are provided to the model to generate the desired response. This adaptation style is also called few-shot learning. Discussions on formatting in-context learning (ICL) templates are available in~\cite{dong2022survey, zhao2023survey, wang2022super, chung2022scaling}.
 
-\textbf{Reasoning in LLMs}: LLMs are zero-shot reasoners and can be provoked to generate answers to logical problems, task planning, critical thinking, etc. with reasoning. Generating reasons is only possible using different prompting styles, while to further improve LLMs on reasoning tasks many methods~\cite{chung2022scaling},~\cite{iyer2022opt} train them on reasoning datasets. Various prompting techniques for reasoning are discussed below.
+\textbf{Reasoning in LLMs}: LLMs are zero-shot reasoners and can be provoked to generate answers to logical problems, task planning, critical thinking, etc. with reasoning. Generating reasons is only possible using different prompting styles, while to further improve LLMs on reasoning tasks many methods~\cite{chung2022scaling, iyer2022opt} train them on reasoning datasets. Various prompting techniques for reasoning are discussed below.
 
-\textbf{Chain-of-Thought}: A special prompting case where demonstrations contain reasoning information aggregated with inputs and outputs so the model generates outcomes with step-by-step reasoning. More CoT prompt details are in~\cite{huang2022towards},~\cite{wei2022chain},~\cite{kim2023cot}.
+\textbf{Chain-of-Thought}: A special prompting case where demonstrations contain reasoning information aggregated with inputs and outputs so the model generates outcomes with step-by-step reasoning. More CoT prompt details are in~\cite{huang2022towards, wei2022chain, kim2023cot}.
 
 \textbf{Self-Consistency}: Improves CoT performance by generating multiple responses and selecting the most frequent answer~\cite{wang2022self}.
 
