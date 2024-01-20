@@ -71,7 +71,9 @@ __pycache__
 *.blg
 *.fdb_latexmk
 *.fls
+*.lof
 *.log
+*.lot
 *.nav
 *.out
 *.snm
