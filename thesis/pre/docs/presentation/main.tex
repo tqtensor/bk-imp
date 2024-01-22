@@ -1,278 +1,67 @@
-\documentclass{beamer}
-
-\hypersetup{pdfpagemode=FullScreen} % full screen mode
-\setbeamertemplate{navigation symbols}{}
-
-\usepackage[english]{babel}
-\usepackage[latin1]{inputenc}
-\usepackage{amsmath,amssymb}
-\usepackage[T1]{fontenc}
-\usepackage{curves}
-\usepackage{verbatim}
-\usepackage{multimedia}
-\usepackage{mathptmx}
-\usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\usepackage{multirow}
-\usepackage{xcolor}
-\usepackage{algorithm,algorithmic}
-\usepackage[font=scriptsize]{caption}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\usepackage{lipsum}
-\setbeamertemplate{caption}[numbered] % for numbering figures
+\documentclass[11pt]{beamer}
 
 \mode<presentation> {
-
-\usetheme{Singapore}
-
-\usecolortheme{whale}
-
-% \setbeamertemplate{footline} % to remove the footer line in all slides uncomment this line
-
-\setbeamertemplate{navigation symbols}{} % to remove the navigation symbols from the bottom of all slides uncomment this line
+    \usetheme{Madrid}
 }
 
-\usepackage{graphicx}
-\usepackage{booktabs}
-\setbeamercovered{transparent}
-\setbeamertemplate{bibliography item}[text]
-\setbeamertemplate{theorems}[numbered]
-\setbeamerfont{title}{size=\Large}
-\setbeamerfont{date}{size=\tiny}
+\usepackage{lmodern}
+\usepackage{media9}
 
-\setbeamertemplate{itemize items}[ball] % if you want a ball
-\setbeamertemplate{itemize subitem}[circle] % if you want a circle
-\setbeamertemplate{itemize subsubitem}[triangle] % if you want a triangle
+\input{settings/package}
+\input{settings/header}
+\input{settings/footer}
+\input{settings/title}
 
-%-------Customized Frame-------
-\newcounter{cont}
-
-\makeatletter
-\setbeamertemplate{frametitle continuation}{
+\newcommand\Wider[2][3em]{
+\makebox[\linewidth][c]{
+    \begin{minipage}{\dimexpr\textwidth+#1\relax}
+    \raggedright#2
+    \end{minipage}
+    }
 }
-\makeatother
-
-%--------------------------
-%	TITLE PAGE
-%--------------------------
-
-\title[Project II]{Project II} % the short title appears at the bottom of every slide, the full title is only on the title page
-
-\author[Tang Quoc Thai]{\texorpdfstring{{\normalsize Tang Quoc Thai}}{Author}}
-
-\institute[2270376] % matricola
-{
-
-{\small Supervisor}\\
-\medskip
-{\small Assoc.\ Prof.\ Quan Thanh Tho}\\
-%\begin{center}
-%\includegraphics[width=0.1\textwidth]{uoh.png}
-%\end{center}
-\vspace{2cm}
-\medskip
-Ho Chi Minh City\\
-University of Technology % your institution for the title page
-
-%\medskip
-%\textit{john@smith.com} % your email address
-}
-\titlegraphic{
-  \begin{picture}(0,0)
-    \put(22,120){\makebox(0,0)[rt]{\includegraphics[width=1.5cm]{img/hcmut.png}}}
-  \end{picture}
-  }
-\date{07 Dec 2023} % date
 
 \begin{document}
-\definecolor{your_color}{HTML}{0c88dd}
-\setbeamercolor{structure}{fg=your_color}
 
 \begin{frame}
-\titlepage% print the title page as the first slide
+    \Wider[-1cm]{\titlepage}
 \end{frame}
 
-\setbeamertemplate{footline}{
-    \raisebox{1.5ex}[0pt][0pt]{\makebox[\paperwidth][r]{\tiny\insertpagenumber\hspace*{2ex}}}
+\begin{frame}
+    \frametitle{Table of Contents}
+    \Wider[-1cm]{\tableofcontents[subsectionstyle = hide, subsubsectionstyle = hide]}
+\end{frame}
+
+\AtBeginSection[]
+{
+    \begin{frame}[plain]
+        \frametitle{Table of Contents}
+        \Wider[-1cm]{\tableofcontents[sectionstyle=show, subsectionstyle=show/show/hide, subsubsectionstyle=show/show/hide/hide, currentsection, hideothersubsections]}
+    \end{frame}
 }
 
-%-------------------------------
-%	PRESENTATION SLIDES
-%-------------------------------
+% Contents
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/direction}
+\input{sections/methodology}
+\input{sections/objective_scope}
+\input{sections/timeline}
 
-\section{Introduction}
-\begin{frame}[allowframebreaks]
-\frametitle{Current challenges in Large Language Models (LLMs)}
-  \begin{itemize}
-    \item \textbf{Reduce and measure hallucinations.}~\cite{kaddour2023challenges}
-    \begin{itemize}
-        \item Hallucination occurs when an AI model generates fabricated information.
-    \end{itemize}
-    \item Optimize context length and context construction.~\cite{kaddour2023challenges}
-    \begin{itemize}
-      \item The actual effectiveness of the model depends not only on the quantity of context but also on how efficiently it utilizes that context.
-      \item Efforts to enhance model context should be accompanied by endeavors to optimize its contextual utilization.
-    \end{itemize}
-    \item Build LLMs for non-English languages.~\cite{kaddour2023challenges}
-    \begin{itemize}
-      \item Current English-first language models exhibit limitations when applied to languages other than English, impacting their performance, response time, and speed.
-    \end{itemize}
-  \end{itemize}
+\begin{frame}{Q\&A}
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[scale=1]{img/qna}
+    \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks]
-\frametitle{Current approaches to reduce hallucinations}
-A variety of strategies exist to mitigate hallucinations, spanning from simple techniques to comprehensive research:
-  \begin{itemize}
-    \item Enhance the prompts, for instance: request the LLMs to justify its provided response.
-    \item Combine the LLMs with a knowledge repository like a Vector Database or a Graph Database.~\cite{yao2023exploring}
-    \item Implement self-correction through a strategically \textbf{structured thought process}.~\cite{wei2022chain,yao2023tree}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Current approaches to reduce hallucinations}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{img/chain_of_thoughts.png}
-    \caption{Schematic illustrating various approaches to problem solving with LLMs. Each rectangle box represents a thought, which is a coherent language sequence that serves as an intermediate step toward problem solving.~\cite{yao2023tree}}
-  \end{figure}
-\end{frame}
-
-%-------------------------------
-\section{Methodology}
-\begin{frame}[allowframebreaks]
-\frametitle{Problem definition}
-  \begin{itemize}
-    \item Generating code has consistently posed a significant challenge with numerous applications, including creating code from natural languages, programming based on examples, and translating code. Nonetheless, for numerous programming tasks, \textbf{producing accurate code in a single try can be difficult}.~\cite{chen2023teaching}
-    \item As per a study, average developers are expected to see a moderate increase in productivity, with the \textbf{overall productivity gain projected to be 32\% with the support of LLMs}.~\cite{eloundou2023gpts}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{$\lambda$utonomousDebugger}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.50\textwidth]{img/autonomous_debugger.png}
-    \caption{An overview of $\lambda$utonomousDebugger. 1. Summarize the bug for initial information $\rightarrow$ 2. Create Chain-of-Thoughts prompts $\rightarrow$ 3. Generate and execute code $\rightarrow$ 4. Collect traceback information$\rightarrow$ 5. Extract related modules from source code $\looparrowright$ 2.}
-  \end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Dataset}
-  \begin{itemize}
-    \item MBPP \href{https://huggingface.co/datasets/mbpp}{Mostly Basic Python Programming}. The benchmark consists of around 1,000 crowd-sourced Python programming problems, designed to be solvable by entry-level programmers.~\cite{austin2021program}
-    \item GHRB:~\href{https://github.com/coinse/GHRB}{GitHub Recent Bugs}~\cite{lee2023github}
-    \item The MBPP dataset, renowned for code generation tasks, and the GHRB dataset, used for code debugging tasks, are two key resources in this field.
-    \item The team behind GHRB has developed a method to gather recent bugs from GitHub, ensuring that this data has not been previously used in training LLMs.~$\rightarrow$~\textbf{This research will use the provided method to create a data science related bugs dataset for evaluation.}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Application}
-This research will develop a plugin based on the open-sourced \href{https://github.com/jupyterlab/jupyter-ai?tab=readme-ov-file}{Jupyter AI} to assist data scientists in debugging their code.
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/jupyter_ai_screenshot.png}
-    \caption{Jupyter AI connects generative AI with Jupyter notebooks.}
-  \end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Novelty}
-This research has the following novel contributions:
-  \begin{itemize}
-    \item A novel dataset to evaluate the performance of LLMs in debugging tasks, specifically in the data science domain.
-    \item A novel approach to build CoT prompts using modularization technique based on traceback information.
-    \item An open-sourced plugin for Jupyter Notebook to assist data scientists in debugging their code*.
-  \end{itemize}
-  * \textit{The plugin will be open-sourced if the research is successful.}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Dataset}
-This research will use the DS-1000 dataset~\cite{Lai2022DS1000}, code generation benchmark with 1000 data science problems. With three advantages as compared to other benchmarks:
-  \begin{itemize}
-    \item Diverse and realistic problems collected from StackOverflow, covering several data science libraries such as Pandas, Numpy, and Scikit-learn.
-    \item Automatic evaluation with high specificity.
-    \item Proactive defense against memorization through problem modifications.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Dataset}
-Each problem in the DS-1000 dataset consists of:
-  \begin{itemize}
-    \item `code context': is the executable code context for evaluation.
-    \item `prompt': is the natural language description of the problem.
-    \item `test code': is the code for testing the generated code.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Dataset}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.85\textwidth]{img/code_context.png}
-  \caption{Example of code context.}
-\end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Dataset}
-\textbf{Prompt}\\
-I have the following DataFrame:\\
-Col1  Col2  Col3  Type\\
-0      1     2     3     1\\
-1      4     5     6     1\\
-2      7     8     9     2\\
-3    10    11    12     2\\
-4    13    14    15     3\\
-5    16    17    18     3\\
-The DataFrame is read from a CSV file. All rows which have Type 1 are on top, followed by the rows with Type 2, followed by the rows with Type 3, etc.\\
-I would like to shuffle the order of the DataFrame's rows according to a list. For example, give a list [2, 4, 0, 3, 1, 5] and desired DataFrame should be:\\
-Col1  Col2  Col3  Type\\
-2      7     8     9     2\\
-4     13    14    15     3\\
-0     1     2     3     1\\
-3    10    11    12     2\\
-1     4     5     6     1\\
-5    16    17    18     3\\
-I want to know how many rows have different Type than the original DataFrame. In this case, 4 rows (0,1,2,4) have different Type than origin. How can I achieve this?\\
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-\frametitle{Tentative timeline}
-  \begin{enumerate}
-    \item Literature review.
-    \item Baseline model.
-    \item \underline{Dataset preparation}.
-    \item CoT prompts generator.
-    \item Code executor.
-    \item Code modules extractor.
-    \item Evaluation and improvement.
-    \item Report.
-    \item Plugin development.
-  \end{enumerate}
-\end{frame}
-
-%-------------------------------
-\section{References}
-\begin{frame}[allowframebreaks]
-\frametitle{References}\scriptsize
-\bibliography{references}
-\bibliographystyle{plain}
-\end{frame}
-
-%-------------------------------
 \begin{frame}
-\Huge{\centerline{Thank You}}
+    \begin{center}
+        \Huge Thank you for your attention!
+    \end{center}
 \end{frame}
 
-%-------------------------------
-\section{Appendix}
-\begin{frame}{Appendix}
+\begin{frame}[allowframebreaks]{References}
+    \bibliography{references}
 \end{frame}
+
 \end{document}
