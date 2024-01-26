@@ -326,7 +326,7 @@ Moreover, a positive feedback loop may emerge as LLMs surpass specific performan
 
 In a recent study~\cite{peng2023impact}, a cumulative total of 166 offers were distributed as part of the experiment, and 95 of these offers were accepted. The 95 developers underwent random assignment into control and treated groups, with 45 individuals in the treated group and 50 in the control group. Thirty-five developers from both the treated and control groups effectively completed the designated task and the subsequent survey.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.5\textwidth]{img/task_completion_time}
     \caption{Distribution of time to completion between treated and control groups~\cite{peng2023impact}.}\label{fig:task_completion_time}
@@ -335,7 +335,7 @@ In a recent study~\cite{peng2023impact}, a cumulative total of 166 offers were d
 Figure~\ref{fig:task_completion_time} illustrates the distribution of time to completion between the treated and control groups. When conditioned on task completion, the average completion time for the treated group is 71.17 minutes, compared to 160.89 minutes for the control group, resulting in a \boldmath{$55.8\%$}~\textbf{reduction in completion time}.
 
 \section{Self-Correcting LLMs for Software Development}
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.90\textwidth]{img/self_debug}
     \caption{
@@ -422,7 +422,7 @@ Based on the above formulation, Figure~\ref{fig:taxonomy} illustrates the fundam
     \item \textbf{Flawed Code}: Besides generating natural language text, LLMs also show strong abilities to generate computer programs (i.e., code)~\cite{chen2022codet}. However, the generated code can sometimes be flawed or incorrect. To fix this, the approach of learning from automated feedback has been extensively applied in code generation~\cite{chen2023teaching, olausson2023selfrepair}, largely facilitated by the ease of obtaining such feedback through the execution of generated code with the corresponding compilers or interpreters.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.90\textwidth]{img/taxonomy}
     \caption{A conceptual framework for self-correcting LLMs with automated feedback.}\label{fig:taxonomy}
@@ -545,7 +545,7 @@ While the efficacy of self-correction strategies in refining text generation tas
 
 Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the Chain-of-Thought prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, exemplified by ChatGPT, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{source code} of flawed libraries and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.90\textwidth]{img/direction_of_research}
     \caption{Focus areas of the current research.}\label{fig:direction_of_research}
@@ -666,7 +666,7 @@ Layer normalization leads to faster convergence and is a widely used component i
 \section{Architectures}
 Variants of the transformer architectures arising from differences in attention patterns and connection of transformer blocks are discussed here. Figure~\ref{fig:attention_patterns} illustrates the attention patterns of these architectures.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.9\textwidth]{img/attention_patterns}
     \caption{Attention patterns in a causal decoder, non-causal decoder, and encoder-decoder.~\cite{wang2022language}.}\label{fig:attention_patterns}
@@ -730,7 +730,7 @@ Humans often solve complex reasoning tasks by decomposing them into intermediate
 
 The authors demonstrate that with the right few-shot prompting, large language models can produce chains of thought leading to correct solutions for problems they initially failed. As shown in Figure~\ref{fig:cot_prompting}, a model generates a step-by-step reasoning chain to solve a math problem it previously answered incorrectly. Although resembling a solution, these reasoning chains are called chains of thought to emphasize they mimic human step-by-step reasoning.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\textwidth]{img/cot_prompting}
     \caption{Example of CoT reasoning processes.~\cite{wei2023chainofthought}.}\label{fig:cot_prompting}
@@ -759,7 +759,7 @@ In summary, CodeChain is a novel way to incorporate modularity and iterative ref
 \section{Evaluation Results}
 On the APPS benchmark, CodeChain with GPT-3.5 and WizardCoder~\cite{luo2023wizardcoder} models achieves new state-of-the-art pass@1 results. With test case filtering, CodeChain+GPT-3.5 further improves to over 35\% average pass@1 across difficulty levels. This demonstrates the efficacy of CodeChain's iterative refinement approach on challenging code generation tasks.
 
-\begin{table}[H]
+\begin{table}[!htb]
     \caption{APPS test results: results with $\dagger$ are for models finetuned on APPS training data. Performance by pass@ 1 (\%)}\label{tab:apps_results}
     \begin{center}
         \begin{tabular}{lccccc}
@@ -801,7 +801,7 @@ In summary, this research proposes to augment CodeChain with logic/library modul
 \chapter{Tentative Timeline}
 Based on the proposed model as well as the study of related works, the author proposes the following tasks to complete the thesis on \textbf{\textit{Application of Large Language Models in Software Error Debugging}}:
 
-\begin{table}[H]
+\begin{table}[!htb]
     \caption{Tentative timeline for thesis completion.}
     \begin{center}
         \begin{tabular}{clc}

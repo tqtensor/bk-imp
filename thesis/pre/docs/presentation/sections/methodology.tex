@@ -1,12 +1,21 @@
 \section{Methodology}
 
+\begin{frame}{Architecture}
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=1\textwidth]{img/enhanced_self_debug}
+        \captionsetup{font=small,labelformat=empty}
+        \caption{Architecture of the proposed system.}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Chain-of-Thought Prompting}
     Chain-of-Thought prompting~\cite{wei2023chainofthought} -- a series of intermediate reasoning steps -- substantially enhances the capacity of LLMs to engage in complex reasoning, making it a promising approach for code generation.
     \begin{figure}[!htb]
         \centering
-        \includegraphics[scale=0.20]{img/cot_prompting}
-        \captionsetup{font=small}
-        \caption{Chain-of-thought reasoning processes are highlighted.}
+        \includegraphics[width=0.8\textwidth]{img/cot_prompting}
+        \captionsetup{font=small,labelformat=empty}
+        \caption{Chain-of-Thought reasoning processes are highlighted.}
     \end{figure}
 \end{frame}
 
@@ -14,8 +23,8 @@
     Modular code analysis, inspired by how developers decompose complex problems into solvable sub-problems, has proven effective for code generation.~\cite{le2023codechain}.
     \begin{figure}[!htb]
         \centering
-        \includegraphics[scale=0.50]{img/class_diagram}
-        \captionsetup{font=small}
+        \includegraphics[width=0.7\textwidth]{img/class_diagram}
+        \captionsetup{font=small,labelformat=empty}
         \caption{Illustration of code modules.}
     \end{figure}
 \end{frame}

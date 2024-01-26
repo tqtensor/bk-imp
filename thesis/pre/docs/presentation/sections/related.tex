@@ -4,25 +4,25 @@
     \begin{block}{Problem}
         Given a set of problems (software bugs) be denoted as \( P = \{P_1, P_2, \ldots, P_N\} \), where each problem \( P_i \) is associated with a description \( D_i \) detailing the observed errors.\\
 
-        Additionally, for each problem \( P_i \), there exist multiple unit tests \( U_{i,j} \) representing different test cases to validate the correctness of the fixed code. The model has access to these unit tests to guide the correction process.\\
-
-        The goal is to maximize the `pass@k' metric, which is defined as the percentage of problems in the set for which the $k$ initial attempts at correction passes all associated unit tests successfully.
+        Additionally, for each problem \( P_i \), there exist multiple unit tests \( U_{i,j} \), the model has access to these unit tests to guide the correction process.\\
+        \vspace{0.5cm}
+        The goal is to maximize the \textbf{`pass@k'} metric, which is defined as the percentage of problems in the set for which the $k$ initial attempts at correction passes all associated unit tests successfully.
     \end{block}
 \end{frame}
 
 \begin{frame}{Taxonomy of Related Works}
     \begin{figure}
         \centering
-        \includegraphics[scale=0.045]{img/taxonomy}
+        \includegraphics[width=1\textwidth]{img/taxonomy}
+        \captionsetup{font=small,labelformat=empty}
         \caption{Taxonomy of related works.}\label{fig:taxonomy}
     \end{figure}
-    In Figure~\ref{fig:taxonomy}, a conceptual framework with three actors depicts related works: a \textbf{Language Model} generates initial output, a \textbf{Critic Model} analyzes and offers feedback, and a \textbf{Refine Model} adjusts either the output or the language model.
 \end{frame}
 
 \begin{frame}{Language Model}
     \begin{columns}[T]
         \begin{column}{0.70\textwidth}
-            The works aimed at developing self-correcting LLMs can be classified according to the issues they tackle:
+            The works aimed at correcting LLMs can be classified according to the issues they tackle:
             \begin{enumerate}
                 \item Hallucination: plausible-sounding but false information~\cite{gao2023rarr, zhang2023language}.
 
@@ -36,8 +36,8 @@
         \begin{column}{0.30\textwidth}
             \begin{figure}[!htb]
                 \centering
-                \includegraphics[scale=0.08]{img/language_model}
-                \captionsetup{font=small}
+                \includegraphics[width=1\textwidth]{img/language_model}
+                \captionsetup{font=small,labelformat=empty}
                 \caption{Problems of LLMs.}
             \end{figure}
         \end{column}
@@ -64,8 +64,8 @@
         \begin{column}{0.45\textwidth}
             \begin{figure}[!htb]
                 \centering
-                \includegraphics[scale=0.072]{img/critic_model}
-                \captionsetup{font=small}
+                \includegraphics[width=1\textwidth]{img/critic_model}
+                \captionsetup{font=small,labelformat=empty}
                 \caption{Critic Model.}
             \end{figure}
         \end{column}
@@ -83,4 +83,23 @@
                   \item Post-hoc: Models/Tools as Feedback~\cite{zhang2023selfedit}, Multi-Agent Debate~\cite{du2023improving}.
               \end{itemize}
     \end{enumerate}
+\end{frame}
+
+\begin{frame}{Challenges and Opportunities}
+    \begin{enumerate}
+        \item The majority of existing LLMs are closed-sourced, such as OpenAI's GPT-4, or have an infeasibly large number of parameters for training within the scope of this research, such as the 70-billion parameter LLaMa model.
+
+        \item The source code of common data science libraries like Pandas and Numpy is extensive, posing a challenge for LLMs to sufficiently capture the context of the full codebase.
+
+        \item Although complex, software systems have structured and well-tested code, allowing the feedback from critic models to be reliable.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Research Direction}
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=1\textwidth]{img/direction_of_research}
+        \captionsetup{font=small,labelformat=empty}
+        \caption{Research Direction.}
+    \end{figure}
 \end{frame}
