@@ -10,20 +10,22 @@
 \end{frame}
 
 \begin{frame}{Chain-of-Thought Prompting}
-    Chain-of-Thought prompting~\cite{wei2023chainofthought} -- a series of intermediate reasoning steps -- substantially enhances the capacity of LLMs to engage in complex reasoning, making it a promising approach for code generation.
+    \textit{Chain-of-Thought} (CoT) prompting~\cite{wei2023chainofthought}, which uses a series of intermediate reasoning steps, significantly improves the ability of LLMs to perform complex reasoning.\\
+    In this research, CoT prompts are leveraged to explain the debugging process.
     \begin{figure}[!htb]
         \centering
-        \includegraphics[width=0.8\textwidth]{img/cot_prompting}
+        \includegraphics[width=0.75\textwidth]{img/cot_prompting}
         \captionsetup{font=small,labelformat=empty}
         \caption{Chain-of-Thought reasoning processes are highlighted.}
     \end{figure}
 \end{frame}
 
 \begin{frame}{Modular Code Analysis}
-    Modular code analysis, inspired by how developers decompose complex problems into solvable sub-problems, has proven effective for code generation.~\cite{le2023codechain}.
+    Decomposing complex code into manageable subcomponents, an approach known as \textit{Modular Code Analysis} (MCA)~\cite{le2023codechain}, has demonstrated success in code generation tasks.\\
+    This research employs MCA to identify related code modules and facilitate comprehension by LLMs.
     \begin{figure}[!htb]
         \centering
-        \includegraphics[width=0.7\textwidth]{img/class_diagram}
+        \includegraphics[width=0.55\textwidth]{img/class_diagram}
         \captionsetup{font=small,labelformat=empty}
         \caption{Illustration of code modules.}
     \end{figure}
@@ -60,4 +62,13 @@
             \end{block}
         \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}{Evaluation}
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=0.9\textwidth]{img/ds1000_evaluation}
+        \captionsetup{font=small,labelformat=empty}
+        \caption{The current baselines based on DS-1000 dataset.}
+    \end{figure}
 \end{frame}
