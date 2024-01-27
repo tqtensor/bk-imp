@@ -28,3 +28,36 @@
         \caption{Illustration of code modules.}
     \end{figure}
 \end{frame}
+
+\begin{frame}{Dataset}
+    DS-1000~\cite{pmlr-v202-lai23b}: 1000 Python data science coding problems, each with:
+    \begin{block}{Problem Description}
+        \small
+        Problem:
+        How do I get the dimensions of an array? For instance, this is (2, 2):\\
+        a = np.array([[1,2],[3,4]])
+    \end{block}
+
+    \begin{columns}[T]
+        \begin{column}{0.50\textwidth}
+            \begin{block}{Buggy Code}
+                \small
+                <code>\\
+                import numpy as np\\
+                a = np.array([[1,2],[3,4]])\\
+                </code>\\
+                result = $\ldots$ \# put solution in this variable\\
+                BEGIN SOLUTION\\
+                <code>
+            \end{block}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Unit Test}
+                \small
+                def test(result, ans):\\
+                \ \ \ \ assert\_array\_equal(result, ans)\\
+                \ \ \ \ return 1
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
