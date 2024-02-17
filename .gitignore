@@ -79,3 +79,6 @@ __pycache__
 *.snm
 *.synctex.gz
 *.toc
+
+# Ignore datasets
+thesis/self-debug/src/dataset/ds-1000
