@@ -46,3 +46,7 @@ praat-parselmouth = "^0.4.3"
 [tool.poetry.group.math.dependencies]
 geopy = "^2.4.0"
 osmnx = "^1.7.1"
+
+[tool.poetry.group.thesis.dependencies]
+langchain = "^0.1.7"
+langchain-openai = "^0.0.6"
