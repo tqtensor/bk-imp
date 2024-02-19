@@ -81,4 +81,4 @@ __pycache__
 *.toc
 
 # Ignore datasets
-thesis/self-debug/src/dataset/ds-1000
+thesis/self-debug/src/dataset/ds1000_data
