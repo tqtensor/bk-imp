@@ -21,7 +21,21 @@ class InitialGenerator:
             system = "You are a helpful Self-debugging assistant that can understand and solve programming problems."
             human = """
             Given the problem description with the code, you need to fullfill the task by writing the code that solves the problem.
-            The problem is: {problem_description}."""
+
+            If the problem asks to return the result via a variable, you need to write the code that assigns the result to the variable.
+            For example:
+                x = ... # put solution in this variable
+
+            The problem is: {problem_description}.
+
+            Please solve the problem by defining a function f that takes the input and returns the output.
+            Then assign the result of calling the function to the variable x.
+            For example:
+            ```python
+            def f(...):
+                # your solution here
+            x = f(...)
+            ```"""
             prompt = ChatPromptTemplate.from_messages(
                 [("system", system), ("human", human)]
             )
@@ -32,7 +46,7 @@ class InitialGenerator:
                     {
                         "problem_description": problem,
                     }
-                )
+                ),
             ).content
 
             # Extract code from the answer

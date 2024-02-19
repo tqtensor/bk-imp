@@ -19,6 +19,8 @@ class Dataset:
                 )
                 os.system("unzip ds-1000.zip")
                 os.system("rm ds-1000.zip")
-            self.dataset = DS1000Dataset("ds1000_data")
+            self.dataset = DS1000Dataset(
+                source_dir="ds1000_data", mode="Completion"
+            )
         else:
             raise ValueError("Invalid dataset name")
