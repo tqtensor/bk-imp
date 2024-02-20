@@ -89,7 +89,9 @@ class Command(object):
                     stderr=PIPE,
                     preexec_fn=os.setsid,
                 )
-            self.process.communicate()
+            stdout, stderr = self.process.communicate()
+            self.stdout = stdout
+            self.stderr = stderr
 
         thread = threading.Thread(target=target)
         thread.start()
@@ -102,7 +104,11 @@ class Command(object):
             else:
                 os.killpg(self.process.pid, signal.SIGTERM)
             thread.join()
-        return self.process.returncode
+        return (
+            self.process.returncode,
+            self.stdout,
+            self.stderr,
+        )
 
 
 def import_source_file(fname, modname):
@@ -292,17 +298,21 @@ class DS1000Problem:
                 cmd = Command(
                     cmd_text,
                 )
-                exit_code = cmd.run(
+                exit_code, stdout, stderr = cmd.run(
                     timeout=time_limit
                 )  # 0 if there is no error
+                if exit_code != 0:
+                    print(stderr.decode("utf-8"))
+                    print(stdout.decode("utf-8"))
                 execution_status.append(exit_code)
+
+            # check if the generated code can run without error
+            pass_flag = all([status == 0 for status in execution_status])
 
             # loading testing code as a module
             test_module = import_source_file(
                 tempdir_name / "test_code.py", "test_code"
             )
-
-            pass_flag = True
 
             if int(self["test_type"]) == 3:
                 # stringTest parses the generated code into AST and check AST components
