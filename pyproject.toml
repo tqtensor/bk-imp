@@ -50,3 +50,8 @@ osmnx = "^1.7.1"
 [tool.poetry.group.thesis.dependencies]
 langchain = "^0.1.7"
 langchain-openai = "^0.0.6"
+
+[tool.poetry.group.nlp.dependencies]
+gensim = "^4.3.2"
+pyvi = "^0.1.1"
+tensorflow = "^2.16.1"
