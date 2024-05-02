@@ -753,10 +753,10 @@ The process of code generation based on problem descriptions alone remains a cha
 Reflecting on the above, SelfEvolve offers a promising reference. It enhances both steps by facilitating the progressive evolution of generated code using solely a large language model, without any need for further learning. Similar to previous work, SelfEvolve generates code by conditioning on the knowledge in the prompt. However, the knowledge is produced by the LLM instead of being sourced from external knowledge databases. After the output of the first step is obtained, SelfEvolve employs the LLM to iteratively modify the generated code. This procedure aligns with the approach of Chen et al.~\cite{chen2023teaching} to rectify code errors by utilizing feedback from a code executor, but it does not require specific test cases.
 
 \section{Evaluation Results}
-SelfEvolve presents a significant enhancement over other base models, demonstrating an average gain of 7.8 in $\texttt{pass@1}$ (equating to a relative increase of $15.8\%$) when compared to ChatGPT. Furthermore, SelfEvolve outperforms the prompt-based approach, Self-Debugging, by a notable performance margin of 4.1. It was also observed that the integration of self-generated knowledge with the self-refinement module yields a considerably higher improvement. Specifically, SelfEvolve boosts the baseline across all perturbation types, which indicates that this method can substantially augment the robustness of large language models.
+SelfEvolve presents a significant enhancement over other base models, demonstrating an average gain of 7.8 in $\text{pass@1}$ (equating to a relative increase of 15.8\%) when compared to ChatGPT. Furthermore, SelfEvolve outperforms the prompt-based approach, Self-Debugging, by a notable performance margin of 4.1. It was also observed that the integration of self-generated knowledge with the self-refinement module yields a considerably higher improvement. Specifically, SelfEvolve boosts the baseline across all perturbation types, which indicates that this method can substantially augment the robustness of large language models.
 
 \begin{table}[H]
-    \caption{$\texttt{Pass@1}$ results on the DS-1000 dataset. (\%)}\label{tab:ds1000_results}
+    \caption{$\text{Pass@1}$ results on the DS-1000 dataset. (\%)}\label{tab:ds1000_results}
     \begin{center}
         \begin{tabular}{|c|c|c|c|c|c|}
             \hline
@@ -796,6 +796,78 @@ The SelfEvolve framework, despite demonstrating impressive performance across mu
 \end{enumerate}
 
 The objective of this research is to augment the capabilities of SelfEvolve by integrating the CoT prompting method and diversifying the feedback sources to include not only the code executor but also human discussions from platforms such as StackOverflow.
+
+\chapter{Proposed Solutions}
+\section{Reference}
+The primary reference for this master's thesis is the SelfEvolve framework, which we aim to enhance. The formal formulation of this framework is as follows:
+
+\subsection{Framework Structure}
+SelfEvolve, a model that facilitates the progressive evolution of generated code using only a large language model (LLM) without any learning requirements, improves both steps of the process. Like prior research, SelfEvolve generates code conditioned on the knowledge embedded in the prompt. However, this knowledge is produced by the LLM rather than being drawn from external knowledge bases. After the first step's output is obtained, SelfEvolve employs the LLM to iteratively revise the generated code. This procedure, following the method of Chen et al.~\cite{chen2023teaching}, corrects code errors by leveraging feedback from a code executor, eliminating the need for specific test cases.
+
+Language models generate knowledge by conditioning on the knowledge in the prompt, a crucial but challenging task. Given $m$ knowledge items $K[1 . . m]$, the language model predicts the next token to generate the final code solution:
+
+\begin{equation}
+    P(Y \mid K)=\prod_{i=1 . . n} p_{\theta}\left(Y_{i} \mid Y_{<i}, X, K\right), Y_{<1}=\emptyset
+\end{equation}
+
+Knowledge can be retrieved through a sparse retriever~\cite{robertson1994some} or a dense retriever~\cite{reimers2019sentence, gao2021simcse} as follows:
+
+\begin{equation}
+    K:=\arg \max _{K \subset B} P(K \mid X, B)
+\end{equation}
+
+where $B$ represents the entire database. Nevertheless, the performance of existing retriever models may be restricted, resulting in $K$ containing irrelevant knowledge items that introduce noise to LLM and degrade the generation results. A common strategy to mitigate this issue involves retrieving as much knowledge as possible~\cite{borgeaud2022improving} to cover the necessary items. However, this approach places demands on the LLM's ability to process lengthy texts, an area still under development~\cite{li2023context}.
+
+For a more precise and convenient acquisition of the necessary knowledge, we leverage language models as sources of knowledge, prompting them to generate information. Large language models, after being pre-trained on a range of corpora, have encoded knowledge from multiple databases into their parameters~\cite{geva2020transformer}. Furthermore, models that have undergone reinforcement learning from human feedback (RLHF)~\cite{ouyang2022training} can adhere to human instructions, acting as organic sources of knowledge and providing diverse knowledge based on appropriate input instructions. In light of this, we suggest the use of self-generated knowledge, which is obtained by prompting LLMs as follows:
+
+\begin{equation}
+    p(K)=\prod_{i=1 . . k} p_{\theta}\left(K_{i} \mid X, K_{<i}\right), K_{<1}=\emptyset
+\end{equation}
+
+where $k$ is the length of the generated knowledge tokens. When problem descriptions, such as those in StackOverflow~\cite{pmlr-v202-lai23b}, contain implicit intents, there often exists a gap between the detailed knowledge required and the language used to describe the problem. This gap emerges because the derivation of required knowledge necessitates reasoning. To close this reasoning gap and extract more accurate knowledge, we decompose this extraction process when intents are implicitly stated:
+
+\begin{equation}
+    p(K)=\prod_{i=1 . . k} p_{\theta}\left(K_{i} \mid c, K_{<i}\right) \cdot p_{\theta}(c \mid X), K_{<1}=\emptyset
+\end{equation}
+
+where $c$ is a preliminary code solution from LLM based solely on problem contexts. It encapsulates necessary but potentially misapplied knowledge that can aid in the extraction of knowledge $(K) . K$ can be formatted to any problem-specific structure to align with the problem instruction $X$, making it adaptable for various tasks. When problem descriptions $X$ contain explicit intents, SELfEvolve employs Eq. 4, as LLM can extract knowledge with high precision in this scenario.
+
+Amendment of generated solution Prior research has indicated that intermediate results produced by LLM may contain errors~\cite{lyu2023faithful, wang2022self, wei2022chain, zhang2022automatic}. Such errors can add noise to the prompt context, diminishing the accuracy of the final output. To minimize code errors, we simulate the debugging process of programmers and introduce an iterative self-refinement mechanism to correct the faulty code. This mechanism employs an external Python interpreter to amend erroneous programs. Our method integrates code context and sample test cases into the input prompt, together with the generated code solution, to construct an executable program. We then run this program in a sandbox environment to gather error information and standard output. Upon obtaining error information, we prompt language models to revise the faulty programs, conditioned on both program requirements and error information:
+
+\begin{equation}
+    P\left(Y^{\prime} \mid X, Y, K, e\right)=p_{\theta}\left(Y^{\prime} \mid X, Y, e\right) \cdot p_{\theta}(Y \mid X, K)
+\end{equation}
+
+The revised output, $Y^{\prime}$, might still contain bugs. Therefore, the above process is reiterated until the code can be interpreted without exceptions, or until the iteration steps reach a preset limit. In practical applications, the modeling of $p_{\theta}\left(Y^{\prime} \mid X, Y, e\right)$ differs based on the type of error. For simplicity, SELfEvolve only corrects API errors and incorrect assertion statements. We find that rectifying these two types of errors significantly enhances performance in empirical experiments.
+
+To conclude, Jiang et al.~\cite{jiang2023selfevolve} amalgamate two LLM-driven methods \- generation based on self-generated knowledge and refinement via error messages \- to devise a more efficient method known as SelfEvolve. These two components mutually reinforce each other almost orthogonally. On one hand, self-generated knowledge enhances self-refinement steps. By conditioning on knowledge from models' parameters, intermediate output explicitly applies the knowledge. With a more accurate output, the self-refinement steps need fewer iterations to fix the code, thereby reducing the difficulty. On the other hand, the self-refinement steps enhance the application of generated knowledge. The input knowledge may contain irrelevant information or noise during the generation process. The self-refinement steps remove this noise by introducing an external interpreter, enhancing the overall quality of the generated code. Subsequent empirical experiments will illustrate how these two modules mutually reinforce each other.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/selfevolve}
+    \caption{SelfEvolve pipeline.~\cite{jiang2023selfevolve}.}\label{fig:selfevolve}
+\end{figure}
+
+\subsection{Evaluation Strategy}
+In the foundational work of SelfEvolve, the team defines the metric $\text{pass@1}$ as the proportion of unit tests that are successfully executed on the first attempt, allowing for additional iterations solely for syntax correction. However, this metric is somewhat inflexible as it does not specify the total number of iterations the LLM is allowed to attempt to solve the problem. Moreover, it does not assure that only syntax errors are addressed.
+
+In light of these limitations, this study introduces an alternative metric to assess the model's performance. The novel metric, termed $\text{pass@n}$, where $n$ represents the maximum number of iterations permitted for the model to resolve the problem. This metric is defined as the proportion of unit tests that are correctly executed after $k$ attempts as long as $k \leq n$. This metric offers greater flexibility and enables a more realistic evaluation of the model's performance.
+
+\section{Dataset}
+\subsection{DS\-1000}
+\subsection{StackOverflow}
+\section{Proposed Solution I\: Chain-of-Thought Prompting based on StackOverflow}
+\subsection{Motivation}
+\subsection{Architecture}
+\subsection{Result and Discussion}
+\section{Proposed Solution II\: Chain-of-Thought Prompting based on Code Executor Feedback}
+\subsection{Motivation}
+\subsection{Architecture}
+\subsection{Result and Discussion}
+\section{Proposed Solution III\: Using Larger LLM to guide Smaller LLM}
+\subsection{Motivation}
+\subsection{Architecture}
+\subsection{Result and Discussion}
 
 \chapter{Conclusion}
 The above is a study on the topic of \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging errors in software code is a challenging task, as traditional methods rely heavily on manual effort and domain expertise. However, recent advances in large language models provide new opportunities for automated debugging. Self-correcting models based on the Chain-of-Thought prompting technique enable iterative refinement of generated fixes. Additionally, incorporating modular code analysis allows the model to learn structural patterns and relationships within the code. Although large language models have limitations in transparency and robustness, results show promising performance improvements over previous baseline methods. For these reasons, the author utilizes prompting and modular analysis to develop a novel framework leveraging large language models for automated software debugging. There remains significant work to address generalizability across languages and model stability. But this thesis aims to demonstrate the feasibility and benefits of applying large language models to this complex domain.
