@@ -214,7 +214,7 @@
         \vspace{0.8cm}
         {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
         \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{Internship 2 Report}}\\[.75cm]
+        {\fontsize{14.4pt}{1}\selectfont \textbf{Master Thesis Report}}\\[.75cm]
         {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}
     \end{center}
     \vspace{4cm}
@@ -253,7 +253,7 @@
         \vspace{0.8cm}
         {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
         \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{Internship 2 Report}}\\[.75cm]
+        {\fontsize{14.4pt}{1}\selectfont \textbf{Master Thesis Report}}\\[.75cm]
         {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}
     \end{center}
     \vspace{.4cm}
@@ -272,7 +272,7 @@
     \thispagestyle{empty}
     \begin{center}
         \begin{large}
-            \textbf{Internship 2 Signature Page}
+            \textbf{Master Thesis Signature Page}
         \end{large}
     \end{center}
     \vspace{1.2cm}
@@ -280,7 +280,7 @@
         \item[] \textbf{Project Title:} Application of Large Language Models in Software Error Debugging
             \vspace{1cm}
 
-            The Internship 2 Report is submitted in partial fulfillment of the requirements for the degree of Master of Science in Computer Science.
+            The Master Thesis Report is submitted in partial fulfillment of the requirements for the degree of Master of Science in Computer Science.
             \vspace{2cm}
 
             \begin{minipage}{0.5\textwidth}
@@ -543,7 +543,7 @@ In light of the inherent challenges associated with the correction process durin
 
 While the efficacy of self-correction strategies in refining text generation tasks is evident, it is imperative to acknowledge their dependence on robust, large-scale LLMs capable of assimilating feedback for effective refinement. It is noteworthy that smaller, open-source models encounter challenges in refining output, even when furnished with accurate feedback, as underscored by Madaan et al.~\cite{madaan2023selfrefine}.
 
-Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the Chain-of-Thought prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, exemplified by ChatGPT, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{source code} of flawed libraries and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
+Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the Chain-of-Thought prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, exemplified by ChatGPT, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{troubleshooting discussion} from StackOverflow and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
 
 \begin{figure}[!htb]
     \centering
@@ -723,7 +723,7 @@ Reinforcement learning combines the reward model for alignment in the next stage
 \textbf{Multi-Turn Instructions}: Solving complex tasks requires multiple LLMs interactions, where feedback and responses from other tools are next round LLMs inputs. This style of using LLMs in the loop is common in autonomous agents.
 
 \chapter{Referenced Works}
-This section discusses two major works referenced in this research: the Chain-of-Thought framework for facilitating reasoning in language models, and a modular code analysis framework for improving code generation. Both claim state-of-the-art results in their domains. Their key ideas, results, and potential for further improvement are examined.
+This section discusses two major works referenced in this research: the Chain-of-Thought framework for facilitating reasoning in language models, and a code evolution framework~\cite{jiang2023selfevolve} for improving code generation. Both claim state-of-the-art results in their domains. Their key ideas, results, and potential for further improvement are examined.
 
 \section{CoT Prompting}
 Humans often solve complex reasoning tasks by decomposing them into intermediate steps. For example, when solving multi-step math word problems, people break the problem down into smaller steps, solving each sub-problem sequentially. The CoT paper~\cite{wei2023chainofthought} aims to enable language models to mimic this reasoning process by generating coherent chains of thought.
@@ -747,115 +747,55 @@ Chain-of-thought prompting has several key advantages:
 
 In summary, chain-of-thought prompting is a promising approach to improve reasoning and interpretability in language models.
 
-\section{Modular Code Analysis}
-Experienced programmers solve problems by decomposing them into modular sub-tasks and iteratively refining solutions. The modular code analysis paper proposes CodeChain~\cite{le2023codechain}, which mimics this process to improve code generation in language models.
+\section{Code Evolution Framework}
+The process of code generation based on problem descriptions alone remains a challenging task for LLMs. Drawing inspiration from the approach of many programmers who frequently consult knowledge documentation and grapple with debugging using existing tools, SelfEvolve~\cite{jiang2023selfevolve} presents a two-step method for prompt-based code generation. The initial step encourages LLMs to grasp additional knowledge and task-specific instructions, while the subsequent step instructs the models to modify the produced code solution based on feedback from human users or an oracle instructor. In this two-step framework, the second generation phase does not degrade the preliminary output from the first phase. Thus, these stages adhere to a topological order in terms of optimization, allowing for sequential optimization and integration.
 
-Specifically, CodeChain first elicits modular solutions using chain-of-thought prompting. It then recursively revises generated code by conditioning on representative sub-module code snippets sampled from previous outputs. This iterative refinement with reusable code `legs up' future generations.
-
-Experiments demonstrate CodeChain significantly improves performance on challenging benchmarks like APPS~\cite{hendrycks2021measuring} and CodeContests~\cite{Li_2022}, achieving state-of-the-art results. For example, on APPS it increases pass@1 by over 35\% on average. Ablations provide insights into the drivers of CodeChain's effectiveness.
-
-In summary, CodeChain is a novel way to incorporate modularity and iterative refinement to boost code generation in language models, inspired by experienced programmers' problem solving process. The gains on benchmark datasets are promising.
+Reflecting on the above, SelfEvolve offers a promising reference. It enhances both steps by facilitating the progressive evolution of generated code using solely a large language model, without any need for further learning. Similar to previous work, SelfEvolve generates code by conditioning on the knowledge in the prompt. However, the knowledge is produced by the LLM instead of being sourced from external knowledge databases. After the output of the first step is obtained, SelfEvolve employs the LLM to iteratively modify the generated code. This procedure aligns with the approach of Chen et al.~\cite{chen2023teaching} to rectify code errors by utilizing feedback from a code executor, but it does not require specific test cases.
 
 \section{Evaluation Results}
-On the APPS benchmark, CodeChain with GPT-3.5 and WizardCoder~\cite{luo2023wizardcoder} models achieves new state-of-the-art pass@1 results. With test case filtering, CodeChain+GPT-3.5 further improves to over 35\% average pass@1 across difficulty levels. This demonstrates the efficacy of CodeChain's iterative refinement approach on challenging code generation tasks.
+SelfEvolve presents a significant enhancement over other base models, demonstrating an average gain of 7.8 in $\texttt{pass@1}$ (equating to a relative increase of $15.8\%$) when compared to ChatGPT. Furthermore, SelfEvolve outperforms the prompt-based approach, Self-Debugging, by a notable performance margin of 4.1. It was also observed that the integration of self-generated knowledge with the self-refinement module yields a considerably higher improvement. Specifically, SelfEvolve boosts the baseline across all perturbation types, which indicates that this method can substantially augment the robustness of large language models.
 
-\begin{table}[!htb]
-    \caption{APPS test results: results with $\dagger$ are for models finetuned on APPS training data. Performance by pass@ 1 (\%)}\label{tab:apps_results}
+\begin{table}[H]
+    \caption{$\texttt{Pass@1}$ results on the DS-1000 dataset. (\%)}\label{tab:ds1000_results}
     \begin{center}
-        \begin{tabular}{lccccc}
+        \begin{tabular}{|c|c|c|c|c|c|}
             \hline
-            Model                      & Size & Introductory         & Interview            & Competition          & All                  \\
+            \multirow[b]{2}{*}{Method}       & \multicolumn{4}{|c|}{Perturbation} & \multirow{2}{*}{Overall}                                   \\
             \hline
-            Codex                      & 12B  & 4.14                 & 0.14                 & 0.02                 & 0.92                 \\
-            CodeT5 $\dagger$           & 770M & 6.60                 & 1.03                 & 0.30                 & 2.00                 \\
-            CodeRL+CodeT5 $\dagger$    & 770M & 7.08                 & 1.86                 & 0.75                 & 2.69                 \\
-            text-davinci-002           & -    & -                    & -                    & -                    & 7.48                 \\
-            Self-edit+text-davinci-002 & -    & -                    & -                    & -                    & 7.94                 \\
-            code-davinci-002           & -    & 29.30                & 6.40                 & 2.50                 & 10.20                \\
+                                             & Origin                             & Surface                  & Semantic & Diff-Rewrite &       \\
             \hline
-            WizardCoder                & 15B  & 26.04                & 4.21                 & 0.81                 & 7.90                 \\
-            CodeChain+WizardCoder      & 15B  & 26.29                & 7.49                 & 3.75                 & 10.50                \\
+            \multicolumn{6}{|c|}{Prior work}                                                                                                   \\
             \hline
-            GPT3.5                     & -    & 48.00                & 19.42                & 5.42                 & 22.33                \\
-            CodeChain+GPT3.5           & -    & $\mathbf{5 4 . 5 0}$ & $\mathbf{2 8 . 1 1}$ & $\mathbf{1 2 . 3 8}$ & $\mathbf{3 0 . 2 4}$ \\
+            Codex (Completion) $)^{\dagger}$ & 44.93                              & 37.94                    & 34.35    & 16.94        & 39.20 \\
+            \hline
+            Codex (Insertion) $)^{\dagger}$  & 47.76                              & 50.18                    & 38.39    & 21.05        & 43.30 \\
+            \hline
+            DocPrompting                     & 53.95                              & 50.00                    & 39.57    & 25.93        & 45.50 \\
+            \hline
+            Self-Debugging                   & 63.38                              & 59.21                    & 45.65    & 28.40        & 53.00 \\
+            \hline
+            \multicolumn{6}{|c|}{This work}                                                                                                    \\
+            \hline
+            ChatGPT                          & 60.31                              & 52.63                    & 41.30    & 26.54        & 49.30 \\
+            \hline
+            SelfEvolve                       & 66.23                              & 67.11                    & 48.70    & 33.95        & 57.10 \\
+            \hline
+            w/o self-refinement              & 60.09                              & 59.21                    & 41.30    & 29.01        & 50.60 \\
             \hline
         \end{tabular}
     \end{center}
 \end{table}
 
 \section{Conclusion}
-While the CodeChain framework has achieved strong results on competitive programming benchmarks, there are opportunities to improve its applicability to real-world tasks:
+The SelfEvolve framework, despite demonstrating impressive performance across multiple benchmarks, still has unexplored avenues for further enhancement:
 
 \begin{enumerate}
-    \item CodeChain has focused on synthetic competitive programming problems, which may not translate to performance on real-world code generation.
+    \item Currently, SelfEvolve depends exclusively on feedback from the code executor. However, there exists a plethora of other feedback sources that could be beneficially exploited.
 
-    \item The modular analysis in CodeChain concentrates on code generation alone, without considering dependencies on external libraries. However, bugs in real applications often arise from misalignments between code logic and library usage.
+    \item The Chain-of-Thought (CoT) prompting technique has not been integrated into the SelfEvolve's feedback loop, with the system instead utilizing a more traditional approach.
 \end{enumerate}
 
-This research aims to enhance CodeChain by incorporating modular analysis of code logic alongside library dependencies. The goal is to build external knowledge sources that language models can reference in a modular, targeted way when generating code.
-
-Additionally, this work shifts the evaluation domain from competitive programming to more practical data science tasks, using the DS-1000~\cite{pmlr-v202-lai23b} benchmark. DS-1000 contains 1,000 diverse, real-world data science problems from StackOverflow spanning multiple Python libraries. It has high-fidelity automatic evaluation, ensuring functional correctness and appropriate API usage. Problem statements are modified from the original posts to prevent memorization. The best current model, Codex-002~\cite{madaan2022language}, achieves only 43.3\% accuracy, providing ample room for improvement.
-
-In summary, this research proposes to augment CodeChain with logic/library modularity and demonstrate gains on practical data science problems. By tackling real-world tasks and dependencies, the enhanced framework could better support applied code generation compared to solely tackling competitive programming.
-
-\chapter{Tentative Timeline}
-Based on the proposed model as well as the study of related works, the author proposes the following tasks to complete the thesis on \textbf{\textit{Application of Large Language Models in Software Error Debugging}}:
-
-\begin{table}[!htb]
-    \caption{Tentative timeline for thesis completion.}
-    \begin{center}
-        \begin{tabular}{clc}
-            \hline
-            No.          & Task                                             & Time    \\
-            \hline\hline
-            $\mathbf{1}$ & Collect and preprocess the DS-1000 dataset       & 5 days  \\
-            \hline
-            $\mathbf{2}$ & Build a baseline model using zero-shot prompting & 15 days \\
-            \hline
-            $\mathbf{3}$ & Test and evaluate initial results                & 5 days  \\
-            \hline
-            $\mathbf{4}$ & Improve the model with CoT prompting             & 10 days \\
-            \hline
-            $\mathbf{5}$ & Improve the model with modular code analysis     & 10 days \\
-            \hline
-            $\mathbf{6}$ & Test and refine second-round results             & 5 days  \\
-            \hline
-            $\mathbf{7}$ & Final evaluation                                 & 3 days  \\
-            \hline
-        \end{tabular}
-    \end{center}
-\end{table}
-
-The proposed thesis implementation plan consists of 4 main phases:
-
-\begin{itemize}
-    \item \textbf{Phase 1: Data preparation.} In this phase, the author will search for and preprocess data into a suitable format for running the code and extracting bug information.
-
-    \item \textbf{Phase 2: Build baseline model and evaluate.} The author will use the zero-shot prompting technique to build a baseline model.
-
-    \item \textbf{Phase 3: Research and refine model.} The author will critique and improve the model based on studies of related papers, then re-evaluate the enhanced model. This process will be iteratively repeated to obtain optimal results.
-
-    \item \textbf{Phase 4: Deploy and evaluate.} The author will build a small application to assess the feasibility of the model in practice.
-\end{itemize}
-
-\chapter{Thesis Structure}
-The author proposes that the thesis will comprise a total of eight chapters, detailed as follows:
-
-\textbf{Chapter 1. Introduction.} This introductory chapter will present the rationale for choosing the topic \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. It will review related achievements, challenges, and the research process undertaken. Additionally, this chapter will detail the thesis objectives, scope, and structure.
-
-\textbf{Chapter 2. Related Works.} This chapter will provide an overview of related studies, current trends, and the author's perspectives on existing methods.
-
-\textbf{Chapter 3. Background.} This chapter will present fundamental knowledge on LLMs and techniques to align LLMs with automated feedback. It will also review the current state-of-the-art methods.
-
-\textbf{Chapter 4. Referenced Works.} This chapter will discuss important reference works, including their strengths, weaknesses, and how this research builds upon them.
-
-\textbf{Chapter 5. Dataset.} This chapter will introduce the dataset used for this research and clearly describe the data processing methods.
-
-\textbf{Chapter 6. Model Implementation.} This chapter will detail the system implementation, including the architecture, programming, and environment setup.
-
-\textbf{Chapter 7. Experiments and Evaluation.} This chapter will describe model training, evaluation, and iterative optimization to achieve the best solution.
-
-\textbf{Chapter 8. Conclusion.} The final chapter will summarize the model, results, key points, and limitations. It will also discuss future work and potential expansions.
+The objective of this research is to augment the capabilities of SelfEvolve by integrating the CoT prompting method and diversifying the feedback sources to include not only the code executor but also human discussions from platforms such as StackOverflow.
 
 \chapter{Conclusion}
 The above is a study on the topic of \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging errors in software code is a challenging task, as traditional methods rely heavily on manual effort and domain expertise. However, recent advances in large language models provide new opportunities for automated debugging. Self-correcting models based on the Chain-of-Thought prompting technique enable iterative refinement of generated fixes. Additionally, incorporating modular code analysis allows the model to learn structural patterns and relationships within the code. Although large language models have limitations in transparency and robustness, results show promising performance improvements over previous baseline methods. For these reasons, the author utilizes prompting and modular analysis to develop a novel framework leveraging large language models for automated software debugging. There remains significant work to address generalizability across languages and model stability. But this thesis aims to demonstrate the feasibility and benefits of applying large language models to this complex domain.
