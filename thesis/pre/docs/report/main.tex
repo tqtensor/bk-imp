@@ -337,12 +337,12 @@ Figure~\ref{fig:task_completion_time} illustrates the distribution of time to co
 \section{Self-Correcting LLMs for Software Development}
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.90\textwidth]{img/self_debug}
+    \includegraphics[width=0.90\textwidth]{img/selfdebug}
     \caption{
-        A prevalent approach for iterative debugging employing a large language model involves multiple steps~\cite{chen2023teaching}.}\label{fig:self_debug}
+        A prevalent approach for iterative debugging employing a large language model involves multiple steps~\cite{chen2023teaching}.}\label{fig:selfdebug}
 \end{figure}
 
-Figure~\ref{fig:self_debug} depicts a typical scenario involving the application of self-correcting LLMs for iterative debugging, employing a pretrained large language model without undergoing finetuning.
+Figure~\ref{fig:selfdebug} depicts a typical scenario involving the application of self-correcting LLMs for iterative debugging, employing a pretrained large language model without undergoing finetuning.
 
 A single iteration within this framework comprises three sequential steps: Generation, Explanation, and Feedback.
 
@@ -854,7 +854,7 @@ In the foundational work of SelfEvolve, the team defines the metric $\text{pass@
 In light of these limitations, this study introduces an alternative metric to assess the model's performance. The novel metric, termed $\text{pass@n}$, where $n$ represents the maximum number of iterations permitted for the model to resolve the problem. This metric is defined as the proportion of unit tests that are correctly executed after $k$ attempts as long as $k \leq n$. This metric offers greater flexibility and enables a more realistic evaluation of the model's performance.
 
 \section{Dataset}
-\subsection{DS\-1000}
+\subsection{\text{DS-1000}}
 \subsection{StackOverflow}
 StackOverflow serves as a comprehensive resource for programmers worldwide, providing an extensive repository of knowledge on various programming languages, libraries, and frameworks. This platform facilitates discussions among developers, allowing them to share insights and potential solutions to coding challenges. The discussions and queries on this platform have been utilized to generate Context over Time (CoT) prompts for Language Learning Models (LLMs) in the proposed solutions.
 
