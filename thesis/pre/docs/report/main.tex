@@ -856,6 +856,54 @@ In light of these limitations, this study introduces an alternative metric to as
 \section{Dataset}
 \subsection{DS\-1000}
 \subsection{StackOverflow}
+StackOverflow serves as a comprehensive resource for programmers worldwide, providing an extensive repository of knowledge on various programming languages, libraries, and frameworks. This platform facilitates discussions among developers, allowing them to share insights and potential solutions to coding challenges. The discussions and queries on this platform have been utilized to generate Context over Time (CoT) prompts for Language Learning Models (LLMs) in the proposed solutions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/stackoverflow}
+    \caption{A discussion on StackOverflow.}\label{fig:stackoverflow}
+\end{figure}
+
+As depicted in Figure~\ref{fig:stackoverflow}, the platform hosts a wealth of questions and answers, providing a rich source of data for generating LLM prompts.
+
+\subsubsection{Data Collection}
+A substantial data dump from StackOverflow was procured from the Stack Exchange Data Dump (https://archive.org/details/stackexchange). After filtering out posts related to specific libraries such as `matplotlib', `pandas', `numpy', `scipy', `seaborn', `sklearn', `tensorflow', and `pytorch', a total of 558,402 posts and 972,513 related comments remained. This refined dataset proves invaluable for guiding LLMs in generating CoT prompts.
+
+\subsubsection{Generate Embeddings}
+The original XML-formatted data, which includes each post and its associated comments, undergoes a comprehensive cleansing process to make it suitable for use. Once cleaned, these elements are structured into a document of the following format:
+
+\begin{verbatim}
+Post: <content_of_post>
+Comments:
+- <content_of_comment_1>
+- <content_of_comment_2>
+...
+- <content_of_comment_n>
+\end{verbatim}
+
+Given the context window size limit of approximately 4000 tokens for many Language Learning Models (LLMs), it is crucial to maintain the total number of tokens in the document below 3000. This precautionary measure ensures ample space is preserved for the original question. To effectively manage the allocation of comments within a post while adhering to this limit, a greedy allocation algorithm is implemented.
+
+Consider a post $P$, $N$ comments, and a function $f$ that calculates the number of tokens in a string. The algorithm operates in the following manner:
+
+\begin{verbatim}
+docs = []
+for i in range(1, N):
+    doc = []
+    doc.append(P)
+    length = f(P)
+    for j in range(i, N):
+        if length + f(comment[j]) < 3000:
+            doc.append(comment[j])
+            length += f(comment[j])
+        else:
+            break
+    docs.append(doc)
+\end{verbatim}
+
+Subsequently, each document is processed by a function that employs OpenAI's text embedding model to generate embeddings for both the post and its comments. These embeddings are then securely stored in a database for future retrieval and use.
+
+Refer to Appendix~\ref{app:stackoverflow_doc} for an example of the generated document.
+
 \section{Proposed Solution I\: Chain-of-Thought Prompting based on StackOverflow}
 \subsection{Motivation}
 \subsection{Architecture}
@@ -871,6 +919,100 @@ In light of these limitations, this study introduces an alternative metric to as
 
 \chapter{Conclusion}
 The above is a study on the topic of \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging errors in software code is a challenging task, as traditional methods rely heavily on manual effort and domain expertise. However, recent advances in large language models provide new opportunities for automated debugging. Self-correcting models based on the Chain-of-Thought prompting technique enable iterative refinement of generated fixes. Additionally, incorporating modular code analysis allows the model to learn structural patterns and relationships within the code. Although large language models have limitations in transparency and robustness, results show promising performance improvements over previous baseline methods. For these reasons, the author utilizes prompting and modular analysis to develop a novel framework leveraging large language models for automated software debugging. There remains significant work to address generalizability across languages and model stability. But this thesis aims to demonstrate the feasibility and benefits of applying large language models to this complex domain.
+
+\newpage
+\appendix
+\chapter{StackOverflow Document}
+\label{app:stackoverflow_doc}
+\begin{lstlisting}
+Post: <p>I have a Numpy array of colors that is returned when using K-means quantization on an image. After K-means is used, I need to take those centers and calculate the convex hull of the set of color centers.</p>
+
+<p>Essentially I need to find which points/colors don't have enough contrast from another color. I think the answer to this would be to find the points inside the hull (simplices?) that aren't the vertices of the hull.</p>
+
+<pre><code>import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+from scipy.spatial import ConvexHull
+from skimage import color, exposure
+from sklearn import cluster
+
+def quantize(pixels, n_colors):
+    width, height, depth = pixels.shape
+    reshaped_pixels = np.reshape(pixels, (width * height, depth))
+    model = cluster.KMeans(n_clusters=n_colors, n_init=100, precompute_distances=True)
+    labels = model.fit_predict(reshaped_pixels)
+    centers = model.cluster_centers_
+    quantized_pixels = np.reshape(centers[labels], (width, height, centers.shape[1]))
+
+    return quantized_pixels, centers, labels
+
+def scale_image(img, max_width=100):
+    img_width, img_height = img.size
+    ratio = (max_width / float(img_width))
+    new_height = int((float(img_height)*float(ratio)))
+    img.thumbnail((max_width, new_height), Image.NEAREST)
+    return img
+
+# Open image, convert to RGB just in case
+img = Image.open('image2.jpg').convert('RGB')
+
+# Scale image to speed up processing
+img = scale_image(img, 80)
+
+# Convert to numpy array
+np_img_array = np.array(img)
+
+# Convert rgb to lab colorspace
+lab_pixels = color.rgb2lab(np_img_array)
+
+# Kmeans quantization
+quantized_lab_pixels, centers, labels = quantize(lab_pixels, 16)
+
+# Convert pixels back to rgb
+quantized_rgb_pixels = (color.lab2rgb(quantized_lab_pixels)*255).astype('uint8')
+
+# Attempt to use convex hull around cluster centers
+hull = ConvexHull(centers)
+
+for simplex in hull.simplices:
+    plt.plot(centers[simplex, 0], centers[simplex, 1])
+plt.scatter(*centers.T, alpha=.5, color='k', marker='v')
+
+
+for p in centers:
+    point_is_in_hull = point_in_hull(p, hull)
+    marker = 'x' if point_is_in_hull else 'd'
+    color = 'g' if point_is_in_hull else 'm'
+    plt.scatter(p[0], p[1], marker=marker, color=color)
+
+plt.show()
+</code></pre>
+
+<p><strong>Update:</strong> Here is my rendered plot output. I'm not using the color labels in the plotting in this render.</p>
+
+<p><a href="https://i.stack.imgur.com/Luv0j.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/Luv0j.png" alt="enter image description here"></a></p>
+
+<p>Here is more so what would be helpful to see. However, the plots aren't what I need... I need to find out which of the cluster centers (colors) make up the vertices of the hull and then pair them back to the vertices labels.</p>
+
+<p><a href="https://i.stack.imgur.com/OgQci.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/OgQci.png" alt="enter image description here"></a></p>
+
+<p>Here is an example of the RGB colors outputted (on the left), and then on the right you would have the final colors, which would be after excluding cluster centers that fall outside of the region.</p>
+
+<p><a href="https://i.stack.imgur.com/lRVVB.jpg" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/lRVVB.jpg" alt="enter image description here"></a></p>
+
+
+Comments:
+- comment: Can you add to your code a sample output of your code, and also what the desired output would be?
+- comment: @user8153 I'll try... but not really sure how to go about that since I'm not getting the correct outputs to start with. It's more so about finding which clusters are not within the hull region... and that would be the answer.
+- comment: Could you please clarify: you want to "find out which of the cluster centers are not within the convex hull" -- the convex hull of what? The convex hull of the cluster centers?
+- comment: @user8153 yes that is correct. These cluster centers are actual colors. Sometimes the cluster centers are very similar colors, but I need to exclude the very similar colors based on contrast to the rest of the cluster centers. I was thinking that if I used each of the centers to draw the regions then it would potentially exclude clusters that didn't have enough contrast between them.
+- comment: Just updated the question with another image to show sample output and desired output.
+- comment: Why doesn't every cluster center lie within the convex hull of the the cluster centers? Doesn't the convex hull of a set of points include all those points?
+- comment: After thinking more, I believe you're right. I think the answer is to find the points inside the hull... the points that are masked. The edge points (points that make up the hull mask) are the points that will be used in the final output.
+- comment: If your cluster centers are too similar, you should try using fewer clusters or change your distance measure so it uses contrast instead of euclidean distance along lab colorspace.
+- comment: @swenzel I don't see either one of those solving the problem in a precise way. Both of those suggestions will leave the door open for other problems. If you calculate based only on contrast, then you're not going to effectively cluster the colors...
+- comment: Sorry, I didn't really know what I was talking about when I mentioned contrast. I've read a little about colorcoding now and understand that contrast doesn't take into account the color itself but only relative luminance. I meant you need a distance measure, that has the same idea of similarity which you have. Apparently you consider colors similar which the clustering algorithm considers different. So change the distance measure, play around with it, make luminance count a little less for example.
+\end{lstlisting}
 
 \newpage
 \renewcommand{\bibname}{References}
