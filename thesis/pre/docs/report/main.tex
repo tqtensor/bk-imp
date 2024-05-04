@@ -985,22 +985,60 @@ The Auto CoT Prompt Generator 2, as depicted in Figure~\ref{fig:cot_generator_2}
 \end{figure}
 
 \subsection{Results and Discussions}
+\subsubsection{Main Results}
 In an extensive system test involving various LLMs such as GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were found to be quite encouraging. The CoT-SelfEvolve model, with GPT-4 as the base LLM, demonstrated a superior performance over the original SelfEvolve model in addressing Pytorch, Sklearn, and Matplotlib questions. However, a slight underperformance was observed with Scipy questions. While the original SelfEvolve study did not disclose results for Pandas, Numpy, and Tensorflow, a comparison of various LLMs with CoT-SelfEvolve yielded remarkable results, especially with GPT-4. These findings are summarized and displayed in Table~\ref{tab:cot_selfevolve_ds1000_results}.
 
 \begin{table}[H]
     \caption{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}\label{tab:cot_selfevolve_ds1000_results}
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|c|c|c|c|c|c|c|}
+        \begin{tabular}{|l|l|c|c|c|c|c|c|c|}
+            \hline
+                                                     & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
+            \multirow{2}{*}{SelfEvolve}              & GPT-3.5       & 52.83                      & 64.71                        & 73.04                        & 78.06                           & N/A                         & N/A                        & N/A                             \\ \cline{2-9}
+                                                     & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           & N/A                         & N/A                        & N/A                             \\ \hline
+            \multirow{6}{*}{\textit{CoT-SelfEvolve}} & GPT-3.5       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \cline{2-9}
+                                                     & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  \\ \cline{2-9}
+                                                     & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           \\ \cline{2-9}
+                                                     & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           \\ \cline{2-9}
+                                                     & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           \\ \cline{2-9}
+                                                     & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           \\ \hline
+        \end{tabular}%
+    }
+\end{table}
+
+\subsubsection{Discussions}
+\subsubsubsection{The importance of CoT prompt generators}
+While the CoT-SelfEvolve generally delivers remarkable results when operating with all enhancements, including two CoT prompt generators, it is essential to comprehend the influence of each individual prompt generator on the same benchmark. Consequently, an additional experiment was conducted, featuring four configurations that utilize CoT prompts for both the Initial Code Generator and the Self-Correction Code Generator. The outcomes of this experiment are presented in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_1}. To expedite the acquisition of these results, GPT-3.5 was employed for this test. Furthermore, an overall score was computed instead of individual scores for each library.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset with or without CoT prompts. (\%)}\label{tab:cot_selfevolve_ds1000_results_ablation_1}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
         \hline
-                                                 & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
-        \multirow{2}{*}{SelfEvolve}              & GPT-35        & 52.83                      & 64.71                        & 73.04                        & 78.06                           & N/A                         & N/A                        & N/A                             \\ \cline{2-9}
-                                                 & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           & N/A                         & N/A                        & N/A                             \\ \hline
-        \multirow{6}{*}{\textit{CoT-SelfEvolve}} & GPT-35        & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \cline{2-9}
-                                                 & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  \\ \cline{2-9}
-                                                 & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           \\ \cline{2-9}
-                                                 & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           \\ \cline{2-9}
-                                                 & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           \\ \cline{2-9}
-                                                 & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           \\ \hline
+        Configuration & \begin{tabular}[c]{@{}c@{}}Initial\\ Code Generator\end{tabular} & \begin{tabular}[c]{@{}c@{}}Self-Correction\\ Code Generator\end{tabular} & \multicolumn{1}{l|}{Overall} \\ \hline
+        1             & GPT-3.5                                                          & GPT-3.5                                                                  & 30.52                        \\ \hline
+        2             & GPT-3.5 + CoT                                                    & GPT-3.5                                                                  & 34.73                        \\ \hline
+        3             & GPT-3.5                                                          & GPT-3.5 + CoT                                                            & 32.52                        \\ \hline
+        4             & GPT-3.5 + CoT                                                    & GPT-3.5 + CoT                                                            & 35.51                        \\ \hline
+    \end{tabular}
+\end{table}
+
+The performance enhancement brought about by the CoT prompt generators is evident when compared to the non-CoT prompt version, with a relative gain of 16.39\%. This finding highlights the significance of CoT prompt generators in augmenting the efficacy of the CoT-SelfEvolve model.
+
+Furthermore, the differential impact of the two prompt generators is noteworthy. The first CoT prompt generator, which employs human discussions from StackOverflow to propose a step-by-step guideline, contributes to a relative performance improvement of 13.77\%. In contrast, the second CoT prompt generator, which formulates suggestions based on feedback from the syntax checker or code executor, accounts for a relative gain of 6.56\%. This outcome suggests a more pivotal role for the first CoT prompt generator in amplifying the performance of the CoT-SelfEvolve model.
+
+\subsubsubsection{Using larger LLM to guide the code generation process}
+Driven by the understanding that the activation of large LLMs, such as GPT-4 or Claude 3, is quite costly, particularly when multiple runs of the self-correction code generator are permitted, we embarked on an experiment to assess the effect of utilizing a large LLM to steer the code generation process while employing a smaller LLM for actual code production. The findings of this study are depicted in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_2}. It's clear that the use of a larger LLM to guide the code generation process can notably augment the model's performance, evidenced by a relative gain of 11.26\%.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset with different LLM stacks. (\%)}\label{tab:cot_selfevolve_ds1000_results_ablation_2}
+    \centering
+    \resizebox{\columnwidth}{!}{%
+        \begin{tabular}{|l|c|c|c|c|c|c|c|}
+            \hline
+            Configuration            & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
+            GPT-3.5 CoT + Code       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \hline
+            GPT-4 CoT + GPT-3.5 Code & 37.74                      & 83.82                        & 73.04                        & 35.48                           & 31.62                       & 19.55                      & 53.33                           \\ \hline
         \end{tabular}%
     }
 \end{table}
