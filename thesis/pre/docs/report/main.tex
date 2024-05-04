@@ -758,30 +758,19 @@ SelfEvolve presents a significant enhancement over other base models, demonstrat
 \begin{table}[H]
     \caption{$\text{Pass@1}$ results on the DS-1000 dataset. (\%)}\label{tab:ds1000_results}
     \begin{center}
-        \begin{tabular}{|c|c|c|c|c|c|}
+        \begin{tabular}{|lccccc|}
             \hline
-            \multirow[b]{2}{*}{Method}       & \multicolumn{4}{|c|}{Perturbation} & \multirow{2}{*}{Overall}                                   \\
-            \hline
-                                             & Origin                             & Surface                  & Semantic & Diff-Rewrite &       \\
-            \hline
-            \multicolumn{6}{|c|}{Prior work}                                                                                                   \\
-            \hline
-            Codex (Completion) $)^{\dagger}$ & 44.93                              & 37.94                    & 34.35    & 16.94        & 39.20 \\
-            \hline
-            Codex (Insertion) $)^{\dagger}$  & 47.76                              & 50.18                    & 38.39    & 21.05        & 43.30 \\
-            \hline
-            DocPrompting                     & 53.95                              & 50.00                    & 39.57    & 25.93        & 45.50 \\
-            \hline
-            Self-Debugging                   & 63.38                              & 59.21                    & 45.65    & 28.40        & 53.00 \\
-            \hline
-            \multicolumn{6}{|c|}{This work}                                                                                                    \\
-            \hline
-            ChatGPT                          & 60.31                              & 52.63                    & 41.30    & 26.54        & 49.30 \\
-            \hline
-            SelfEvolve                       & 66.23                              & 67.11                    & 48.70    & 33.95        & 57.10 \\
-            \hline
-            w/o self-refinement              & 60.09                              & 59.21                    & 41.30    & 29.01        & 50.60 \\
-            \hline
+            \multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Method}}} & \multicolumn{4}{c|}{\textbf{Perturbation}} & \multirow{2}{*}{\textbf{Overall}}                                                                                                \\ \cline{2-5}
+            \multicolumn{1}{|c|}{}                                 & \multicolumn{1}{l|}{Origin}                & \multicolumn{1}{l|}{Surface}        & \multicolumn{1}{l|}{Semantic}       & \multicolumn{1}{l|}{Diff-Rewrite}   &                \\ \hline
+            \multicolumn{6}{|c|}{\textit{Prior work}}                                                                                                                                                                                              \\ \hline
+            \multicolumn{1}{|l|}{Codex (Completion)†}              & \multicolumn{1}{c|}{44.93}                 & \multicolumn{1}{c|}{37.94}          & \multicolumn{1}{c|}{34.35}          & \multicolumn{1}{c|}{16.94}          & 39.20          \\ \hline
+            \multicolumn{1}{|l|}{Codex (Insertion)†}               & \multicolumn{1}{c|}{47.76}                 & \multicolumn{1}{c|}{50.18}          & \multicolumn{1}{c|}{38.39}          & \multicolumn{1}{c|}{21.05}          & 43.30          \\ \hline
+            \multicolumn{1}{|l|}{DocPrompting}                     & \multicolumn{1}{c|}{53.95}                 & \multicolumn{1}{c|}{50.00}          & \multicolumn{1}{c|}{39.57}          & \multicolumn{1}{c|}{25.93}          & 45.50          \\ \hline
+            \multicolumn{1}{|l|}{Self-Debugging}                   & \multicolumn{1}{c|}{63.38}                 & \multicolumn{1}{c|}{59.21}          & \multicolumn{1}{c|}{45.65}          & \multicolumn{1}{c|}{28.40}          & 53.00          \\ \hline
+            \multicolumn{6}{|c|}{\textit{This work}}                                                                                                                                                                                               \\ \hline
+            \multicolumn{1}{|l|}{ChatGPT}                          & \multicolumn{1}{c|}{60.31}                 & \multicolumn{1}{c|}{52.63}          & \multicolumn{1}{c|}{41.30}          & \multicolumn{1}{c|}{26.54}          & 49.30          \\ \hline
+            \multicolumn{1}{|l|}{SelfEvolve}                       & \multicolumn{1}{c|}{\textbf{66.23}}        & \multicolumn{1}{c|}{\textbf{67.11}} & \multicolumn{1}{c|}{\textbf{48.70}} & \multicolumn{1}{c|}{\textbf{33.95}} & \textbf{57.10} \\ \hline
+            \multicolumn{1}{|r|}{\textit{w/o self-refinement}}     & \multicolumn{1}{c|}{60.09}                 & \multicolumn{1}{c|}{59.21}          & \multicolumn{1}{c|}{41.30}          & \multicolumn{1}{c|}{29.01}          & 50.60          \\ \hline
         \end{tabular}
     \end{center}
 \end{table}
