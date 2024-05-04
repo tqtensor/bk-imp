@@ -984,7 +984,26 @@ The Auto CoT Prompt Generator 2, as depicted in Figure~\ref{fig:cot_generator_2}
     \caption{Architecture of Auto CoT Prompt Generator 2.}\label{fig:cot_generator_2}
 \end{figure}
 
-\subsection{Result and Discussion}
+\subsection{Results and Discussions}
+In an extensive system test involving various LLMs such as GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were found to be quite encouraging. The CoT-SelfEvolve model, with GPT-4 as the base LLM, demonstrated a superior performance over the original SelfEvolve model in addressing Pytorch, Sklearn, and Matplotlib questions. However, a slight underperformance was observed with Scipy questions. While the original SelfEvolve study did not disclose results for Pandas, Numpy, and Tensorflow, a comparison of various LLMs with CoT-SelfEvolve yielded remarkable results, especially with GPT-4. These findings are summarized and displayed in Table~\ref{tab:cot_selfevolve_ds1000_results}.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}\label{tab:cot_selfevolve_ds1000_results}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|c|c|c|c|c|c|c|}
+        \hline
+                                                 & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
+        \multirow{2}{*}{SelfEvolve}              & GPT-35        & 52.83                      & 64.71                        & 73.04                        & 78.06                           & N/A                         & N/A                        & N/A                             \\ \cline{2-9}
+                                                 & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           & N/A                         & N/A                        & N/A                             \\ \hline
+        \multirow{6}{*}{\textit{CoT-SelfEvolve}} & GPT-35        & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \cline{2-9}
+                                                 & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  \\ \cline{2-9}
+                                                 & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           \\ \cline{2-9}
+                                                 & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           \\ \cline{2-9}
+                                                 & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           \\ \cline{2-9}
+                                                 & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           \\ \hline
+        \end{tabular}%
+    }
+\end{table}
 
 \chapter{Conclusion}
 The above is a study on the topic of \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging errors in software code is a challenging task, as traditional methods rely heavily on manual effort and domain expertise. However, recent advances in large language models provide new opportunities for automated debugging.
