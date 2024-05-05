@@ -389,8 +389,6 @@ In the context of a master's thesis, the author proposes to limit the scope of t
 
     \item The dataset utilized is DS-1000~\cite{pmlr-v202-lai23b}, which primarily addresses problems related to Python data science, excluding errors in more generic software such as Java or other programming languages.
 
-    \item The chosen LLM is Azure OpenAI ChatGPT Turbo 3.5.
-
     \item The goal is to develop a system based on CoT prompting and code evolution framework that can effectively resolve bugs in Python data science problems.
 \end{itemize}
 
@@ -543,7 +541,7 @@ In light of the inherent challenges associated with the correction process durin
 
 While the efficacy of self-correction strategies in refining text generation tasks is evident, it is imperative to acknowledge their dependence on robust, large-scale LLMs capable of assimilating feedback for effective refinement. It is noteworthy that smaller, open-source models encounter challenges in refining output, even when furnished with accurate feedback, as underscored by Madaan et al.~\cite{madaan2023selfrefine}.
 
-Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the CoT prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, exemplified by ChatGPT, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{troubleshooting discussion} from StackOverflow and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
+Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the CoT prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{troubleshooting discussion} from StackOverflow and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
 
 \begin{figure}[!htb]
     \centering
@@ -788,48 +786,12 @@ The objective of this research is to augment the capabilities of SelfEvolve by i
 
 \chapter{Proposed Solutions}
 \section{Reference}
-The primary reference for this master's thesis is the SelfEvolve framework, which we aim to enhance. The formal formulation of this framework is as follows:
+The principal reference for this master's thesis is the SelfEvolve framework, the enhancement of which is the main objective. The formal formulation of this framework is presented as follows:
 
 \subsection{Framework Structure}
-SelfEvolve, a model that facilitates the progressive evolution of generated code using only a LLM without any learning requirements, improves both steps of the process. Like prior research, SelfEvolve generates code conditioned on the knowledge embedded in the prompt. However, this knowledge is produced by the LLM rather than being drawn from external knowledge bases. After the first step's output is obtained, SelfEvolve employs the LLM to iteratively revise the generated code. This procedure, following the method of Chen et al.~\cite{chen2023teaching}, corrects code errors by leveraging feedback from a code executor, eliminating the need for specific test cases.
+SelfEvolve, a framework that facilitates the progressive evolution of generated code using only a LLM without any learning requirements, improves both steps of the process. Like prior research, SelfEvolve generates code conditioned on the knowledge embedded in the prompt. However, this knowledge is produced by the LLM rather than being drawn from external knowledge bases. After the first step's output is obtained, SelfEvolve employs the LLM to iteratively revise the generated code. This procedure, following the method of Chen et al.~\cite{chen2023teaching}, corrects code errors by leveraging feedback from a code executor, eliminating the need for specific test cases.
 
-Language models generate knowledge by conditioning on the knowledge in the prompt, a crucial but challenging task. Given $m$ knowledge items $K[1 . . m]$, the language model predicts the next token to generate the final code solution:
-
-\begin{equation}
-    P(Y \mid K)=\prod_{i=1 . . n} p_{\theta}\left(Y_{i} \mid Y_{<i}, X, K\right), Y_{<1}=\emptyset
-\end{equation}
-
-Knowledge can be retrieved through a sparse retriever~\cite{robertson1994some} or a dense retriever~\cite{reimers2019sentence, gao2021simcse} as follows:
-
-\begin{equation}
-    K:=\arg \max _{K \subset B} P(K \mid X, B)
-\end{equation}
-
-where $B$ represents the entire database. Nevertheless, the performance of existing retriever models may be restricted, resulting in $K$ containing irrelevant knowledge items that introduce noise to LLM and degrade the generation results. A common strategy to mitigate this issue involves retrieving as much knowledge as possible~\cite{borgeaud2022improving} to cover the necessary items. However, this approach places demands on the LLM's ability to process lengthy texts, an area still under development~\cite{li2023context}.
-
-For a more precise and convenient acquisition of the necessary knowledge, we leverage language models as sources of knowledge, prompting them to generate information. Large language models, after being pre-trained on a range of corpora, have encoded knowledge from multiple databases into their parameters~\cite{geva2020transformer}. Furthermore, models that have undergone reinforcement learning from human feedback (RLHF)~\cite{ouyang2022training} can adhere to human instructions, acting as organic sources of knowledge and providing diverse knowledge based on appropriate input instructions. In light of this, we suggest the use of self-generated knowledge, which is obtained by prompting LLMs as follows:
-
-\begin{equation}
-    p(K)=\prod_{i=1 . . k} p_{\theta}\left(K_{i} \mid X, K_{<i}\right), K_{<1}=\emptyset
-\end{equation}
-
-where $k$ is the length of the generated knowledge tokens. When problem descriptions, such as those in StackOverflow~\cite{pmlr-v202-lai23b}, contain implicit intents, there often exists a gap between the detailed knowledge required and the language used to describe the problem. This gap emerges because the derivation of required knowledge necessitates reasoning. To close this reasoning gap and extract more accurate knowledge, we decompose this extraction process when intents are implicitly stated:
-
-\begin{equation}
-    p(K)=\prod_{i=1 . . k} p_{\theta}\left(K_{i} \mid c, K_{<i}\right) \cdot p_{\theta}(c \mid X), K_{<1}=\emptyset
-\end{equation}
-
-where $c$ is a preliminary code solution from LLM based solely on problem contexts. It encapsulates necessary but potentially misapplied knowledge that can aid in the extraction of knowledge $(K) . K$ can be formatted to any problem-specific structure to align with the problem instruction $X$, making it adaptable for various tasks. When problem descriptions $X$ contain explicit intents, SELfEvolve employs Eq. 4, as LLM can extract knowledge with high precision in this scenario.
-
-Amendment of generated solution Prior research has indicated that intermediate results produced by LLM may contain errors~\cite{lyu2023faithful, wang2022self, wei2022chain, zhang2022automatic}. Such errors can add noise to the prompt context, diminishing the accuracy of the final output. To minimize code errors, we simulate the debugging process of programmers and introduce an iterative self-refinement mechanism to correct the faulty code. This mechanism employs an external Python interpreter to amend erroneous programs. Our method integrates code context and sample test cases into the input prompt, together with the generated code solution, to construct an executable program. We then run this program in a sandbox environment to gather error information and standard output. Upon obtaining error information, we prompt language models to revise the faulty programs, conditioned on both program requirements and error information:
-
-\begin{equation}
-    P\left(Y^{\prime} \mid X, Y, K, e\right)=p_{\theta}\left(Y^{\prime} \mid X, Y, e\right) \cdot p_{\theta}(Y \mid X, K)
-\end{equation}
-
-The revised output, $Y^{\prime}$, might still contain bugs. Therefore, the above process is reiterated until the code can be interpreted without exceptions, or until the iteration steps reach a preset limit. In practical applications, the modeling of $p_{\theta}\left(Y^{\prime} \mid X, Y, e\right)$ differs based on the type of error. For simplicity, SELfEvolve only corrects API errors and incorrect assertion statements. We find that rectifying these two types of errors significantly enhances performance in empirical experiments.
-
-To conclude, Jiang et al.~\cite{jiang2023selfevolve} amalgamate two LLM-driven methods \- generation based on self-generated knowledge and refinement via error messages \- to devise a more efficient method known as SelfEvolve. These two components mutually reinforce each other almost orthogonally. On one hand, self-generated knowledge enhances self-refinement steps. By conditioning on knowledge from models' parameters, intermediate output explicitly applies the knowledge. With a more accurate output, the self-refinement steps need fewer iterations to fix the code, thereby reducing the difficulty. On the other hand, the self-refinement steps enhance the application of generated knowledge. The input knowledge may contain irrelevant information or noise during the generation process. The self-refinement steps remove this noise by introducing an external interpreter, enhancing the overall quality of the generated code. Subsequent empirical experiments will illustrate how these two modules mutually reinforce each other.
+In a nutshell, Jiang et al.~\cite{jiang2023selfevolve} amalgamate two LLM-driven methods: generation based on self-generated knowledge and refinement via error messages to devise a more efficient method known as SelfEvolve. These two components mutually reinforce each other almost orthogonally. On one hand, self-generated knowledge enhances self-refinement steps. By conditioning on knowledge from models' parameters, intermediate output explicitly applies the knowledge. With a more accurate output, the self-refinement steps need fewer iterations to fix the code, thereby reducing the difficulty. On the other hand, the self-refinement steps enhance the application of generated knowledge. The input knowledge may contain irrelevant information or noise during the generation process. The self-refinement steps remove this noise by introducing an external interpreter, enhancing the overall quality of the generated code. Subsequent empirical experiments will illustrate how these two modules mutually reinforce each other.
 
 \begin{figure}[!htb]
     \centering
@@ -838,7 +800,7 @@ To conclude, Jiang et al.~\cite{jiang2023selfevolve} amalgamate two LLM-driven m
 \end{figure}
 
 \subsection{Evaluation Strategy}
-In the foundational work of SelfEvolve, the team defines the metric $\text{pass@1}$ as the proportion of unit tests that are successfully executed on the first attempt, allowing for additional iterations solely for syntax correction. However, this metric is somewhat inflexible as it does not specify the total number of iterations the LLM is allowed to attempt to solve the problem. Moreover, it does not assure that only syntax errors are addressed.
+In the foundational work of SelfEvolve, the team defines the metric $\text{pass@1}$ as the proportion of unit tests that are successfully executed on the first attempt, allowing for additional iterations solely for syntax correction. However, this metric is somewhat inflexible as it does not specify the total number of iterations the LLM is allowed to attempt to solve the problem.
 
 In light of these limitations, this study introduces an alternative metric to assess the model's performance. The novel metric, termed $\text{pass@n}$, where $n$ represents the maximum number of iterations permitted for the model to resolve the problem. This metric is defined as the proportion of unit tests that are correctly executed after $k$ attempts as long as $k \leq n$. This metric offers greater flexibility and enables a more realistic evaluation of the model's performance.
 
@@ -856,7 +818,7 @@ StackOverflow serves as a comprehensive resource for programmers worldwide, prov
 As depicted in Figure~\ref{fig:stackoverflow}, the platform hosts a wealth of questions and answers, providing a rich source of data for generating LLM prompts.
 
 \subsubsection{Data Collection}
-A substantial data dump from StackOverflow was procured from the Stack Exchange Data Dump (https://archive.org/details/stackexchange). After filtering out posts related to specific libraries such as `matplotlib', `pandas', `numpy', `scipy', `seaborn', `sklearn', `tensorflow', and `pytorch', a total of 558,402 posts and 972,513 related comments remained. This refined dataset proves invaluable for guiding LLMs in generating CoT prompts.
+A substantial data dump from StackOverflow was procured from the Stack Exchange Data Dump (https://archive.org/details/stackexchange). After filtering out posts related to specific libraries such as `matplotlib', `pandas', `numpy', `scipy', `seaborn', `sklearn', `tensorflow', and `pytorch', a total of \textbf{558,402 posts} and \textbf{972,513 related comments} remained. This refined dataset proves invaluable for guiding LLMs in generating CoT prompts.
 
 \subsubsection{Generate Embeddings}
 The original XML-formatted data, which includes each post and its associated comments, undergoes a comprehensive cleansing process to make it suitable for use. Once cleaned, these elements are structured into a document of the following format:
@@ -898,6 +860,7 @@ In the SelfEvolve paper, it is explicitly stated that the model primarily relies
 
 The architecture of SelfEvolve is illustrated in Figure~\ref{fig:selfevolve_architecture}, while the architecture of the enhanced model, CoT-SelfEvolve, is portrayed in Figure~\ref{fig:cot_selfdebug_architecture}, featuring the subsequent enhancements:
 
+\newpage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{img/selfevolve_architecture}
@@ -930,7 +893,7 @@ The motivation behind improving code generation using a combination of CoT and a
 \begin{enumerate}
     \item Firstly, CoT allows for the decomposition of complex coding tasks into manageable steps, making the process more interpretable and debuggable.
     \item Secondly, the incorporation of StackOverflow discussions provides a rich and evolving source of real-world programming knowledge, allowing the model to stay current with the latest programming trends and challenges.
-    \item Lastly, the use of an LLM to learn from these discussions and generate prompts ensures that the process is dynamic and adaptable, capable of handling a wide range of programming problems.
+    \item Lastly, the use of a LLM to learn from these discussions and generate prompts ensures that the process is dynamic and adaptable, capable of handling a wide range of programming problems.
 \end{enumerate}
 
 This fusion of techniques aims to harness the strengths of CoT prompting and the practical insights from StackOverflow to significantly enhance the performance of code generation models.
@@ -941,6 +904,12 @@ The Auto CoT Prompt Generator 1, as depicted in Figure~\ref{fig:cot_generator_1}
 This module takes as input a specially composed document, which is a synthesis of the problem description and a relevant discussion from StackOverflow. The role of the Auto CoT Prompt Generator 1 is to analyze the discussion in the context of the problem, extracting key insights, common solutions, and potential pitfalls. It then uses this analysis to generate a series of step-by-step guidelines for solving the problem. These guidelines essentially form a chain-of-thought prompt, breaking down the complex problem into a series of smaller, more manageable tasks.
 
 The generated guidelines are then fed into the second component of the architecture, the Initial Code Generator. This component is another LLM model, but its task is to take the step-by-step guidelines and translate them into code. It leverages the CoT prompt to generate code solutions that are not only accurate, but also in line with the best practices and solutions discussed on StackOverflow.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/cot_generator_1}
+    \caption{Architecture of Auto CoT Prompt Generator 1.}\label{fig:cot_generator_1}
+\end{figure}
 
 The prompt to combine the problem description and StackOverflow discussion is formatted as follows:
 
@@ -956,12 +925,6 @@ The prompt to combine the problem description and StackOverflow discussion is fo
     - Final suggestion: [...]
 \end{lstlisting}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{img/cot_generator_1}
-    \caption{Architecture of Auto CoT Prompt Generator 1.}\label{fig:cot_generator_1}
-\end{figure}
-
 \subsection{Automatic CoT Prompt Generator 2}
 \subsubsection{Motivation}
 Drawing from the foundational principles of the CoT prompting technique, it is observed that feedback from syntax checkers or code executors can sometimes be too comprehensive for the model to effectively process. This feedback often encompasses a vast array of information, including error messages, standard output, and other intricate details, which can prove challenging for the model to interpret accurately. To address this complexity, the concept of employing an LLM model to generate a CoT prompt that poses salient questions for another LLM to use in code generation is proposed. This approach enables the model to adapt to the dynamic nature of programming problems, thereby generating code that is more precise and contextually relevant.
@@ -969,9 +932,13 @@ Drawing from the foundational principles of the CoT prompting technique, it is o
 The key questions that the model should consider to guide the code generation process include:
 \begin{enumerate}
     \item What is the problem and what does it require?
+
     \item What are the input and output formats?
+
     \item How does the current problem relate to the defined problem?
+
     \item What are the differences between the current state and the desired outcome? Are additional imports necessary? Is there a need to create our own test cases?
+
     \item What is the error message? What is the expected output?
 \end{enumerate}
 
@@ -986,7 +953,7 @@ The Auto CoT Prompt Generator 2, as depicted in Figure~\ref{fig:cot_generator_2}
 
 \subsection{Results and Discussions}
 \subsubsection{Main Results}
-In an extensive system test involving various LLMs such as GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were found to be quite encouraging. The CoT-SelfEvolve model, with GPT-4 as the base LLM, demonstrated a superior performance over the original SelfEvolve model in addressing Pytorch, Sklearn, and Matplotlib questions. However, a slight underperformance was observed with Scipy questions. While the original SelfEvolve study did not disclose results for Pandas, Numpy, and Tensorflow, a comparison of various LLMs with CoT-SelfEvolve yielded remarkable results, especially with GPT-4. These findings are summarized and displayed in Table~\ref{tab:cot_selfevolve_ds1000_results}.
+In a comprehensive system test encompassing a variety of LLMs including GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were significantly promising. The CoT-SelfEvolve model, employing GPT-4 as the base LLM, outperformed the original SelfEvolve model in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear superiority. Despite a minor setback observed with Scipy questions, the overall performance remained impressive. Even though the original SelfEvolve study did not provide results for Pandas, Numpy, and Tensorflow, when compared with various LLMs, CoT-SelfEvolve achieved outstanding results, notably with GPT-4. These remarkable findings are concisely compiled and presented in Table~\ref{tab:cot_selfevolve_ds1000_results}.
 
 \begin{table}[H]
     \caption{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}\label{tab:cot_selfevolve_ds1000_results}
@@ -1023,12 +990,12 @@ While the CoT-SelfEvolve generally delivers remarkable results when operating wi
     \end{tabular}
 \end{table}
 
-The performance enhancement brought about by the CoT prompt generators is evident when compared to the non-CoT prompt version, with a relative gain of 16.39\%. This finding highlights the significance of CoT prompt generators in augmenting the efficacy of the CoT-SelfEvolve model.
+The performance enhancement brought about by the CoT prompt generators is evident when compared to the non-CoT prompt version, with a relative gain of \textbf{16.39\%}. This finding highlights the significance of CoT prompt generators in augmenting the efficacy of the CoT-SelfEvolve model.
 
-Furthermore, the differential impact of the two prompt generators is noteworthy. The first CoT prompt generator, which employs human discussions from StackOverflow to propose a step-by-step guideline, contributes to a relative performance improvement of 13.77\%. In contrast, the second CoT prompt generator, which formulates suggestions based on feedback from the syntax checker or code executor, accounts for a relative gain of 6.56\%. This outcome suggests a more pivotal role for the first CoT prompt generator in amplifying the performance of the CoT-SelfEvolve model.
+Furthermore, the differential impact of the two prompt generators is noteworthy. The first CoT prompt generator, which employs human discussions from StackOverflow to propose a step-by-step guideline, contributes to a relative performance improvement of \textbf{13.77\%}. In contrast, the second CoT prompt generator, which formulates suggestions based on feedback from the syntax checker or code executor, accounts for a relative gain of \textbf{6.56\%}. This outcome suggests a more pivotal role for the first CoT prompt generator in amplifying the performance of the CoT-SelfEvolve model.
 
 \subsubsubsection{Using larger LLM to guide the code generation process}
-Driven by the understanding that the activation of large LLMs, such as GPT-4 or Claude 3, is quite costly, particularly when multiple runs of the self-correction code generator are permitted, we embarked on an experiment to assess the effect of utilizing a large LLM to steer the code generation process while employing a smaller LLM for actual code production. The findings of this study are depicted in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_2}. It's clear that the use of a larger LLM to guide the code generation process can notably augment the model's performance, evidenced by a relative gain of 11.26\%.
+Motivated by the understanding that employing large LLMs, such as GPT-4 or Claude 3, can be costly, especially when multiple runs of the self-correction code generator are permitted, an experiment was conducted to evaluate the impact of using a large LLM to guide the code generation process while deploying a smaller LLM for actual code production. The results of this study are illustrated in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_2}. The data clearly shows that leveraging a larger LLM to steer the code generation process can significantly enhance the model's performance, as evidenced by a relative gain of \textbf{11.26\%}.
 
 \begin{table}[H]
     \caption{$\text{Pass@5}$ results on the DS-1000 dataset with different LLM stacks. (\%)}\label{tab:cot_selfevolve_ds1000_results_ablation_2}
@@ -1037,14 +1004,20 @@ Driven by the understanding that the activation of large LLMs, such as GPT-4 or 
         \begin{tabular}{|l|c|c|c|c|c|c|c|}
             \hline
             Configuration            & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
-            GPT-3.5 CoT + Code       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \hline
+            GPT-3.5 CoT + GPT-3.5 Code       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \hline
             GPT-4 CoT + GPT-3.5 Code & 37.74                      & 83.82                        & 73.04                        & 35.48                           & 31.62                       & 19.55                      & 53.33                           \\ \hline
         \end{tabular}%
     }
 \end{table}
 
 \chapter{Conclusion}
-The above is a study on the topic of \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging errors in software code is a challenging task, as traditional methods rely heavily on manual effort and domain expertise. However, recent advances in large language models provide new opportunities for automated debugging.
+This study presents a comprehensive examination of the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging software code is a challenging task, traditionally dependent on extensive manual effort and domain expertise. However, the advent of large language models opens new avenues for automated debugging.
+
+\section{Achievements}
+The CoT-SelfEvolve model, which leverages the power of large language models such as GPT-4, exhibits superior performance in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear advancement over the original SelfEvolve model. The study also reveals that the CoT-SelfEvolve model performs impressively when compared with various LLMs, particularly with GPT-4, on tasks involving Pandas, Numpy, and Tensorflow. Furthermore, the ablation study confirms the significant contribution of the CoT prompt generators to the model's performance, with a notable relative gain of \textbf{16.39\%}. The differential impact of the two prompt generators also sheds light on their individual importance in the overall system. Lastly, the study uncovers the potential of using a larger LLM to guide the code generation process, which results in a significant performance boost, as evidenced by a relative gain of \textbf{11.26\%}.
+
+\section{Things to Improve}
+Despite the promising results, there are areas that warrant further investigation. The study reveals a minor underperformance of the model with Scipy questions, indicating room for improvement in handling such tasks. Additionally, the effects of parameters of the LLM, such as temperature, on the model's performance have not been thoroughly explored and could be a fruitful area for future research. Finally, the optimal number of discussions from StackOverflow that should be used for the CoT prompt generator is still an open question. Diving deeper into these areas could lead to further enhancements of the CoT-SelfEvolve model and, consequently, more efficient and effective automated debugging.
 
 \newpage
 \appendix
