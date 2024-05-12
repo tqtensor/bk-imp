@@ -307,9 +307,9 @@
         {\fontsize{12pt}{1}  Assoc.\ Prof.\ Huynh Tuong Nguyen}\\
         {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
         {\fontsize{12pt}{1}  Examiner 1:}\\
-        {\fontsize{12pt}{1}  Dr.\ A}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
         {\fontsize{12pt}{1}  Examiner 2:}\\
-        {\fontsize{12pt}{1}  Dr.\ B}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
         }
     \end{flushleft}
 
@@ -343,14 +343,14 @@
         \begin{flushleft}
             {\fontsize{8pt}{1}\textbf{CHAIR OF THESIS COMMITTEE}}\\[0.1cm]
             {\fontsize{8pt}{1}\textbf{}}\\[1cm]
-            {\fontsize{8pt}{1} Assoc.\ Prof.\ X}
+            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
         \end{flushleft}
     \end{minipage}
     \begin{minipage}[t]{0.55\textwidth}
         \begin{flushleft}
             {\fontsize{8pt}{1}\textbf{DEAN OF FACULTY OF}}\\[0.1cm]
             {\fontsize{8pt}{1}\textbf{COMPUTER SCIENCE AND ENGINEERING}}\\[1cm]
-            {\fontsize{8pt}{1} Assoc.\ Prof.\ Y}
+            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
         \end{flushleft}
     \end{minipage}
 
@@ -904,6 +904,14 @@ In light of these limitations, this study introduces an alternative metric to as
 
 \section{Dataset}
 \subsection{\text{DS-1000}}
+DS-1000~\cite{pmlr-v202-lai23b} serves as a benchmark for code generation, encompassing a thousand data science problems across seven Python libraries, including NumPy and Pandas. Distinct from prior works, DS-1000's problems are diverse, realistic, and practical, as they are collected from StackOverflow. The automated evaluation is highly reliable, with only 1.8\% of all Codex-002-predicted solutions accepted by our evaluation system being incorrect. This accuracy is ensured through multi-criteria metrics, which check functional correctness by running test cases and surface form constraints by limiting API usages or keywords. To mitigate potential memorization, we've modified more than half of the DS-1000 problems from their original StackOverflow versions, including 152 surface perturbations, 235 semantic perturbations, and 162 complex rewrites. This alteration prevents models from correctly answering them by simply recalling the solutions from pre-training. The current leading public system, Codex-002, achieves an accuracy of 43.3\%, suggesting considerable room for improvement.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/ds1000_example}
+    \caption{An example problem of Matplotlib.}\label{fig:ds1000_example}
+\end{figure}
+
 \subsection{StackOverflow}
 StackOverflow serves as a comprehensive resource for programmers worldwide, providing an extensive repository of knowledge on various programming languages, libraries, and frameworks. This platform facilitates discussions among developers, allowing them to share insights and potential solutions to coding challenges. The discussions and queries on this platform have been utilized to generate CoT prompts for LLMs in the proposed solutions.
 
@@ -956,7 +964,7 @@ Refer to Appendix~\ref{app:stackoverflow_doc} for an example of the generated do
 \section{Proposed Enhancements}
 In the SelfEvolve paper, it is explicitly stated that the model primarily relies on feedback from the code executor to refine the generated code. However, there exist additional potential feedback sources that could be harnessed to bolster the model's performance. This study seeks to investigate the integration of the CoT prompting method and the inclusion of human discussions.
 
-The architecture of SelfEvolve is illustrated in Figure~\ref{fig:selfevolve_architecture}, while the architecture of the enhanced model, CoT-SelfEvolve, is portrayed in Figure~\ref{fig:cot_selfdebug_architecture}, featuring the subsequent enhancements:
+The architecture of SelfEvolve is illustrated in Figure~\ref{fig:selfevolve_architecture}, while the architecture of the enhanced model, CoT-SelfEvolve, is portrayed in Figure~\ref{fig:cot_selfevolve_architecture}, featuring the subsequent enhancements:
 
 \newpage
 \begin{figure}[H]
@@ -967,8 +975,8 @@ The architecture of SelfEvolve is illustrated in Figure~\ref{fig:selfevolve_arch
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{img/cot_selfdebug_architecture}
-    \caption{Architecture of CoT-SelfEvolve with Auto-CoT prompt generators.}\label{fig:cot_selfdebug_architecture}
+    \includegraphics[width=1.0\textwidth]{img/cot_selfevolve_architecture}
+    \caption{Architecture of CoT-SelfEvolve with Auto-CoT prompt generators.}\label{fig:cot_selfevolve_architecture}
 \end{figure}
 
 \begin{enumerate}
