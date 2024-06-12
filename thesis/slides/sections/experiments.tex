@@ -18,17 +18,17 @@
     \begin{table}[H]
         \caption*{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}
         \resizebox{\textwidth}{!}{%
-            \begin{tabular}{|l|l|c|c|c|c|c|c|c|}
+            \begin{tabular}{|l|l|c|c|c|c|c|c|c|c|}
                 \hline
-                                                         & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
-                \multirow{2}{*}{SelfEvolve}              & GPT-3.5       & 52.83                      & 64.71                        & 73.04                        & 78.06                           & N/A                         & N/A                        & N/A                             \\ \cline{2-9}
-                                                         & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           & N/A                         & N/A                        & N/A                             \\ \hline
-                \multirow{6}{*}{\textit{CoT-SelfEvolve}} & GPT-3.5       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \cline{2-9}
-                                                         & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  \\ \cline{2-9}
-                                                         & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           \\ \cline{2-9}
-                                                         & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           \\ \cline{2-9}
-                                                         & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           \\ \cline{2-9}
-                                                         & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           \\ \hline
+                                                & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{PyTorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{TensorFlow} & \multicolumn{1}{l|}{Overall} \\ \hline
+                \multirow{2}{*}{SelfEvolve}     & GPT-3.5       & 52.83                      & 64.71                        & 73.04                        & 78.06                           &                             &                            &                                 & \multicolumn{1}{l|}{}        \\ \cline{2-10}
+                                                & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           &                             &                            &                                 & \multicolumn{1}{l|}{}        \\ \hline
+                \multirow{6}{*}{CoT-SelfEvolve} & GPT-3.5       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           & 35.5                         \\ \cline{2-10}
+                                                & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  & \textbf{83.8}                \\ \cline{2-10}
+                                                & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           & 68.7                         \\ \cline{2-10}
+                                                & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           & 53.7                         \\ \cline{2-10}
+                                                & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           & 59.2                         \\ \cline{2-10}
+                                                & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           & 45.5                         \\ \hline
             \end{tabular}%
         }
     \end{table}
@@ -39,15 +39,16 @@
 
     \begin{table}[H]
         \caption*{$\text{Pass@5}$ results on the DS-1000 dataset w or w/o CoT prompts. (\%)}
-        \centering
-        \begin{tabular}{|c|c|c|c|}
-            \hline
-            Configuration & \begin{tabular}[c]{@{}c@{}}Initial\\ Code Generator\end{tabular} & \begin{tabular}[c]{@{}c@{}}Self-Correcting\\ Code Generator\end{tabular} & \multicolumn{1}{l|}{Overall} \\ \hline
-            1             & GPT-3.5                                                          & GPT-3.5                                                                  & 30.52                        \\ \hline
-            2             & GPT-3.5 + CoT                                                    & GPT-3.5                                                                  & 34.73                        \\ \hline
-            3             & GPT-3.5                                                          & GPT-3.5 + CoT                                                            & 32.52                        \\ \hline
-            4             & GPT-3.5 + CoT                                                    & GPT-3.5 + CoT                                                            & 35.51                        \\ \hline
-        \end{tabular}
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+                \hline
+                Auto-CoT 1 & Auto-CoT 2 & Scipy & PyTorch & Sklearn & Matplotlib & Pandas & Numpy & TensorFlow & Overall \\ \hline
+                off        & off        & 33.02 & 64.71   & 59.13   & 26.45      & 23.02  & 14.09 & 42.22      & 30.5    \\ \hline
+                on         & off        & 28.3  & 75      & 63.48   & 29.68      & 29.21  & 17.27 & 51.11      & 34.6    \\ \hline
+                on         & on         & 32.08 & 72.06   & 66.09   & 32.26      & 29.55  & 17.73 & 46.67      & 35.5    \\ \hline
+                off        & on         & 23.58 & 66.18   & 53.91   & 29.68      & 30.24  & 18.18 & 42.22      & 32.4    \\ \hline
+            \end{tabular}%
+        }
     \end{table}
 \end{frame}
 
@@ -58,11 +59,11 @@
         \caption*{$\text{Pass@5}$ results on the DS-1000 dataset with different LLM stacks. (\%)}
         \centering
         \resizebox{\columnwidth}{!}{%
-            \begin{tabular}{|l|c|c|c|c|c|c|c|}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
                 \hline
-                Configuration              & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
-                GPT-3.5 CoT + GPT-3.5 Code & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \hline
-                GPT-4 CoT + GPT-3.5 Code   & 37.74                      & 83.82                        & 73.04                        & 35.48                           & 31.62                       & 19.55                      & 53.33                           \\ \hline
+                CoT LLM & Code LLM & Scipy & PyTorch & Sklearn & Matplotlib & Pandas & Numpy & TensorFlow & Overall \\ \hline
+                GPT-3.5 & GPT-3.5  & 32.08 & 72.06   & 66.09   & 32.26      & 29.55  & 17.73 & 46.67      & 35.5    \\ \hline
+                GPT-4   & GPT-3.5  & 37.74 & 83.82   & 73.04   & 35.48      & 31.62  & 19.55 & 53.33      & 39.5    \\ \hline
             \end{tabular}%
         }
     \end{table}
