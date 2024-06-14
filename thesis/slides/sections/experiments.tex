@@ -1,7 +1,7 @@
 \section{Experiments and Results}
 
 \begin{frame}{Experiments}
-    Three types of experiments were conducted, each involving a single pass through 1000 problems due to cost constraints.
+    Four types of experiments were conducted, each involving a single pass through 1000 problems due to cost constraints.
 
     \begin{enumerate}
         \item \textbf{Full System:} The CoT-SelfEvolve model was evaluated alongside six different Language Learning Models (LLMs), including GPT-3.5-turbo, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B.
@@ -9,6 +9,8 @@
         \item \textbf{Auto-CoT Generators:} The functionality of Auto-CoT generators was toggled on and off to examine their impact on the performance of CoT-SelfEvolve.
 
         \item \textbf{Large LLM as Teacher:} A large LLM, such as GPT-4, was used for CoT prompt generation, while GPT-3.5-turbo was used for code generation.
+
+        \item \textbf{Auto-CoT with Code LLM:} The initial Auto-CoT prompt generator was evaluated using the specialized code LLM (Llama 3 70B).
     \end{enumerate}
 \end{frame}
 
@@ -67,4 +69,12 @@
             \end{tabular}%
         }
     \end{table}
+\end{frame}
+
+\begin{frame}{Result: Auto-CoT with Code LLM}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\columnwidth]{img/code_llm}
+        \caption*{Comparison of Llama 3 CoT and Zeroshot (without self-correction).}
+    \end{figure}
 \end{frame}
