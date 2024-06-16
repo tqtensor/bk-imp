@@ -40,6 +40,27 @@ ax.set_xticks(index + bar_width / 2)
 ax.set_xticklabels(libraries)
 ax.legend()
 
+# Annotate bars with values
+for bar in bar1:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+    )
+
+for bar in bar2:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+    )
+
 # Save the plot with 300 dpi
 plt.savefig("thesis/slides/img/code_llm.png", dpi=300)
 
