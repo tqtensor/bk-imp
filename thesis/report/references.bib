@@ -6,26 +6,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@inproceedings{akyurek-etal-2023-rl4f,
-  title     = {{RL}4{F}: Generating Natural Language Feedback with Reinforcement Learning for Repairing Model Outputs},
-  author    = {Akyurek, Afra Feyza  and
-               Akyurek, Ekin  and
-               Kalyan, Ashwin  and
-               Clark, Peter  and
-               Wijaya, Derry Tanti  and
-               Tandon, Niket},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.427},
-  doi       = {10.18653/v1/2023.acl-long.427},
-  pages     = {7716--7733},
-  abstract  = {Despite their unprecedented success, even the largest language models make mistakes. Similar to how humans learn and improve using feedback, previous work proposed providing language models with natural language feedback to guide them in repairing their outputs. Because human-generated critiques are expensive to obtain, researchers have devised learned critique generators in lieu of human critics while assuming one can train downstream models to utilize generated feedback. However, this approach does not apply to black-box or limited access models such as ChatGPT, as they cannot be fine-tuned. Moreover, in the era of large general-purpose language agents, fine-tuning is neither computationally nor spatially efficient as it results in multiple copies of the network. In this work, we introduce RL4F (Reinforcement Learning for Feedback), a multi-agent collaborative framework where the critique generator is trained to maximize end-task performance of GPT-3, a fixed model more than 200 times its size. RL4F produces critiques that help GPT-3 revise its outputs. We study three datasets for action planning, summarization and alphabetization and show relative improvements up to 10{\%} in multiple text similarity metrics over other learned, retrieval-augmented or prompting-based critique generators.}
+@article{akyurek2023rl4f,
+  title   = {Rl4f: Generating natural language feedback with reinforcement learning for repairing model outputs},
+  author  = {Aky{\"u}rek, Afra Feyza and Aky{\"u}rek, Ekin and Madaan, Aman and Kalyan, Ashwin and Clark, Peter and Wijaya, Derry and Tandon, Niket},
+  journal = {arXiv preprint arXiv:2305.08844},
+  year    = {2023}
 }
 @article{askell2021general,
   title   = {A general language assistant as a laboratory for alignment},
@@ -45,29 +30,25 @@
   journal = {arXiv preprint arXiv:1409.0473},
   year    = {2014}
 }
-@misc{bai2022constitutional,
-  title         = {Constitutional AI: Harmlessness from AI Feedback},
-  author        = {Yuntao Bai and Saurav Kadavath and Sandipan Kundu and Amanda Askell and Jackson Kernion and Andy Jones and Anna Chen and Anna Goldie and Azalia Mirhoseini and Cameron McKinnon and Carol Chen and Catherine Olsson and Christopher Olah and Danny Hernandez and Dawn Drain and Deep Ganguli and Dustin Li and Eli Tran-Johnson and Ethan Perez and Jamie Kerr and Jared Mueller and Jeffrey Ladish and Joshua Landau and Kamal Ndousse and Kamile Lukosuite and Liane Lovitt and Michael Sellitto and Nelson Elhage and Nicholas Schiefer and Noemi Mercado and Nova DasSarma and Robert Lasenby and Robin Larson and Sam Ringer and Scott Johnston and Shauna Kravec and Sheer El Showk and Stanislav Fort and Tamera Lanham and Timothy Telleen-Lawton and Tom Conerly and Tom Henighan and Tristan Hume and Samuel R. Bowman and Zac Hatfield-Dodds and Ben Mann and Dario Amodei and Nicholas Joseph and Sam McCandlish and Tom Brown and Jared Kaplan},
-  year          = {2022},
-  eprint        = {2212.08073},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{bai2022constitutional,
+  title   = {Constitutional ai: Harmlessness from ai feedback},
+  author  = {Bai, Yuntao and Kadavath, Saurav and Kundu, Sandipan and Askell, Amanda and Kernion, Jackson and Jones, Andy and Chen, Anna and Goldie, Anna and Mirhoseini, Azalia and McKinnon, Cameron and others},
+  journal = {arXiv preprint arXiv:2212.08073},
+  year    = {2022}
 }
-@misc{bai2022training,
-  title         = {Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback},
-  author        = {Yuntao Bai and Andy Jones and Kamal Ndousse and Amanda Askell and Anna Chen and Nova DasSarma and Dawn Drain and Stanislav Fort and Deep Ganguli and Tom Henighan and Nicholas Joseph and Saurav Kadavath and Jackson Kernion and Tom Conerly and Sheer El-Showk and Nelson Elhage and Zac Hatfield-Dodds and Danny Hernandez and Tristan Hume and Scott Johnston and Shauna Kravec and Liane Lovitt and Neel Nanda and Catherine Olsson and Dario Amodei and Tom Brown and Jack Clark and Sam McCandlish and Chris Olah and Ben Mann and Jared Kaplan},
-  year          = {2022},
-  eprint        = {2204.05862},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{bai2022training,
+  title   = {Training a helpful and harmless assistant with reinforcement learning from human feedback},
+  author  = {Bai, Yuntao and Jones, Andy and Ndousse, Kamal and Askell, Amanda and Chen, Anna and DasSarma, Nova and Drain, Dawn and Fort, Stanislav and Ganguli, Deep and Henighan, Tom and others},
+  journal = {arXiv preprint arXiv:2204.05862},
+  year    = {2022}
 }
-@misc{brown2020language,
-  title         = {Language Models are Few-Shot Learners},
-  author        = {Tom B. Brown and Benjamin Mann and Nick Ryder and Melanie Subbiah and Jared Kaplan and Prafulla Dhariwal and Arvind Neelakantan and Pranav Shyam and Girish Sastry and Amanda Askell and Sandhini Agarwal and Ariel Herbert-Voss and Gretchen Krueger and Tom Henighan and Rewon Child and Aditya Ramesh and Daniel M. Ziegler and Jeffrey Wu and Clemens Winter and Christopher Hesse and Mark Chen and Eric Sigler and Mateusz Litwin and Scott Gray and Benjamin Chess and Jack Clark and Christopher Berner and Sam McCandlish and Alec Radford and Ilya Sutskever and Dario Amodei},
-  year          = {2020},
-  eprint        = {2005.14165},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{brown2020language,
+  title   = {Language models are few-shot learners},
+  author  = {Brown, Tom and Mann, Benjamin and Ryder, Nick and Subbiah, Melanie and Kaplan, Jared D and Dhariwal, Prafulla and Neelakantan, Arvind and Shyam, Pranav and Sastry, Girish and Askell, Amanda and others},
+  journal = {Advances in neural information processing systems},
+  volume  = {33},
+  pages   = {1877--1901},
+  year    = {2020}
 }
 @misc{chang2023learning,
   title         = {Learning to Generate Better Than Your LLM},
@@ -85,13 +66,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.SE}
 }
-@misc{chen2021evaluating,
-  title         = {Evaluating Large Language Models Trained on Code},
-  author        = {Mark Chen and Jerry Tworek and Heewoo Jun and Qiming Yuan and Henrique Ponde de Oliveira Pinto and Jared Kaplan and Harri Edwards and Yuri Burda and Nicholas Joseph and Greg Brockman and Alex Ray and Raul Puri and Gretchen Krueger and Michael Petrov and Heidy Khlaaf and Girish Sastry and Pamela Mishkin and Brooke Chan and Scott Gray and Nick Ryder and Mikhail Pavlov and Alethea Power and Lukasz Kaiser and Mohammad Bavarian and Clemens Winter and Philippe Tillet and Felipe Petroski Such and Dave Cummings and Matthias Plappert and Fotios Chantzis and Elizabeth Barnes and Ariel Herbert-Voss and William Hebgen Guss and Alex Nichol and Alex Paino and Nikolas Tezak and Jie Tang and Igor Babuschkin and Suchir Balaji and Shantanu Jain and William Saunders and Christopher Hesse and Andrew N. Carr and Jan Leike and Josh Achiam and Vedant Misra and Evan Morikawa and Alec Radford and Matthew Knight and Miles Brundage and Mira Murati and Katie Mayer and Peter Welinder and Bob McGrew and Dario Amodei and Sam McCandlish and Ilya Sutskever and Wojciech Zaremba},
-  year          = {2021},
-  eprint        = {2107.03374},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.LG}
+@article{chen2021evaluating,
+  title   = {Evaluating large language models trained on code},
+  author  = {Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Ponde de Oliveira and Kaplan, Jared and Edwards, Harri and Burda, Yuri and Joseph, Nicholas and Brockman, Greg and others},
+  journal = {arXiv preprint arXiv:2107.03374},
+  year    = {2021}
 }
 @misc{chen2022codet,
   title         = {CodeT: Code Generation with Generated Tests},
@@ -284,13 +263,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@misc{ganguli2023capacity,
-  title         = {The Capacity for Moral Self-Correction in Large Language Models},
-  author        = {Deep Ganguli and Amanda Askell and Nicholas Schiefer and Thomas I. Liao and Kamilė Lukošiūtė and Anna Chen and Anna Goldie and Azalia Mirhoseini and Catherine Olsson and Danny Hernandez and Dawn Drain and Dustin Li and Eli Tran-Johnson and Ethan Perez and Jackson Kernion and Jamie Kerr and Jared Mueller and Joshua Landau and Kamal Ndousse and Karina Nguyen and Liane Lovitt and Michael Sellitto and Nelson Elhage and Noemi Mercado and Nova DasSarma and Oliver Rausch and Robert Lasenby and Robin Larson and Sam Ringer and Sandipan Kundu and Saurav Kadavath and Scott Johnston and Shauna Kravec and Sheer El Showk and Tamera Lanham and Timothy Telleen-Lawton and Tom Henighan and Tristan Hume and Yuntao Bai and Zac Hatfield-Dodds and Ben Mann and Dario Amodei and Nicholas Joseph and Sam McCandlish and Tom Brown and Christopher Olah and Jack Clark and Samuel R. Bowman and Jared Kaplan},
-  year          = {2023},
-  eprint        = {2302.07459},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{ganguli2023capacity,
+  title   = {The capacity for moral self-correction in large language models},
+  author  = {Ganguli, Deep and Askell, Amanda and Schiefer, Nicholas and Liao, Thomas I and Luko{\v{s}}i{\=u}t{\.e}, Kamil{\.e} and Chen, Anna and Goldie, Anna and Mirhoseini, Azalia and Olsson, Catherine and Hernandez, Danny and others},
+  journal = {arXiv preprint arXiv:2302.07459},
+  year    = {2023}
 }
 @misc{gao2023continually,
   title         = {Continually Improving Extractive QA via Human Feedback},
@@ -316,13 +293,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@misc{glaese2022improving,
-  title         = {Improving alignment of dialogue agents via targeted human judgements},
-  author        = {Amelia Glaese and Nat McAleese and Maja Trebacz and John Aslanides and Vlad Firoiu and Timo Ewalds and Maribeth Rauh and Laura Weidinger and Martin Chadwick and Phoebe Thacker and Lucy Campbell-Gillingham and Jonathan Uesato and Po-Sen Huang and Ramona Comanescu and Fan Yang and Abigail See and Sumanth Dathathri and Rory Greig and Charlie Chen and Doug Fritz and Jaume Sanchez Elias and Richard Green and Sona Mokra and Nicholas Fernando and Boxi Wu and Rachel Foley and Susannah Young and Iason Gabriel and William Isaac and John Mellor and Demis Hassabis and Koray Kavukcuoglu and Lisa Anne Hendricks and Geoffrey Irving},
-  year          = {2022},
-  eprint        = {2209.14375},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.LG}
+@article{glaese2022improving,
+  title   = {Improving alignment of dialogue agents via targeted human judgements},
+  author  = {Glaese, Amelia and McAleese, Nat and Tr{\k{e}}bacz, Maja and Aslanides, John and Firoiu, Vlad and Ewalds, Timo and Rauh, Maribeth and Weidinger, Laura and Chadwick, Martin and Thacker, Phoebe and others},
+  journal = {arXiv preprint arXiv:2209.14375},
+  year    = {2022}
 }
 @misc{goldstein2023generative,
   title         = {Generative Language Models and Automated Influence Operations: Emerging Threats and Potential Mitigations},
@@ -440,24 +415,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {stat.ML}
 }
-@inproceedings{jauregi-unanue-etal-2021-berttune,
-  title     = {{BERTT}une: Fine-Tuning Neural Machine Translation with {BERTS}core},
-  author    = {Jauregi Unanue, Inigo  and
-               Parnell, Jacob  and
-               Piccardi, Massimo},
-  editor    = {Zong, Chengqing  and
-               Xia, Fei  and
-               Li, Wenjie  and
-               Navigli, Roberto},
-  booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)},
-  month     = aug,
-  year      = {2021},
-  address   = {Online},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2021.acl-short.115},
-  doi       = {10.18653/v1/2021.acl-short.115},
-  pages     = {915--924},
-  abstract  = {Neural machine translation models are often biased toward the limited translation references seen during training. To amend this form of overfitting, in this paper we propose fine-tuning the models with a novel training objective based on the recently-proposed BERTScore evaluation metric. BERTScore is a scoring function based on contextual embeddings that overcomes the typical limitations of n-gram-based metrics (e.g. synonyms, paraphrases), allowing translations that are different from the references, yet close in the contextual embedding space, to be treated as substantially correct. To be able to use BERTScore as a training objective, we propose three approaches for generating soft predictions, allowing the network to remain completely differentiable end-to-end. Experiments carried out over four, diverse language pairs show improvements of up to 0.58 pp (3.28{\%}) in BLEU score and up to 0.76 pp (0.98{\%}) in BERTScore (F{\_}BERT) when fine-tuning a strong baseline.}
+@article{unanue2021berttune,
+  title   = {BERTTune: Fine-tuning neural machine translation with BERTScore},
+  author  = {Unanue, Inigo Jauregi and Parnell, Jacob and Piccardi, Massimo},
+  journal = {arXiv preprint arXiv:2106.02208},
+  year    = {2021}
 }
 @inproceedings{jung-etal-2022-maieutic,
   title     = {Maieutic Prompting: Logically Consistent Reasoning with Recursive Explanations},
@@ -577,25 +539,11 @@
   month     = dec,
   pages     = {1092–1097}
 }
-@inproceedings{li-etal-2019-deep,
-  title     = {Deep Reinforcement Learning with Distributional Semantic Rewards for Abstractive Summarization},
-  author    = {Li, Siyao  and
-               Lei, Deren  and
-               Qin, Pengda  and
-               Wang, William Yang},
-  editor    = {Inui, Kentaro  and
-               Jiang, Jing  and
-               Ng, Vincent  and
-               Wan, Xiaojun},
-  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
-  month     = nov,
-  year      = {2019},
-  address   = {Hong Kong, China},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/D19-1623},
-  doi       = {10.18653/v1/D19-1623},
-  pages     = {6038--6044},
-  abstract  = {Deep reinforcement learning (RL) has been a commonly-used strategy for the abstractive summarization task to address both the exposure bias and non-differentiable task issues. However, the conventional reward Rouge-L simply looks for exact n-grams matches between candidates and annotated references, which inevitably makes the generated sentences repetitive and incoherent. In this paper, instead of Rouge-L, we explore the practicability of utilizing the distributional semantics to measure the matching degrees. With distributional semantics, sentence-level evaluation can be obtained, and semantically-correct phrases can also be generated without being limited to the surface form of the reference sentences. Human judgments on Gigaword and CNN/Daily Mail datasets show that our proposed distributional semantics reward (DSR) has distinct superiority in capturing the lexical and compositional diversity of natural language.}
+@article{li2019deep,
+  title   = {Deep reinforcement learning with distributional semantic rewards for abstractive summarization},
+  author  = {Li, Siyao and Lei, Deren and Qin, Pengda and Wang, William Yang},
+  journal = {arXiv preprint arXiv:1909.00141},
+  year    = {2019}
 }
 @inproceedings{li-etal-2023-making,
   title     = {Making Language Models Better Reasoners with Step-Aware Verifier},
@@ -651,23 +599,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.LG}
 }
-@inproceedings{liu-liu-2021-simcls,
-  title     = {{S}im{CLS}: A Simple Framework for Contrastive Learning of Abstractive Summarization},
-  author    = {Liu, Yixin  and
-               Liu, Pengfei},
-  editor    = {Zong, Chengqing  and
-               Xia, Fei  and
-               Li, Wenjie  and
-               Navigli, Roberto},
-  booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)},
-  month     = aug,
-  year      = {2021},
-  address   = {Online},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2021.acl-short.135},
-  doi       = {10.18653/v1/2021.acl-short.135},
-  pages     = {1065--1072},
-  abstract  = {In this paper, we present a conceptually simple while empirically powerful framework for abstractive summarization, SimCLS, which can bridge the gap between the learning objective and evaluation metrics resulting from the currently dominated sequence-to-sequence learning framework by formulating text generation as a reference-free evaluation problem (i.e., quality estimation) assisted by contrastive learning. Experimental results show that, with minor modification over existing top-scoring systems, SimCLS can improve the performance of existing top-performing models by a large margin. Particularly, 2.51 absolute improvement against BART and 2.50 over PEGASUS w.r.t ROUGE-1 on the CNN/DailyMail dataset, driving the state-of-the-art performance to a new level. We have open-sourced our codes and results: \url{https://github.com/yixinL7/SimCLS}. Results of our proposed models have been deployed into ExplainaBoard platform, which allows researchers to understand our systems in a more fine-grained way.}
+@article{liu2021simcls,
+  title   = {SimCLS: A simple framework for contrastive learning of abstractive summarization},
+  author  = {Liu, Yixin and Liu, Pengfei},
+  journal = {arXiv preprint arXiv:2106.01890},
+  year    = {2021}
 }
 @article{liu2018generating,
   title   = {Generating wikipedia by summarizing long sequences},
@@ -713,24 +649,11 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@inproceedings{madaan-etal-2022-memory,
-  title     = {Memory-assisted prompt editing to improve {GPT}-3 after deployment},
-  author    = {Madaan, Aman  and
-               Tandon, Niket  and
-               Clark, Peter  and
-               Yang, Yiming},
-  editor    = {Goldberg, Yoav  and
-               Kozareva, Zornitsa  and
-               Zhang, Yue},
-  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing},
-  month     = dec,
-  year      = {2022},
-  address   = {Abu Dhabi, United Arab Emirates},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2022.emnlp-main.183},
-  doi       = {10.18653/v1/2022.emnlp-main.183},
-  pages     = {2833--2861},
-  abstract  = {Large LMs such as GPT-3 are powerful, but can commit mistakes that are obvious to humans. For example, GPT-3 would mistakenly interpret {``}What word is similar to good?{''} to mean a homophone, while the user intended a synonym. Our goal is to effectively correct such errors via user interactions with the system but without retraining, which will be prohibitively costly. We pair GPT-3 with a growing memory of recorded cases where the model misunderstood the user{'}s intents, along with user feedback for clarification. Such a memory allows our system to produce enhanced prompts for any new query based on the user feedback for error correction on similar cases in the past. On four tasks (two lexical tasks, two advanced ethical reasoning tasks), we show how a (simulated) user can interactively teach a deployed GPT-3, substantially increasing its accuracy over the queries with different kinds of misunderstandings by the GPT-3. Our approach is a step towards the low-cost utility enhancement for very large pre-trained LMs.}
+@article{madaan2022memory,
+  title   = {Memory-assisted prompt editing to improve gpt-3 after deployment},
+  author  = {Madaan, Aman and Tandon, Niket and Clark, Peter and Yang, Yiming},
+  journal = {arXiv preprint arXiv:2201.06009},
+  year    = {2022}
 }
 @misc{madaan2022language,
   title         = {Language Models of Code are Few-Shot Commonsense Learners},
@@ -740,13 +663,12 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@misc{madaan2023selfrefine,
-  title         = {Self-Refine: Iterative Refinement with Self-Feedback},
-  author        = {Aman Madaan and Niket Tandon and Prakhar Gupta and Skyler Hallinan and Luyu Gao and Sarah Wiegreffe and Uri Alon and Nouha Dziri and Shrimai Prabhumoye and Yiming Yang and Shashank Gupta and Bodhisattwa Prasad Majumder and Katherine Hermann and Sean Welleck and Amir Yazdanbakhsh and Peter Clark},
-  year          = {2023},
-  eprint        = {2303.17651},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{madaan2024self,
+  title   = {Self-refine: Iterative refinement with self-feedback},
+  author  = {Madaan, Aman and Tandon, Niket and Gupta, Prakhar and Hallinan, Skyler and Gao, Luyu and Wiegreffe, Sarah and Alon, Uri and Dziri, Nouha and Prabhumoye, Shrimai and Yang, Yiming and others},
+  journal = {Advances in Neural Information Processing Systems},
+  volume  = {36},
+  year    = {2024}
 }
 @misc{mehrabi2023flirt,
   title         = {FLIRT: Feedback Loop In-context Red Teaming},
@@ -793,21 +715,19 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@misc{openai2023gpt4,
-  title         = {GPT-4 Technical Report},
-  author        = {OpenAI and : and Josh Achiam and Steven Adler and Sandhini Agarwal and Lama Ahmad and Ilge Akkaya and Florencia Leoni Aleman and Diogo Almeida and Janko Altenschmidt and Sam Altman and Shyamal Anadkat and Red Avila and Igor Babuschkin and Suchir Balaji and Valerie Balcom and Paul Baltescu and Haiming Bao and Mo Bavarian and Jeff Belgum and Irwan Bello and Jake Berdine and Gabriel Bernadett-Shapiro and Christopher Berner and Lenny Bogdonoff and Oleg Boiko and Madelaine Boyd and Anna-Luisa Brakman and Greg Brockman and Tim Brooks and Miles Brundage and Kevin Button and Trevor Cai and Rosie Campbell and Andrew Cann and Brittany Carey and Chelsea Carlson and Rory Carmichael and Brooke Chan and Che Chang and Fotis Chantzis and Derek Chen and Sully Chen and Ruby Chen and Jason Chen and Mark Chen and Ben Chess and Chester Cho and Casey Chu and Hyung Won Chung and Dave Cummings and Jeremiah Currier and Yunxing Dai and Cory Decareaux and Thomas Degry and Noah Deutsch and Damien Deville and Arka Dhar and David Dohan and Steve Dowling and Sheila Dunning and Adrien Ecoffet and Atty Eleti and Tyna Eloundou and David Farhi and Liam Fedus and Niko Felix and Simón Posada Fishman and Juston Forte and Isabella Fulford and Leo Gao and Elie Georges and Christian Gibson and Vik Goel and Tarun Gogineni and Gabriel Goh and Rapha Gontijo-Lopes and Jonathan Gordon and Morgan Grafstein and Scott Gray and Ryan Greene and Joshua Gross and Shixiang Shane Gu and Yufei Guo and Chris Hallacy and Jesse Han and Jeff Harris and Yuchen He and Mike Heaton and Johannes Heidecke and Chris Hesse and Alan Hickey and Wade Hickey and Peter Hoeschele and Brandon Houghton and Kenny Hsu and Shengli Hu and Xin Hu and Joost Huizinga and Shantanu Jain and Shawn Jain and Joanne Jang and Angela Jiang and Roger Jiang and Haozhun Jin and Denny Jin and Shino Jomoto and Billie Jonn and Heewoo Jun and Tomer Kaftan and Łukasz Kaiser and Ali Kamali and Ingmar Kanitscheider and Nitish Shirish Keskar and Tabarak Khan and Logan Kilpatrick and Jong Wook Kim and Christina Kim and Yongjik Kim and Hendrik Kirchner and Jamie Kiros and Matt Knight and Daniel Kokotajlo and Łukasz Kondraciuk and Andrew Kondrich and Aris Konstantinidis and Kyle Kosic and Gretchen Krueger and Vishal Kuo and Michael Lampe and Ikai Lan and Teddy Lee and Jan Leike and Jade Leung and Daniel Levy and Chak Ming Li and Rachel Lim and Molly Lin and Stephanie Lin and Mateusz Litwin and Theresa Lopez and Ryan Lowe and Patricia Lue and Anna Makanju and Kim Malfacini and Sam Manning and Todor Markov and Yaniv Markovski and Bianca Martin and Katie Mayer and Andrew Mayne and Bob McGrew and Scott Mayer McKinney and Christine McLeavey and Paul McMillan and Jake McNeil and David Medina and Aalok Mehta and Jacob Menick and Luke Metz and Andrey Mishchenko and Pamela Mishkin and Vinnie Monaco and Evan Morikawa and Daniel Mossing and Tong Mu and Mira Murati and Oleg Murk and David Mély and Ashvin Nair and Reiichiro Nakano and Rajeev Nayak and Arvind Neelakantan and Richard Ngo and Hyeonwoo Noh and Long Ouyang and Cullen O'Keefe and Jakub Pachocki and Alex Paino and Joe Palermo and Ashley Pantuliano and Giambattista Parascandolo and Joel Parish and Emy Parparita and Alex Passos and Mikhail Pavlov and Andrew Peng and Adam Perelman and Filipe de Avila Belbute Peres and Michael Petrov and Henrique Ponde de Oliveira Pinto and Michael and Pokorny and Michelle Pokrass and Vitchyr Pong and Tolly Powell and Alethea Power and Boris Power and Elizabeth Proehl and Raul Puri and Alec Radford and Jack Rae and Aditya Ramesh and Cameron Raymond and Francis Real and Kendra Rimbach and Carl Ross and Bob Rotsted and Henri Roussez and Nick Ryder and Mario Saltarelli and Ted Sanders and Shibani Santurkar and Girish Sastry and Heather Schmidt and David Schnurr and John Schulman and Daniel Selsam and Kyla Sheppard and Toki Sherbakov and Jessica Shieh and Sarah Shoker and Pranav Shyam and Szymon Sidor and Eric Sigler and Maddie Simens and Jordan Sitkin and Katarina Slama and Ian Sohl and Benjamin Sokolowsky and Yang Song and Natalie Staudacher and Felipe Petroski Such and Natalie Summers and Ilya Sutskever and Jie Tang and Nikolas Tezak and Madeleine Thompson and Phil Tillet and Amin Tootoonchian and Elizabeth Tseng and Preston Tuggle and Nick Turley and Jerry Tworek and Juan Felipe Cerón Uribe and Andrea Vallone and Arun Vijayvergiya and Chelsea Voss and Carroll Wainwright and Justin Jay Wang and Alvin Wang and Ben Wang and Jonathan Ward and Jason Wei and CJ Weinmann and Akila Welihinda and Peter Welinder and Jiayi Weng and Lilian Weng and Matt Wiethoff and Dave Willner and Clemens Winter and Samuel Wolrich and Hannah Wong and Lauren Workman and Sherwin Wu and Jeff Wu and Michael Wu and Kai Xiao and Tao Xu and Sarah Yoo and Kevin Yu and Qiming Yuan and Wojciech Zaremba and Rowan Zellers and Chong Zhang and Marvin Zhang and Shengjia Zhao and Tianhao Zheng and Juntang Zhuang and William Zhuk and Barret Zoph},
-  year          = {2023},
-  eprint        = {2303.08774},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{achiam2023gpt,
+  title   = {Gpt-4 technical report},
+  author  = {Achiam, Josh and Adler, Steven and Agarwal, Sandhini and Ahmad, Lama and Akkaya, Ilge and Aleman, Florencia Leoni and Almeida, Diogo and Altenschmidt, Janko and Altman, Sam and Anadkat, Shyamal and others},
+  journal = {arXiv preprint arXiv:2303.08774},
+  year    = {2023}
 }
-@misc{ouyang2022training,
-  title         = {Training language models to follow instructions with human feedback},
-  author        = {Long Ouyang and Jeff Wu and Xu Jiang and Diogo Almeida and Carroll L. Wainwright and Pamela Mishkin and Chong Zhang and Sandhini Agarwal and Katarina Slama and Alex Ray and John Schulman and Jacob Hilton and Fraser Kelton and Luke Miller and Maddie Simens and Amanda Askell and Peter Welinder and Paul Christiano and Jan Leike and Ryan Lowe},
-  year          = {2022},
-  eprint        = {2203.02155},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{ouyang2022training,
+  title   = {Training language models to follow instructions with human feedback},
+  author  = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and others},
+  journal = {Advances in neural information processing systems},
+  volume  = {35},
+  pages   = {27730--27744},
+  year    = {2022}
 }
 @misc{pan2023logiclm,
   title         = {Logic-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning},
@@ -841,20 +761,13 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.SE}
 }
-@inproceedings{pmlr-v202-lai23b,
-  title     = {{DS}-1000: A Natural and Reliable Benchmark for Data Science Code Generation},
-  author    = {Lai, Yuhang and Li, Chengxi and Wang, Yiming and Zhang, Tianyi and Zhong, Ruiqi and Zettlemoyer, Luke and Yih, Wen-Tau and Fried, Daniel and Wang, Sida and Yu, Tao},
-  booktitle = {Proceedings of the 40th International Conference on Machine Learning},
-  pages     = {18319--18345},
-  year      = {2023},
-  editor    = {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
-  volume    = {202},
-  series    = {Proceedings of Machine Learning Research},
-  month     = {23--29 Jul},
-  publisher = {PMLR},
-  pdf       = {https://proceedings.mlr.press/v202/lai23b/lai23b.pdf},
-  url       = {https://proceedings.mlr.press/v202/lai23b.html},
-  abstract  = {We introduce DS-1000, a code generation benchmark with a thousand data science problems spanning seven Python libraries, such as Numpy and Pandas. Compared to prior works, DS-1000 incorporates three core features. First, our problems reflect diverse, realistic, and practical use cases since we collected them from StackOverflow. Second, our automatic evaluation is highly specific (reliable) – across all Codex-002-predicted solutions that our evaluation accepts, only 1.8% of them are incorrect; we achieve this with multi-criteria metrics, checking both functional correctness by running test cases and surface-form constraints by restricting API usages or keywords. Finally, we proactively defend against memorization by slightly modifying our problems to be different from the original StackOverflow source; consequently, models cannot answer them correctly by memorizing the solutions from pre-training. The current best public system (Codex-002) achieves 43.3% accuracy, leaving ample room for improvement. We release our benchmark at https://ds1000-code-gen.github.io.}
+@inproceedings{lai2023ds,
+  title        = {DS-1000: A natural and reliable benchmark for data science code generation},
+  author       = {Lai, Yuhang and Li, Chengxi and Wang, Yiming and Zhang, Tianyi and Zhong, Ruiqi and Zettlemoyer, Luke and Yih, Wen-tau and Fried, Daniel and Wang, Sida and Yu, Tao},
+  booktitle    = {International Conference on Machine Learning},
+  pages        = {18319--18345},
+  year         = {2023},
+  organization = {PMLR}
 }
 @article{press2021train,
   title   = {Train short, test long: Attention with linear biases enables input length extrapolation},
@@ -950,24 +863,11 @@
   year         = {2023},
   howpublished = {Blog post}
 }
-@inproceedings{sellam-etal-2020-bleurt,
-  title     = {{BLEURT}: Learning Robust Metrics for Text Generation},
-  author    = {Sellam, Thibault  and
-               Das, Dipanjan  and
-               Parikh, Ankur},
-  editor    = {Jurafsky, Dan  and
-               Chai, Joyce  and
-               Schluter, Natalie  and
-               Tetreault, Joel},
-  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
-  month     = jul,
-  year      = {2020},
-  address   = {Online},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2020.acl-main.704},
-  doi       = {10.18653/v1/2020.acl-main.704},
-  pages     = {7881--7892},
-  abstract  = {Text generation has made significant advances in the last few years. Yet, evaluation metrics have lagged behind, as the most popular choices (e.g., BLEU and ROUGE) may correlate poorly with human judgment. We propose BLEURT, a learned evaluation metric for English based on BERT. BLEURT can model human judgment with a few thousand possibly biased training examples. A key aspect of our approach is a novel pre-training scheme that uses millions of synthetic examples to help the model generalize. BLEURT provides state-of-the-art results on the last three years of the WMT Metrics shared task and the WebNLG data set. In contrast to a vanilla BERT-based approach, it yields superior results even when the training data is scarce and out-of-distribution.}
+@article{sellam2020bleurt,
+  title   = {BLEURT: Learning robust metrics for text generation},
+  author  = {Sellam, Thibault and Das, Dipanjan and Parikh, Ankur P},
+  journal = {arXiv preprint arXiv:2004.04696},
+  year    = {2020}
 }
 @article{sennrich2015neural,
   title   = {Neural machine translation of rare words with subword units},
@@ -975,64 +875,17 @@
   journal = {arXiv preprint arXiv:1508.07909},
   year    = {2015}
 }
-@article{Shahaf_Horvitz_2010,
-  title        = {Generalized Task Markets for Human and Machine Computation},
-  volume       = {24},
-  url          = {https://ojs.aaai.org/index.php/AAAI/article/view/7652},
-  doi          = {10.1609/aaai.v24i1.7652},
-  abstractnote = { &lt;p&gt; We discuss challenges and opportunities for developing generalized task markets where human and machine intelligence are enlisted to solve problems, based on a consideration of the competencies, availabilities, and pricing of different problem-solving resources. The approach couples human computation with machine learning and planning, and is aimed at optimizing the flow of subtasks to people and to computational problem solvers. We illustrate key ideas in the context of Lingua Mechanica, a project focused on harnessing human and machine translation skills to perform translation among languages. We present infrastructure and methods for enlisting and guiding human and machine computation for language translation, including details about the hardness of generating plans for assigning tasks to solvers. Finally, we discuss studies performed with machine and human solvers, focusing on components of a Lingua Mechanica prototype. &lt;/p&gt; },
-  number       = {1},
-  journal      = {Proceedings of the AAAI Conference on Artificial Intelligence},
-  author       = {Shahaf, Dafna and Horvitz, Eric},
-  year         = {2010},
-  month        = {Jul.},
-  pages        = {986-993}
-}
-@inproceedings{shaikh-etal-2023-second,
-  title     = {On Second Thought, Let{'}s Not Think Step by Step! Bias and Toxicity in Zero-Shot Reasoning},
-  author    = {Shaikh, Omar  and
-               Zhang, Hongxin  and
-               Held, William  and
-               Bernstein, Michael  and
-               Yang, Diyi},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.244},
-  doi       = {10.18653/v1/2023.acl-long.244},
-  pages     = {4454--4470},
-  abstract  = {Generating a Chain of Thought (CoT) has been shown to consistently improve large language model (LLM) performance on a wide range of NLP tasks. However, prior work has mainly focused on logical reasoning tasks (e.g. arithmetic, commonsense QA); it remains unclear whether improvements hold for more diverse types of reasoning, especially in socially situated contexts. Concretely, we perform a controlled evaluation of zero-shot CoT across two socially sensitive domains: harmful questions and stereotype benchmarks. We find that zero-shot CoT reasoning in sensitive domains significantly increases a model{'}s likelihood to produce harmful or undesirable output, with trends holding across different prompt formats and model variants. Furthermore, we show that harmful CoTs increase with model size, but decrease with improved instruction following. Our work suggests that zero-shot CoT should be used with caution on socially important tasks, especially when marginalized groups or sensitive topics are involved.}
-}
 @article{shazeer2020glu,
   title   = {Glu variants improve transformer},
   author  = {Shazeer, Noam},
   journal = {arXiv preprint arXiv:2002.05202},
   year    = {2020}
 }
-@inproceedings{shen-etal-2016-minimum,
-  title     = {Minimum Risk Training for Neural Machine Translation},
-  author    = {Shen, Shiqi  and
-               Cheng, Yong  and
-               He, Zhongjun  and
-               He, Wei  and
-               Wu, Hua  and
-               Sun, Maosong  and
-               Liu, Yang},
-  editor    = {Erk, Katrin  and
-               Smith, Noah A.},
-  booktitle = {Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = aug,
-  year      = {2016},
-  address   = {Berlin, Germany},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/P16-1159},
-  doi       = {10.18653/v1/P16-1159},
-  pages     = {1683--1692}
+@article{shen2015minimum,
+  title   = {Minimum risk training for neural machine translation},
+  author  = {Shen, Shiqi and Cheng, Yong and He, Zhongjun and He, Wei and Wu, Hua and Sun, Maosong and Liu, Yang},
+  journal = {arXiv preprint arXiv:1512.02433},
+  year    = {2015}
 }
 @misc{shinn2023reflexion,
   title         = {Reflexion: Language Agents with Verbal Reinforcement Learning},
@@ -1089,37 +942,17 @@
   journal = {arXiv preprint arXiv:2305.03047},
   year    = {2023}
 }
-@inproceedings{tafjord-etal-2022-entailer,
-  title     = {Entailer: Answering Questions with Faithful and Truthful Chains of Reasoning},
-  author    = {Tafjord, Oyvind  and
-               Dalvi Mishra, Bhavana  and
-               Clark, Peter},
-  editor    = {Goldberg, Yoav  and
-               Kozareva, Zornitsa  and
-               Zhang, Yue},
-  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing},
-  month     = dec,
-  year      = {2022},
-  address   = {Abu Dhabi, United Arab Emirates},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2022.emnlp-main.134},
-  doi       = {10.18653/v1/2022.emnlp-main.134},
-  pages     = {2078--2093},
-  abstract  = {Our goal is a question-answering (QA) system that can show how its answers are implied by its own internal beliefs via a systematic chain of reasoning. Such a capability would allow better understanding of why a model produced the answer it did. Our approach is to recursively combine a trained backward-chainingmodel, capable of generating a set of premises entailing an answer hypothesis, with a verifier that checks that the model itself believes those premises (and the entailment itself) through self-querying. To our knowledge, this is the first system to generate multistep chains that are both faithful (the answer follows from the reasoning) and truthful (the chain reflects the system{'}s own internal beliefs). In evaluation using two different datasets, users judge that a majority (70{\%}+) of generated chains clearly show how an answer follows from a set of facts - substantially better than a high-performance baseline - while preserving answer accuracy. By materializing model beliefs that systematically support an answer, new opportunities arise for understanding the model{'}s system of belief, and diagnosing and correcting its misunderstandings when an answer is wrong.}
-}
 @article{tay2022unifying,
   title   = {Unifying language learning paradigms},
   author  = {Tay, Yi and Dehghani, Mostafa and Tran, Vinh Q and Garcia, Xavier and Bahri, Dara and Schuster, Tal and Zheng, Huaixiu Steven and Houlsby, Neil and Metzler, Donald},
   journal = {arXiv preprint arXiv:2205.05131},
   year    = {2022}
 }
-@misc{thoppilan2022lamda,
-  title         = {LaMDA: Language Models for Dialog Applications},
-  author        = {Romal Thoppilan and Daniel De Freitas and Jamie Hall and Noam Shazeer and Apoorv Kulshreshtha and Heng-Tze Cheng and Alicia Jin and Taylor Bos and Leslie Baker and Yu Du and YaGuang Li and Hongrae Lee and Huaixiu Steven Zheng and Amin Ghafouri and Marcelo Menegali and Yanping Huang and Maxim Krikun and Dmitry Lepikhin and James Qin and Dehao Chen and Yuanzhong Xu and Zhifeng Chen and Adam Roberts and Maarten Bosma and Vincent Zhao and Yanqi Zhou and Chung-Ching Chang and Igor Krivokon and Will Rusch and Marc Pickett and Pranesh Srinivasan and Laichee Man and Kathleen Meier-Hellstern and Meredith Ringel Morris and Tulsee Doshi and Renelito Delos Santos and Toju Duke and Johnny Soraker and Ben Zevenbergen and Vinodkumar Prabhakaran and Mark Diaz and Ben Hutchinson and Kristen Olson and Alejandra Molina and Erin Hoffman-John and Josh Lee and Lora Aroyo and Ravi Rajakumar and Alena Butryna and Matthew Lamm and Viktoriya Kuzmina and Joe Fenton and Aaron Cohen and Rachel Bernstein and Ray Kurzweil and Blaise Aguera-Arcas and Claire Cui and Marian Croak and Ed Chi and Quoc Le},
-  year          = {2022},
-  eprint        = {2201.08239},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
+@article{thoppilan2022lamda,
+  title   = {Lamda: Language models for dialog applications},
+  author  = {Thoppilan, Romal and De Freitas, Daniel and Hall, Jamie and Shazeer, Noam and Kulshreshtha, Apoorv and Cheng, Heng-Tze and Jin, Alicia and Bos, Taylor and Baker, Leslie and Du, Yu and others},
+  journal = {arXiv preprint arXiv:2201.08239},
+  year    = {2022}
 }
 @article{touvron2023llama,
   title   = {Llama 2: Open foundation and fine-tuned chat models},
@@ -1214,14 +1047,6 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@misc{weidinger2021ethical,
-  title         = {Ethical and social risks of harm from Language Models},
-  author        = {Laura Weidinger and John Mellor and Maribeth Rauh and Conor Griffin and Jonathan Uesato and Po-Sen Huang and Myra Cheng and Mia Glaese and Borja Balle and Atoosa Kasirzadeh and Zac Kenton and Sasha Brown and Will Hawkins and Tom Stepleton and Courtney Biles and Abeba Birhane and Julia Haas and Laura Rimell and Lisa Anne Hendricks and William Isaac and Sean Legassick and Geoffrey Irving and Iason Gabriel},
-  year          = {2021},
-  eprint        = {2112.04359},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
-}
 @misc{welleck2022generating,
   title         = {Generating Sequences by Learning to Self-Correct},
   author        = {Sean Welleck and Ximing Lu and Peter West and Faeze Brahman and Tianxiao Shen and Daniel Khashabi and Yejin Choi},
@@ -1254,154 +1079,23 @@
   archiveprefix = {arXiv},
   primaryclass  = {cs.CL}
 }
-@inproceedings{xu-etal-2022-errors,
-  title     = {Not All Errors are Equal: Learning Text Generation Metrics using Stratified Error Synthesis},
-  author    = {Xu, Wenda  and
-               Tuan, Yi-Lin  and
-               Lu, Yujie  and
-               Saxon, Michael  and
-               Li, Lei  and
-               Wang, William Yang},
-  editor    = {Goldberg, Yoav  and
-               Kozareva, Zornitsa  and
-               Zhang, Yue},
-  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2022},
-  month     = dec,
-  year      = {2022},
-  address   = {Abu Dhabi, United Arab Emirates},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2022.findings-emnlp.489},
-  doi       = {10.18653/v1/2022.findings-emnlp.489},
-  pages     = {6559--6574},
-  abstract  = {Is it possible to build a general and automatic natural language generation (NLG) evaluation metric? Existing learned metrics either perform unsatisfactorily or are restricted to tasks where large human rating data is already available. We introduce SESCORE, a model-based metric that is highly correlated with human judgements without requiring human annotation, by utilizing a novel, iterative error synthesis and severity scoring pipeline. This pipeline applies a series of plausible errors to raw text and assigns severity labels by simulating human judgements with entailment. We evaluate SESCORE against existing metrics by comparing how their scores correlate with human ratings. SESCORE outperforms all prior unsupervised metrics on multiple diverse NLG tasks including machine translation, image captioning, and WebNLG text generation. For WMT 20/21En-De and Zh-En, SESCORE improve the average Kendall correlation with human judgement from 0.154 to 0.195. SESCORE even achieves comparable performance to the best supervised metric COMET, despite receiving no human annotated training data.}
-}
-@inproceedings{xu-etal-2023-sescore2,
-  title     = {{SESCORE}2: Learning Text Generation Evaluation via Synthesizing Realistic Mistakes},
-  author    = {Xu, Wenda  and
-               Qian, Xian  and
-               Wang, Mingxuan  and
-               Li, Lei  and
-               Wang, William Yang},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.283},
-  doi       = {10.18653/v1/2023.acl-long.283},
-  pages     = {5166--5183},
-  abstract  = {Is it possible to train a general metric for evaluating text generation quality without human-annotated ratings? Existing learned metrics either perform unsatisfactory across text generation tasks or require human ratings for training on specific tasks. In this paper, we propose SEScore2, a self-supervised approach for training a model-based metric for text generation evaluation. The key concept is to synthesize realistic model mistakes by perturbing sentences retrieved from a corpus. We evaluate SEScore2 and previous methods on four text generation tasks across three languages. SEScore2 outperforms all prior unsupervised metrics on four text generation evaluation benchmarks, with an average Kendall improvement of 0.158. Surprisingly, SEScore2 even outperforms the supervised BLEURT and COMET on multiple text generation tasks.}
-}
 @article{xue2020mt5,
   title   = {mT5: A massively multilingual pre-trained text-to-text transformer},
   author  = {Xue, Linting and Constant, Noah and Roberts, Adam and Kale, Mihir and Al-Rfou, Rami and Siddhant, Aditya and Barua, Aditya and Raffel, Colin},
   journal = {arXiv preprint arXiv:2010.11934},
   year    = {2020}
 }
-@inproceedings{yan-etal-2023-bleurt,
-  title     = {{BLEURT} Has Universal Translations: An Analysis of Automatic Metrics by Minimum Risk Training},
-  author    = {Yan, Yiming  and
-               Wang, Tao  and
-               Zhao, Chengqi  and
-               Huang, Shujian  and
-               Chen, Jiajun  and
-               Wang, Mingxuan},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.297},
-  doi       = {10.18653/v1/2023.acl-long.297},
-  pages     = {5428--5443},
-  abstract  = {Automatic metrics play a crucial role in machine translation. Despite the widespread use of n-gram-based metrics, there has been a recent surge in the development of pre-trained model-based metrics that focus on measuring sentence semantics. However, these neural metrics, while achieving higher correlations with human evaluations, are often considered to be black boxes with potential biases that are difficult to detect. In this study, we systematically analyze and compare various mainstream and cutting-edge automatic metrics from the perspective of their guidance for training machine translation systems. Through Minimum Risk Training (MRT), we find that certain metrics exhibit robustness defects, such as the presence of universal adversarial translations in BLEURT and BARTScore. In-depth analysis suggests two main causes of these robustness deficits: distribution biases in the training datasets, and the tendency of the metric paradigm. By incorporating token-level constraints, we enhance the robustness of evaluation metrics, which in turn leads to an improvement in the performance of machine translation systems. Codes are available at \url{https://github.com/powerpuffpomelo/fairseq_mrt}.}
+@article{yan2023learning,
+  title   = {Learning to simulate natural language feedback for interactive semantic parsing},
+  author  = {Yan, Hao and Srivastava, Saurabh and Tai, Yintao and Wang, Sida I and Yih, Wen-tau and Yao, Ziyu},
+  journal = {arXiv preprint arXiv:2305.08195},
+  year    = {2023}
 }
-@inproceedings{yan-etal-2023-learning,
-  title     = {Learning to Simulate Natural Language Feedback for Interactive Semantic Parsing},
-  author    = {Yan, Hao  and
-               Srivastava, Saurabh  and
-               Tai, Yintao  and
-               Wang, Sida I.  and
-               Yih, Wen-tau  and
-               Yao, Ziyu},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.177},
-  doi       = {10.18653/v1/2023.acl-long.177},
-  pages     = {3149--3170},
-  abstract  = {Interactive semantic parsing based on natural language (NL) feedback, where users provide feedback to correct the parser mistakes, has emerged as a more practical scenario than the traditional one-shot semantic parsing. However, prior work has heavily relied on human-annotated feedback data to train the interactive semantic parser, which is prohibitively expensive and not scalable. In this work, we propose a new task of simulating NL feedback for interactive semantic parsing. We accompany the task with a novel feedback evaluator. The evaluator is specifically designed to assess the quality of the simulated feedback, based on which we decide the best feedback simulator from our proposed variants. On a text-to-SQL dataset, we show that our feedback simulator can generate high-quality NL feedback to boost the error correction ability of a specific parser. In low-data settings, our feedback simulator can help achieve comparable error correction performance as trained using the costly, full set of human annotations.}
-}
-@inproceedings{yang-etal-2022-generating,
-  title     = {Generating Natural Language Proofs with Verifier-Guided Search},
-  author    = {Yang, Kaiyu  and
-               Deng, Jia  and
-               Chen, Danqi},
-  editor    = {Goldberg, Yoav  and
-               Kozareva, Zornitsa  and
-               Zhang, Yue},
-  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing},
-  month     = dec,
-  year      = {2022},
-  address   = {Abu Dhabi, United Arab Emirates},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2022.emnlp-main.7},
-  doi       = {10.18653/v1/2022.emnlp-main.7},
-  pages     = {89--105},
-  abstract  = {Reasoning over natural language is a challenging problem in NLP. In this work, we focus on proof generation: Given a hypothesis and a set of supporting facts, the model generates a proof tree indicating how to derive the hypothesis from supporting facts. Compared to generating the entire proof in one shot, stepwise generation can better exploit the compositionality and generalize to longer proofs but has achieved limited success on real-world data. Existing stepwise methods struggle to generate proof steps that are both logically valid and relevant to the hypothesis. Instead, they tend to hallucinate invalid steps given the hypothesis. In this paper, we present a novel stepwise method, NLProofS (Natural Language Proof Search), which learns to generate relevant steps conditioning on the hypothesis. At the core of our approach, we train an independent verifier to check the validity of the proof steps to prevent hallucination. Instead of generating steps greedily, we search for proofs maximizing a global proof score judged by the verifier. NLProofS achieves state-of-the-art performance on EntailmentBank and RuleTaker. Specifically, it improves the correctness of predicted proofs from 27.7{\%} to 33.3{\%} in the distractor setting of EntailmentBank, demonstrating the effectiveness of NLProofS in generating challenging human-authored proofs.}
-}
-@inproceedings{yang-etal-2022-re3,
-  title     = {Re3: Generating Longer Stories With Recursive Reprompting and Revision},
-  author    = {Yang, Kevin  and
-               Tian, Yuandong  and
-               Peng, Nanyun  and
-               Klein, Dan},
-  editor    = {Goldberg, Yoav  and
-               Kozareva, Zornitsa  and
-               Zhang, Yue},
-  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing},
-  month     = dec,
-  year      = {2022},
-  address   = {Abu Dhabi, United Arab Emirates},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2022.emnlp-main.296},
-  doi       = {10.18653/v1/2022.emnlp-main.296},
-  pages     = {4393--4479},
-  abstract  = {We consider the problem of automatically generating longer stories of over two thousand words. Compared to prior work on shorter stories, long-range plot coherence and relevance are more central challenges here. We propose the Recursive Reprompting and Revision framework (Re3) to address these challenges by (a) prompting a general-purpose language model to construct a structured overarching plan, and (b) generating story passages by repeatedly injecting contextual information from both the plan and current story state into a language model prompt. We then revise by (c) reranking different continuations for plot coherence and premise relevance, and finally (d) editing the best continuation for factual consistency. Compared to similar-length stories generated directly from the same base model, human evaluators judged substantially more of Re3{'}s stories as having a coherent overarching plot (by 14{\%} absolute increase), and relevant to the given initial premise (by 20{\%}).}
-}
-@inproceedings{yang-klein-2021-fudge,
-  title     = {{FUDGE}: Controlled Text Generation With Future Discriminators},
-  author    = {Yang, Kevin  and
-               Klein, Dan},
-  editor    = {Toutanova, Kristina  and
-               Rumshisky, Anna  and
-               Zettlemoyer, Luke  and
-               Hakkani-Tur, Dilek  and
-               Beltagy, Iz  and
-               Bethard, Steven  and
-               Cotterell, Ryan  and
-               Chakraborty, Tanmoy  and
-               Zhou, Yichao},
-  booktitle = {Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies},
-  month     = jun,
-  year      = {2021},
-  address   = {Online},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2021.naacl-main.276},
-  doi       = {10.18653/v1/2021.naacl-main.276},
-  pages     = {3511--3535},
-  abstract  = {We propose Future Discriminators for Generation (FUDGE), a flexible and modular method for controlled text generation. Given a pre-existing model G for generating text from a distribution of interest, FUDGE enables conditioning on a desired attribute a (for example, formality) while requiring access only to G{'}s output logits. FUDGE learns an attribute predictor operating on a partial sequence, and uses this predictor{'}s outputs to adjust G{'}s original probabilities. We show that FUDGE models terms corresponding to a Bayesian decomposition of the conditional distribution of G given attribute a. Moreover, FUDGE can easily compose predictors for multiple desired attributes. We evaluate FUDGE on three tasks {---} couplet completion in poetry, topic control in language generation, and formality change in machine translation {---} and observe gains in all three tasks.}
+@article{yang2021fudge,
+  title   = {FUDGE: Controlled text generation with future discriminators},
+  author  = {Yang, Kevin and Klein, Dan},
+  journal = {arXiv preprint arXiv:2104.05218},
+  year    = {2021}
 }
 @misc{yao2023tree,
   title         = {Tree of Thoughts: Deliberate Problem Solving with Large Language Models},
@@ -1472,28 +1166,11 @@
   journal = {arXiv preprint arXiv:2303.18223},
   year    = {2023}
 }
-@inproceedings{zhu-etal-2023-solving,
-  title     = {Solving Math Word Problems via Cooperative Reasoning induced Language Models},
-  author    = {Zhu, Xinyu  and
-               Wang, Junjie  and
-               Zhang, Lin  and
-               Zhang, Yuxiang  and
-               Huang, Yongfeng  and
-               Gan, Ruyi  and
-               Zhang, Jiaxing  and
-               Yang, Yujiu},
-  editor    = {Rogers, Anna  and
-               Boyd-Graber, Jordan  and
-               Okazaki, Naoaki},
-  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  month     = jul,
-  year      = {2023},
-  address   = {Toronto, Canada},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2023.acl-long.245},
-  doi       = {10.18653/v1/2023.acl-long.245},
-  pages     = {4471--4485},
-  abstract  = {Large-scale pre-trained language models (PLMs) bring new opportunities to challenging problems, especially those that need high-level intelligence, such as the math word problem (MWPs). However, directly applying existing PLMs to MWPs can fail as the generation process lacks sufficient supervision and thus lacks fast adaptivity as humans. We notice that human reasoning has a dual reasoning framework that consists of an immediate reaction system (system 1) and a delicate reasoning system (system 2), where the entire reasoning is determined by their interaction. This inspires us to develop a cooperative reasoning-induced PLM for solving MWPs, called Cooperative Reasoning (CoRe), resulting in a human-like reasoning architecture with system 1 as the generator and system 2 as the verifier. In our approach, the generator is responsible for generating reasoning paths, and the verifiers are used to supervise the evaluation in order to obtain reliable feedback for the generator. We evaluate our CoRe framework on several mathematical reasoning datasets and achieve decent improvement over state-of-the-art methods, up to 9.6{\%} increase over best baselines.}
+@article{zhu2022solving,
+  title   = {Solving math word problems via cooperative reasoning induced language models},
+  author  = {Zhu, Xinyu and Wang, Junjie and Zhang, Lin and Zhang, Yuxiang and Huang, Yongfeng and Gan, Ruyi and Zhang, Jiaxing and Yang, Yujiu},
+  journal = {arXiv preprint arXiv:2210.16257},
+  year    = {2022}
 }
 @article{ziegler2019fine,
   title   = {Fine-tuning language models from human preferences},
