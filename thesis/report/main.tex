@@ -1,0 +1,1226 @@
+\documentclass[a4paper,oneside]{book}
+
+\usepackage[english]{babel}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage[square,numbers]{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage{a4wide}
+\usepackage{amsbsy}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{footnote}
+\usepackage{geometry}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hhline}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage{lastpage}
+\usepackage{latexsym}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{pgfplots}
+\usepackage{pictex}
+\usepackage{pifont}
+\usepackage{rotating}
+\usepackage{scrextend}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{tikz-timing}[2014/10/29]
+\usepackage{tikz}
+\usepackage{tocloft}
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+\changefontsizes[12pt]{12pt}
+
+\definecolor{lightgray}{gray}{0.9}
+
+\bibliographystyle{ieeetr}
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{.5em}
+
+\usetikztiminglibrary[rising arrows]{clockarrows}
+\usetikzlibrary{arrows,backgrounds,patterns,snakes}
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc}
+
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+\captionsetup[figure]{labelfont={small,bf},textfont={small,it},belowskip=-1pt,aboveskip=7pt}
+% space remove between caption, figure, and text
+\captionsetup[table]{labelfont={small,bf},textfont={small,it},belowskip=-1pt,aboveskip=7pt}
+% space remove between caption, table, and text
+\newcommand{\myarrow}[1][1cm]{\mathrel{%
+		\vcenter{\hbox{\rule[-1.5\fontdimen8\textfont3]{#1}{\fontdimen8\textfont3}}}%
+		\mkern-4mu\hbox{\usefont{U}{lasy}{m}{n}\symbol{41}}}}
+\newcommand{\inlinecode}[2]{\colorbox{lightgray}{\lstinline[language=#1] $#2$}}
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
+
+% the following is needed for syntax highlighting
+\fboxsep=3\fboxsep
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{01,0,0.82}
+
+\lstset{ %
+    language=[Sharp]C,              % the language of the code
+    basicstyle=\tt\footnotesize,    % the size of the fonts that are used for the code
+    numbers=left,                   % where to put the line-numbers
+    numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+    stepnumber=2,                   % the step between two line-numbers. If it's 1, each line
+                                                                    % will be numbered
+    numbersep=5pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    frame=single,                   % adds a frame around the code
+    rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=2,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    breaklines=true,                % sets automatic line breaking
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                    % also try caption instead of title
+    keywordstyle=\color{blue},      % keyword style
+    commentstyle=\color{dkgreen},   % comment style
+    stringstyle=\color{mauve},      % string literal style
+    morekeywords={*, \ldots},       % if you want to add more keywords to the set
+}
+
+
+\newcommand*\colourcheck[1]{%
+    \expandafter\newcommand\csname #1check\endcsname{\textcolor{#1}{\ding{51}}}%
+}
+\colourcheck{blue}
+\colourcheck{green}
+\colourcheck{red}
+
+\NewDocumentCommand{\busref}{som}{\texttt{%
+    #3%
+    \IfValueTF{#2}{[#2]}{}%
+    \IfBooleanTF{#1}{\#}{}%
+}}
+
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+
+\addtolength{\oddsidemargin}{0.6cm}
+\addtolength{\evensidemargin}{1.25cm}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[L]{
+\begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{img/hcmut_bw}}
+    \end{picture}
+	\begin{tabular}{l}
+		\textbf{\bf \ttfamily Ho Chi Minh University of Technology}\\
+		\textbf{\bf \ttfamily Faculty of Computer Science and Engineering}
+	\end{tabular}
+\end{tabular}
+}
+\fancyhead[R]{
+	\begin{tabular}{l}
+		\tiny \bf \\
+		\tiny \bf
+	\end{tabular}  }
+\fancyfoot{} % clear all footer fields
+
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\renewcommand{\baselinestretch}{1.5}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\makeatletter
+\newcounter {subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection .\@alph\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+                                    {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                    {1.5ex \@plus .2ex}%
+                                    {\normalfont\normalsize\bfseries}}
+\newcommand*\l@subsubsubsection{\@dottedtocline{3}{10.0em}{4.1em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+\makeatother
+
+\newcommand{\fancyfootnotetext}[2]{%
+    \fancypagestyle{dingens}{%
+    \fancyfoot[LO,RE]{\parbox{12cm}{\footnotemark[#1]\footnotesize #2}}%
+    }%
+    \thispagestyle{dingens}%
+}
+
+\newcommand{\listhistogramname}{\large{List of chart}}
+\newlistof{histogram}{exp}{\listhistogramname}
+\newcommand{\histogram}[1]{%
+\refstepcounter{histogram}
+\par\noindent\textbf{Histogram \thehistogram. #1}
+\addcontentsline{exp}{histogram}
+{\protect\numberline{\thehistogram}#1}\par}
+
+\begin{document}
+
+\begin{titlepage}
+    \thispagestyle{empty}
+    \usetikzlibrary{calc}
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw [line width=3pt]
+        ($ (current page.north west) + (2.0cm,-2.0cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.5cm,1.8cm) $);
+        \draw [line width=1pt]
+        ($ (current page.north west) + (2.15cm,-2.15cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.65cm,1.95cm) $);
+    \end{tikzpicture}
+
+    \begin{center}
+        \begin{large}
+            {\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}} \\
+            \fontsize{12pt}{1}\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
+            \fontsize{12pt}{1}\textbf{Faculty of Computer Science and Engineering}
+        \end{large} \\
+        \textbf{--------------------  *  ---------------------}\\
+
+        \vspace{0.8cm}
+        \includegraphics[scale=.35]{img/hcmut}\\
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
+
+        \vspace{0.8cm}
+        {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}\\[.75cm]
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1} Major: Computer Science}\\[.2cm]
+
+        \vspace{0.2cm}
+        {\fontsize{14.4pt}{1} Major code: 8480101}\\[.2cm]
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1}\selectfont \textbf{MASTER'S THESIS}}
+    \end{center}
+
+    \vspace{1.0cm}
+
+    \hspace{.5cm}
+
+    \begin{center}
+        {{\fontsize{12pt}{1} Ho Chi Minh City, May 2024}}
+    \end{center}
+\end{titlepage}
+
+\newpage
+\begin{titlepage}
+    \thispagestyle{empty}
+    \usetikzlibrary{calc}
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw [line width=3pt]
+        ($ (current page.north west) + (2.0cm,-2.0cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.5cm,1.8cm) $);
+        \draw [line width=1pt]
+        ($ (current page.north west) + (2.15cm,-2.15cm) $)
+        rectangle
+        ($ (current page.south east) + (-1.65cm,1.95cm) $);
+    \end{tikzpicture}
+
+    \begin{center}
+        \begin{large}
+            {\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}} \\
+            \fontsize{12pt}{1}\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
+            \fontsize{12pt}{1}\textbf{Faculty of Computer Science and Engineering}
+        \end{large} \\
+        \textbf{--------------------  *  ---------------------}\\
+
+        \vspace{0.8cm}
+        \includegraphics[scale=.35]{img/hcmut}\\
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
+
+        \vspace{0.8cm}
+        {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}\\[.75cm]
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1} Major: Computer Science}\\[.2cm]
+
+        \vspace{0.2cm}
+        {\fontsize{14.4pt}{1} Major code: 8480101}\\[.2cm]
+
+        \vspace{0.8cm}
+        {\fontsize{14.4pt}{1}\selectfont \textbf{MASTER'S THESIS}}
+    \end{center}
+
+    \vspace{1.0cm}
+
+    \hspace{.5cm}
+
+    \begin{center}
+        {{\fontsize{12pt}{1} Ho Chi Minh City, May 2024}}
+    \end{center}
+\end{titlepage}
+
+\newpage
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        \draw[line width=0.5pt] ($(current page.north west) + (2cm,-2cm) $) rectangle ($(current page.south east) + (-1.5cm,1.8cm) $);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\fontsize{12pt}{1}\textbf{THIS THESIS IS COMPLETED AT}} \\
+        \fontsize{12pt}{1}\textbf{HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY -\ VNU-HCM}
+    \end{center}
+
+    \vspace{0.2cm}
+
+    \begin{flushleft}
+        {
+        {\fontsize{12pt}{1}  Supervisor:}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Huynh Tuong Nguyen}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
+        {\fontsize{12pt}{1}  Examiner 1:}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
+        {\fontsize{12pt}{1}  Examiner 2:}\\
+        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
+        }
+    \end{flushleft}
+
+    \vspace{0.2cm}
+
+    \begin{center}
+        {\fontsize{12pt}{1} This master's thesis is defended at HCM City University of Technology,}\\
+        {\fontsize{12pt}{1} VNU- HCM City on \ldots\ldots\ldots}\\[0.2cm]
+    \end{center}
+
+    \vspace{0.1cm}
+
+    \begin{flushleft}
+        {{\fontsize{12}{1} Master's Thesis Committee:}}
+        \begin{enumerate}
+            \item \ldots\ldots\ldots\ldots\ldots\ldots
+            \item \ldots\ldots\ldots\ldots\ldots\ldots
+            \item \ldots\ldots\ldots\ldots\ldots\ldots
+            \item \ldots\ldots\ldots\ldots\ldots\ldots
+            \item \ldots\ldots\ldots\ldots\ldots\ldots
+        \end{enumerate}
+
+        \vspace{0.1cm}
+
+        {{\fontsize{12}{1} Approval of the Chair of Master's Thesis Committee and Dean of Faculty of Computer Science and Engineering after the thesis being corrected (If any).}}
+    \end{flushleft}
+
+    \vspace{0.1cm}
+
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{flushleft}
+            {\fontsize{8pt}{1}\textbf{CHAIR OF THESIS COMMITTEE}}\\[0.1cm]
+            {\fontsize{8pt}{1}\textbf{}}\\[1cm]
+            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.55\textwidth}
+        \begin{flushleft}
+            {\fontsize{8pt}{1}\textbf{DEAN OF FACULTY OF}}\\[0.1cm]
+            {\fontsize{8pt}{1}\textbf{COMPUTER SCIENCE AND ENGINEERING}}\\[1cm]
+            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
+        \end{flushleft}
+    \end{minipage}
+
+    \vskip0pt plus1fill
+\end{titlepage}
+
+\newpage
+\begin{titlepage}
+    \begin{center}
+        \large\bf ACKNOWLEDGEMENTS
+    \end{center}
+    The completion of this thesis was made possible by the significant support I received from numerous individuals. I am deeply grateful to my primary supervisors, \textbf{Assoc.\ Prof.\ Quan Thanh Tho} and \textbf{Assoc.\ Prof.\ Huynh Tuong Nguyen}. Their guidance, provision of resources, and continuous monitoring of this topic's progress were invaluable. They were always ready to help when I faced challenges. Above all, their passion for machine learning, deep learning, natural language processing, and various other aspects of Computer Science has been a source of inspiration.
+
+    I wish to express my profound gratitude to the esteemed professors and lecturers of the Department of Computer Science and Engineering, and the Ho Chi Minh City University of Technology at large. The knowledge they imparted is priceless and has been instrumental in the completion of this thesis.
+
+    I would also like to extend my appreciation to the startup PixelML for your generous contribution of AWS credits, which facilitated the use of several LLMs for this project.
+
+    Lastly, I am thankful for my family, relatives, and friends. Their concern, encouragement, and support, both emotionally and physically, provided me with the strength and resilience needed to successfully complete this thesis.
+
+    With heartfelt gratitude, I wish good health and all the best to the professors and lecturers of the Department of Computer Science and Engineering at the Ho Chi Minh City University of Technology, National University of Ho Chi Minh City.
+\end{titlepage}
+
+\newpage
+\begin{titlepage}
+    \begin{center}
+        \large\bf ABSTRACT OF DISSERTATION
+    \end{center}
+    This thesis explores the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}, focusing on the use of self-correcting Large Language Models (LLMs) to assist in software bug resolution. The study introduces and evaluates a novel method that combines the Chain-of-Thought (CoT) prompting technique and a code evolution framework, specifically applied to Python data science problems. This approach, referred to as the CoT-SelfEvolve model, is evaluated against several benchmarks and compared with other published methods. The CoT-SelfEvolve model demonstrates superior performance, particularly with Pytorch, Sklearn, Matplotlib, Pandas, Numpy, and Tensorflow tasks, highlighting the potential of LLMs in automated debugging. However, areas for improvement were identified, such as underperformance with Scipy questions and the need for further exploration of LLM parameters' effects on performance. The study concludes that the CoT-SelfEvolve model is a promising step towards more efficient and effective automated debugging, and it paves the way for future research in this domain.
+\end{titlepage}
+
+
+\newpage
+\begin{titlepage}
+    \begin{center}
+        \large\bf DECLARATION
+    \end{center}
+    I solemnly affirm that the thesis titled: \textbf{\textit{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}} is the product of my own research endeavors.
+
+    The data and findings presented in this thesis are entirely accurate to the best of my knowledge, and I accept full responsibility for any inaccuracies. I am prepared to face any disciplinary actions that may be imposed by the department or the university in case of any discrepancies.
+
+    \begin{flushright}
+        \begin{tabular}{c c}
+            \textbf{Student}        & \textbf{} \\[2cm]
+            \textbf{Tang Quoc Thai} & \textbf{} \\
+        \end{tabular}
+    \end{flushright}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+\listoffigures
+
+\newpage
+\listoftables
+
+\newpage
+\chapter{Topic Introduction}
+
+\section{General Introduction}
+In recent years, generative AI models, particularly Large Language Models (LLMs), have garnered significant attention from both the Artificial Intelligence (AI) research community and the general public. These models exhibit a remarkable capacity to address a diverse array of intricate language-based tasks. Their advancements are propelled by factors such as increased model parameter count, augmented training data volume, and refined training configurations~\cite{brown2020language, radford2019language, hernandez2021scaling, kaplan2020scaling}. Prominent LLMs like LaMDA~\cite{thoppilan2022lamda} and GPT-4~\cite{openai2023gpt4} demonstrate exceptional proficiency in applications ranging from translation and classification to creative writing and code generation. Such capabilities, previously necessitating task-specific models developed by domain experts using specialized data, are now achieved by these broad, state-of-the-art LLMs.
+
+Concurrently, researchers have enhanced the steerability, reliability, and utility of these models through techniques like fine-tuning and reinforcement learning with human feedback~\cite{ouyang2022training, bai2022training}. These advancements empower models to better understand user intent, thereby enhancing user-friendliness and practicality. Recent studies also showcase LLMs' potential to program and control other digital tools, such as APIs, search engines, and even fellow generative AI systems~\cite{schick2023toolformer, mialon2023augmented}. This integration of individual components facilitates improved utility, performance, and generalization. At the forefront of these trends, there lies a prospect where LLMs can potentially execute any task traditionally performed at a computer.
+
+While generative AI models have primarily been deployed as modular specialists for tasks like image generation from captions or text transcription from speech, the focus is on viewing LLMs as versatile building blocks for creating additional tools. The development and integration of these tools into systems may necessitate time and significant reconfiguration of existing processes across diverse industries. Nevertheless, early adoption trends are already emerging. Despite their limitations, LLMs are increasingly finding integration into specialized applications in areas such as writing assistance, coding, and legal research. These specialized applications enable businesses and individuals to incorporate LLMs into their existing workflows.
+
+The emphasis is on the significance of these complementary technologies, particularly because standalone general-purpose LLMs may still exhibit unreliability for certain tasks, attributable to issues such as factual inaccuracies, inherent biases, privacy concerns, and risks associated with disinformation~\cite{abid2021persistent, schramowski2022large, goldstein2023generative}. However, specialized workflows, encompassing tooling, software, or human-in-the-loop systems, can effectively mitigate these shortcomings by incorporating domain-specific expertise. For instance, Casetext provides LLM-based legal research tools that furnish lawyers with quicker and more accurate legal research results, utilizing embeddings and summarization to counteract the risk of GPT-4 potentially providing inaccurate details about a legal case or set of documents. GitHub Copilot, a coding assistant, leverages LLMs to generate code snippets and auto-complete code, allowing users to accept or reject suggestions based on their expertise. In essence, while GPT-4, on its own, might not inherently `know what time it is', incorporating a watch can address this limitation.
+
+Moreover, a positive feedback loop may emerge as LLMs surpass specific performance thresholds, enabling them to contribute to the development of tools that enhance their usefulness and usability across diverse contexts. This could potentially reduce the cost and engineering expertise required to create such tools, thereby accelerating LLMs adoption and integration~\cite{chen2021evaluating, peng2023impact}. LLMs may also become valuable assets in machine learning model development—serving as coding assistants for developers.
+
+In a recent study~\cite{peng2023impact}, a cumulative total of 166 offers were distributed as part of the experiment, and 95 of these offers were accepted. The 95 developers underwent random assignment into control and treated groups, with 45 individuals in the treated group and 50 in the control group. Thirty-five developers from both the treated and control groups effectively completed the designated task and the subsequent survey.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/task_completion_time}
+    \caption{Distribution of time to completion between treated and control groups~\cite{peng2023impact}.}\label{fig:task_completion_time}
+\end{figure}
+
+Figure~\ref{fig:task_completion_time} illustrates the distribution of time to completion between the treated and control groups. When conditioned on task completion, the average completion time for the treated group is 71.17 minutes, compared to 160.89 minutes for the control group, resulting in a \boldmath{$55.8\%$}~\textbf{reduction in completion time}.
+
+\section{Self-Correcting LLMs for Software Development}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.90\textwidth]{img/selfdebug}
+    \caption{
+        A prevalent approach for iterative debugging employing a large language model involves multiple steps~\cite{chen2023teaching}.}\label{fig:selfdebug}
+\end{figure}
+
+Figure~\ref{fig:selfdebug} depicts a typical scenario involving the application of self-correcting LLMs for iterative debugging, employing a pretrained large language model without undergoing finetuning.
+
+A single iteration within this framework comprises three sequential steps: Generation, Explanation, and Feedback.
+
+\begin{itemize}
+    \item In the Generation step, the model predicts candidate programs based on the given problem description.
+
+    \item Throughout the Explanation step, the model is prompted to process the predictions in a semantically meaningful manner. This may involve explaining the prediction in natural language or creating an execution trace of the predicted code for a sample input.
+
+    \item For the Feedback step, a feedback message evaluating the correctness of the predicted code is generated. This assessment can be obtained by querying the model itself or externally generating feedback from unit tests.
+\end{itemize}
+
+The debugging process concludes either when the feedback message confirms the correctness of the prediction or when the maximum allowed number of debugging turns is reached.
+
+\textbf{Simple feedback}: a straightforward form of automatic feedback is a sentence indicating code correctness without additional detailed information, omitting the Explanation step in a complete Self-Debugging turn. For example, in text-to-SQL generation, the few-shot prompt issues the feedback message `The SQL prediction above is correct' for accurate SQL queries and `The SQL prediction above is wrong. Please fix the SQL' for incorrect predictions.
+
+\textbf{Unit test feedback}: is applicable to code generation tasks where the problem description includes unit tests. In addition to using code execution to assess correctness, feedback can incorporate execution results, providing richer debugging information. Intuitively, examining runtime errors and execution results of failed unit tests enhances the effectiveness of human programmers in debugging. Our experiments will illustrate that leveraging unit tests whenever available consistently enhances the performance of self-correcting LLMs.
+
+\textbf{Code explanation feedback}: remains an unexplored area in the context of model-generated feedback on code generation. Despite the promising progress demonstrated by large language models in generating critiques to avoid harmful model outputs and improving performance on certain natural language tasks, the effectiveness of such feedback on code generation tasks has not been established in prior work. Conversely, large language models have exhibited proficiency in describing their generated problem solutions in both textual and code formats.
+
+\textbf{Execution trace feedback}: extends beyond explaining the code itself, as human programmers often comprehend the semantic meaning of code through simulating the execution process. Previous work on code repair has indicated that training repair models on execution traces enhances debugging performance. Thus, when unit tests are available, an alternative explanation feedback format is examined, wherein the LLMs explains the intermediate execution steps line-by-line. It is noteworthy that both the execution trace and the line-by-line explanation originate from model generation rather than code execution. Therefore, trace feedback does not necessitate more information than pure code explanation feedback, specifically no access to intermediate execution states.
+
+\section{Research Objectives}
+Motivated by the appeal of diversity and the opportunities presented by self-correcting Large Language Models, the author has chosen to undertake a master's thesis centered on the theme: \textbf{\textit{Application of Large Language Models in Software Error Debugging}}.
+
+Within this thesis, the author introduces pertinent research and commonly employed methods for guiding LLMs in rectifying software bugs. The study delves into the amalgamation of the Chain-of-Thought (CoT) prompting technique and code evolution framework to assess the efficacy of self-correcting LLMs in assisting data scientists with software bug resolution. The proposed method will undergo a comprehensive evaluation benchmark to compare its performance with other published works. To achieve the aforementioned objectives, the author will address the following issues:
+
+\begin{itemize}
+    \item Gain a comprehensive understanding of self-correcting LLMs and their general application in software error debugging.
+
+    \item Concentrate on elucidating methods to instruct LLMs in finding optimal solutions for bug resolution, exploring and seeking enhancements over published methods in this domain.
+
+    \item Identify suitable benchmarks for evaluation.
+
+    \item Implement an appropriate model based on CoT prompting and code evolution framework using the identified dataset, researching and suggesting improvements to elevate the model's quality.
+
+    \item Conduct a comparative evaluation of results against published methods.
+\end{itemize}
+
+\section{Research Scopes}
+In the context of a master's thesis, the author proposes to limit the scope of the research as follows:
+
+\begin{itemize}
+    \item The thesis primarily concentrates on the techniques that enable self-correction in LLMs and their application in software error debugging.
+
+    \item The dataset utilized is DS-1000~\cite{pmlr-v202-lai23b}, which primarily addresses problems related to Python data science, excluding errors in more generic software such as Java or other programming languages.
+
+    \item The goal is to develop a system based on CoT prompting and code evolution framework that can effectively resolve bugs in Python data science problems.
+\end{itemize}
+
+\chapter{Related Works}
+
+\section{A Taxonomy for Self-Correcting LLMs with Automated Feedback}
+For the sake of clean exposition, this research first presents a conceptual framework outlining the overall process of correcting LLMs with feedback, thereby establishing the scope. It then proceeds to identify five primary dimensions that serve as classification criteria for existing works: 1. What gets corrected, 2. What is the source of the feedback, 3. What is the format of the feedback, 4. When the feedback is used, and 5. How to correct the model with feedback.
+
+\subsection{Conceptual Framework}
+The general process of correcting LLMs with automated feedback is formulated in Figure~\ref{fig:taxonomy}, using an analogy of medical treatment in daily life. Three parties are involved in this process:
+
+\begin{itemize}
+    \item Language Model (Patient). A language model $\mathcal{M}: \mathcal{X} \rightarrow \mathcal{Y}$ performs a specific task by mapping an input $x \in \mathcal{X}$ to an output text $\hat{y} \in \mathcal{Y}$. This formulation encompasses a wide range of NLP tasks. For example, in summarization, $x$ is a passage, $\hat{y}$ is the generated summary; for question-answering, $x$ is a question and $\hat{y}$ is the predicted answer. The initial generation $\hat{y}$ may be imperfect and suffer from various problems such as hallucination and incorrect reasoning.
+
+    \item Critic Model (Doctor \& Diagnosis). A critic model $\mathcal{C}: \mathcal{X} \times \mathcal{Y} \rightarrow \mathcal{F}$ learns to generate feedback $x, \hat{y} \rightarrow c$ where $\hat{y} \sim \mathcal{M}(x)$ is the output or partial output of the language model, and $c$ is the feedback of some format, e.g., scalar value, or natural language. A simple example is binary feedback of whether the output is good or bad given the input $(\mathcal{C}: \mathcal{X} \times \mathcal{Y} \rightarrow\{0,1\})$.
+
+    \item Refine Model (Treatment). A refine model $\mathcal{R}$: $\mathcal{X} \times \mathcal{Y} \times \mathcal{F} \rightarrow \mathcal{Y}$ learns to repair an output $x, \hat{y}, c \rightarrow$ $y_{\text {new }}$ based on the feedback $c$, where $y_{\text {new }}$ is the revised output. Besides repairing output, some refine models directly repair the language model $\mathcal{M}$ through fine-tuning or reinforcement learning.
+\end{itemize}
+
+Based on the above formulation, Figure~\ref{fig:taxonomy} illustrates the fundamental interaction among the language model $\mathcal{M}$, the critic model $\mathcal{C}$, and the refine model $\mathcal{R}$. However, the specific model design in existing works varies along five crucial axes, which this research will elaborate on in the following sections.
+
+\begin{itemize}
+    \item \textbf{Hallucination}: An open challenge for LLMs are that they often hallucinate by making up facts or citing sources that do not exist~\cite{li2023halueval, zhang2023language}. These hallucinated contents are often quite plausible-sounding, making it difficult even for humans to detect~\cite{clark2021thats}. To address this, several studies have proposed the collection of automated feedback on potential factual inaccuracies by cross-referencing the output generated by the model with credible knowledge sources. The gathered feedback can then be utilized by a subsequent refinement model to correct hallucinations~\cite{gao2023rarr, zhang2023language}.
+
+    \item \textbf{Unfaithful Reasoning}: LLMs have exhibited a strong ability in solving complex reasoning tasks with improved reasoning strategies, such as CoT prompting~\cite{wei2023chainofthought}. However, recent studies~\cite{golovneva2023roscoe, ribeiro2023street, lyu2023faithful} found that LLMs occasionally make unfaithful reasoning, i.e., the derived conclusion does not follow the previously generated reasoning chain. To address this, existing works have proposed the use of automated feedback from external tools or models for guiding the reasoning process~\cite{xie2023selfevaluation, yao2023tree}, verifying the reasoning process and rectifying errors~\cite{he2022rethinking, pan2023logiclm}, or finetuning LLMs with process-based feedback~\cite{huang2022large, lightman2023lets}.
+
+    \item \textbf{Toxic, Biased, and Harmful Contents}: LLMs have been observed to occasionally generate content that is toxic, biased, or harmful due to biases present in the training data~\cite{shaikh-etal-2023-second}. To rectify this, reinforcement learning from human feedback (RLHF)~\cite{ouyang2022training, bai2022training} has been extensively employed to train LLMs to align more closely with human values, such as being helpful, honest, and harmless. However, RLHF is heavily dependent on highquality human feedback, the collection of which can be resource-intensive. To alleviate this, recent works~\cite{lu2022quark, gou2023critic} have also explored collecting automated feedback to identify and correct potentially harmful outputs.
+
+    \item \textbf{Flawed Code}: Besides generating natural language text, LLMs also show strong abilities to generate computer programs (i.e., code)~\cite{chen2022codet}. However, the generated code can sometimes be flawed or incorrect. To fix this, the approach of learning from automated feedback has been extensively applied in code generation~\cite{chen2023teaching, olausson2023selfrepair}, largely facilitated by the ease of obtaining such feedback through the execution of generated code with the corresponding compilers or interpreters.
+\end{itemize}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.90\textwidth]{img/taxonomy}
+    \caption{A conceptual framework for self-correcting LLMs with automated feedback.}\label{fig:taxonomy}
+\end{figure}
+
+\subsection{What is the source of the feedback?}
+Feedback can be broadly divided into two categories: human feedback and automated feedback. Fernandes et al.~\cite{fernandes2023bridging} provided a survey on integrating human feedback for language generation. This research focuses on the emerging research area of automated feedback, which explores the possibility of LLMs to self-correct without constant human intervention. Automated feedback typically originates from two sources, distinguished by their relationship with the LLMs: self-feedback (i.e., the feedback originates from the LLMs itself) and external feedback (i.e., the feedback is derived from external models, tools, or knowledge sources).
+
+\begin{itemize}
+    \item \textbf{Self-Feedback}: The LLMs itself can be utilized as a feedback provider. One straightforward way is to directly evaluate the quality of the generated outputs through prompting and subsequently use this feedback to refine the results~\cite{madaan2023selfrefine, shinn2023reflexion}. This process can be iterative, with the model continually refining its output until it meets a certain standard. This continuous self-improvement strategy has been found particularly useful by numerous studies~\cite{selfee2023, yan-etal-2023-learning}, especially in scenarios where external feedback is unavailable or limited.
+
+    \item \textbf{External Feedback}: Feedback can originate from sources external to the LLMs, typically including (1) other trained models~\cite{yan-etal-2023-learning, lightman2023lets}, (2) external tools~\cite{gou2023critic, charalambous2023new}, (3) external knowledge sources~\cite{gao2023rarr, yu2023improving}, and (4) external evaluation metrics~\cite{jung-etal-2022-maieutic, welleck2022generating}. External feedback provides a valuable outside perspective which is particularly useful in identifying errors that the LLMs might not recognize on its own. For example, code interpreters are widely used in programming tasks to provide real-time error messages; while external knowledge sources can be utilized to verify the factual accuracy of the LLMs' output.
+\end{itemize}
+
+\subsection{What is the format of the feedback?}
+The selection of feedback format requires the consideration of its expressivity, the ease of its collection, and its potential to improve systems~\cite{fernandes2023bridging}. In existing works, automated feedback is typically in the form of a scalar value signal or in natural language.
+
+\begin{itemize}
+    \item \textbf{Scalar Value Feedback}: In this scenario, the critic model maps the input and output to a single score $(\mathcal{C}: \mathcal{X} \times \mathcal{Y} \rightarrow \mathcal{N} \subseteq \mathbb{R})$. Scalar value feedback can be easily integrated into the training/decoding process of LLMs. For example, SelfVerification~\cite{weng2023large} ranks candidate outputs to find the optimal one based on the realvalue feedback score assigned by the critic model to each candidate. Similarly, Xie et al.~\cite{xie2023selfevaluation} use real-value feedback for each intermediate reasoning step to guide the model in performing a stochastic beam search for the optimal solution. However, despite its flexibility, scalar value feedback is often less informative to capture detailed information necessary for model correction.
+
+    \item \textbf{Natural Language Feedback}: Natural language feedback offers greater expressivity than scalar value feedback, providing richer information that can highlight the shortcomings of the current output or suggest specific improvements. This form of feedback is particularly crucial for certain applications, such as text editing and code generation. For text editing, PEER~\cite{schick2022peer} trains a LLM to generate detailed suggestions for edits to the initial generated text, such as `remove unsourced claim' or `rewrote the guacamole question for clarity'. For code generation, SelfDebug~\cite{chen2023teaching} uses LLMs to generate explanations for the produced code and utilize both the explanation and the execution results as feedback to enhance coding solutions.
+\end{itemize}
+
+\subsection{When to correct the model with feedback?}
+Depending on the timing of using automated feedback to correct the model, existing works can be divided into three major categories:
+
+\begin{itemize}
+    \item \textbf{Training-time Correction}: The ideal scenario is to rectify a flawed model during training, prior to its deployment for use. Once feedback has been collected, it is directly used to optimize the model parameters. Human feedback is typically used for training-time correction, as exemplified by the widely adopted RLHF approach~\cite{ouyang2022training}. For leveraging automated feedback, a common strategy is self-training~\cite{huang2022large}, where the model is trained with its own generated high-quality output filtered by the critic model. While training-time correction is a pre-hoc strategy that addresses problems during training, its practical application may be hindered by: (1) the infeasibility of fine-tuning closed-source LLMs like GPT-4~\cite{openai2023gpt4}, (2) the potential unavailability of feedback during model training, and (3) the requirement for the feedback to be `optimizable', e.g., a numerical score serving as the basis for model optimization.
+
+    \item \textbf{Generation-time Correction}: This strategy utilizes automated feedback to guide the language model during generation, allowing the model to correct errors in its outputs as it is being generated. For example, for proof generation, several works utilize the automated feedback of the intermediate reasoning steps to guide the model to recover from incorrect generation and search for the optimal solution more efficiently~\cite{yang-etal-2022-generating, lightman2023lets}.
+
+    \item \textbf{Post-hoc Correction}: Finally, post-hoc correction involves refining the model output after it has been generated, without updating the model parameters. This typically involves iteratively generating output, receiving feedback, and refining output. Post-hoc correction provides more flexibility than the previous two strategies as it does not require training the LLMs or accessing its parameters. Furthermore, post-hoc correction enhances explainability as it facilitates incorporating more informative natural language feedback. This allows for a more transparent visualization and interpretation of the self-correction process.
+\end{itemize}
+
+\subsection{How to correct the model with feedback?}
+Various concrete strategies have been proposed to correct LLMs with automated feedback, tailored to the different dimensions mentioned in previous sections. For example, self-training is often used for training-time correction. Generate-then-rank often comes with scalar value feedback. Self-refine is the strategy that uses the same LLMs as both the critic model and the refine model.
+
+\section{Training-Time Correction}
+This section delves into methodologies that rectify model behavior during the training phase. Three typical strategies for training-time correction are identified, each utilizing different forms of feedback to modify the model parameters during training: human feedback, a reward model approximating human feedback, and automated feedback.
+
+\subsection{Learning from Human Feedback}
+The next-word prediction objective of LLMs pretraining is not inherently designed to encapsulate human values or preferences. This misalignment can lead to unintended consequences like generating harmful, misleading, or biased content~\cite{kenton2021alignment}. Many research efforts have explored integrating human feedback to better align LLMs with human values and expectations.Wang~\cite{wang2023aligning} and Fernandes~\cite{fernandes2023bridging} extensively reviewed this area. However, this research focuses on automated feedback, so only representative works in this direction are touched upon.
+
+\textbf{Direct Optimization with Human Feedback}: In an ideal scenario, human feedback would directly optimize model parameters. Typically, this approach follows: (1) LLMs generate candidate outputs, (2) Humans provide feedback or refinements on these outputs, and (3) LLMs are optimized on the collected (outputs, feedback) to align with human preferences. One strategy is fine-tuning the model on outputs with positively-labeled feedback. For example, Sparrow~\cite{glaese2022improving} fine-tunes LLMs on dialogues rated as preferred and rule compliant (concerning correctness, harmfulness, and helpfulness) by humans. Similarly, Scheurer et al.~\cite{scheurer2023training} use a LLM to generate refinements of the original output based on human feedback, and fine-tunes the original LLMs on the best refinement. A similar idea is adopted to fine-tune code generation models~\cite{chen2023improving}. First, human annotators provide feedback for incorrect codes. A refinement model utilizes this to correct the code. Finally, the refined code fine-tunes the code-generating LLMs. However, using only positive data (human-refined or positive-rated) may constrain identifying and correcting negative attributes or errors. Chain-of-Hindsight~\cite{liu2023chain} addresses this by fine-tuning the LLMs on outputs paired with both positive and negative feedback. Beyond fine-tuning, other optimization methods are explored. For example, Gao et al.~\cite{gao2023continually} use human feedback as the reward signal and optimizes the model with contextual bandit learning.
+
+\textbf{Reward Modeling and RLHF}: Employing human feedback directly may not always be practical since collecting it can be labor-intensive and time-consuming. An efficient alternative is training a reward model that emulates human feedback. Once trained, this can provide consistent, real-time feedback for every output, circumventing constant human involvement. A prominent example is Reinforcement Learning from Human Feedback (RLHF)~\cite{ouyang2022training}. It first has humans label preference for different LLMs outputs and trains the reward model to predict human preference. Then reinforcement learning algorithms (e.g., Proximal Policy Optimization (PPO)~\cite{schulman2017proximal}) optimize the model. RLHF and variants have proven effective in making LLMs more beneficial and less harmful~\cite{bai2022training}, and instilling moral correctness~\cite{ganguli2023capacity}.
+
+\subsection{Learning with Automated Feedback}
+Given the resource-intensive nature of collecting human feedback, multiple studies have investigated the utilization of automated feedback to reduce the dependence on human intervention. To distinguish between human and automated feedback, human feedback is defined as a quality assessment conducted by human evaluators on outputs generated by the base model. In contrast, automated feedback is acquired in an offline environment without human assessment of model outputs. This discussion primarily addresses training-time strategies employing two types of automated feedback: extrinsic feedback from external metrics/models and intrinsic feedback from the language model itself.
+
+\textbf{External Metric Guidance}: Feedback from external metrics is commonly employed for training-time correction. Due to the discrete nature of metric signals, most approaches focus on non-differentiable training techniques. Minimum Risk Training~\cite{shen-etal-2016-minimum} optimizes model parameters with external evaluation metrics~\cite{xu-etal-2022-errors, xu-etal-2023-sescore2} by incorporating metric scores with maximum log-likelihood in the loss function. This method can optimize metric scores during training. However, it may lead to robustness deficiencies in some metrics~\cite{yan-etal-2023-bleurt}, such as BLEURT~\cite{sellam-etal-2020-bleurt}. Liu et al.~\cite{liu-liu-2021-simcls} leverages a contrastive learning framework to rerank candidates based on metric scores, bridging the gap between training and inference objectives. Li et al.~\cite{li-etal-2019-deep} employ a deep Reinforcement Learning (RL) algorithm, and~\cite{jauregi-unanue-etal-2021-berttune} leverage Gumbel softmax~\cite{jang2017categorical} to build distributional semantic reward from BERTScore~\cite{zhang2020bertscore} and mitigate exposure bias. To stabilize gradients, Wu et al.~\cite{wu2021textgail} uses a contrastive discriminator and PPO to imitate human texts. Recently, Chang et al.~\cite{chang2023learning} propose a more efficient RL algorithm, RLGF, than PPO~\cite{schulman2017proximal} to finetune LLMs with pre-defined reward. They integrate a reasonable but incomplete guide policy into a policy gradient framework and learn a near-optimal strategy. Different from leveraging feedback solely at fine-tuning, Korbak et al.~\cite{korbak2023pretraining} employ conditional training~\cite{keskar2019ctrl} and an automated classifier to tag undesirable contents at the pretraining stage.
+
+\textbf{Self-Training}: Instead of relying on external metrics as feedback, the language model itself can provide feedback for its own output. This introduces the self-training strategy of self-improving LLMs by bootstrapping its original outputs. STaR~\cite{zelikman2022star} employs the CoT idea by prompting LLMs to generate answers with rationales. By selecting rationales leading to the correct answer to further finetune LLMs, the performance of LLMs are improved. This process can be iterated with further performance gains. Huang et al.~\cite{huang2022large} follows this idea by applying self-consistency~\cite{wang2023selfconsistency} to majority vote reasoning paths (the paths that lead to the most voted answers). LLMs are finetuned over selected reasoning-answer data with augmented prompts. This strategy has also been used to reduce the harmful responses of LLMs. RLAIF~\cite{bai2022training} adopts the critique $\rightarrow$ revision $\rightarrow$ supervised learning strategy. The initial toxic responses are criticized and revised by the LLMs itself following a set of human-defined principles. Afterward, the LLMs are fine-tuned on the revised responses. AlpacaFarm~\cite{dubois2024alpacafarm} further demonstrates that LLMs can self-improve with RL. It designs LLMs prompts to simulate human feedback in RLHF and shows that the feedback is effective and greatly reduces the cost. Gulcehre et al.~\cite{gulcehre2023reinforced} enhances self-training by proposing Reinforced Self-Training (ReST). It iteratively performs the following two steps to improve the LLMs: (1) the Grow step produces a dataset by sampling from the policy model (i.e., the current LLMs), and (2) the Improve step optimizes the LLMs policy using offline RL algorithms.
+
+\section{Generation-Time Correction}
+Correcting Language Models during training is often deemed the optimal solution, aligning with the proverbial principle that `an ounce of prevention is worth a pound of cure'. However, the assurance that all undesired behaviors can be addressed during training is not guaranteed. Furthermore, the correction process during training may be excessively resource-intensive or even impractical for many LLMs, such as closed-source LLMs where weights are inaccessible, and colossal LLMs with billions of parameters. This motivates the exploration of methods seeking to correct LLMs during the generation time or after the output is generated. This section focuses on generation-time correction techniques, where automated feedback serves as a guiding mechanism for LLMs generation. Such a strategy allows LLMs to rectify errors during generation without modifying the model parameters. Two primary strategies for generation-time correction are identified: Generate-then-Rank and Feedback-Guided Decoding.
+
+\subsection{Generate-then-Rank}
+The most immediate strategy involves sampling a large number of candidate generations and subsequently selecting the best generation based on the feedback provided by the critic model. Here, the critic model $\mathcal{C}$ aims to learn the mapping $x, \hat{y}{1}, \ldots, \hat{y}{N} \rightarrow y_{\text {best }}$, where $y_{\text {best }}$ is the best output among the $N$ candidate outputs $\hat{y}{1}, \ldots, \hat{y}{N} \sim \mathcal{M}(x)$.
+
+This approach is often integrated with the CoT prompting method~\cite{wei2023chainofthought} to address complex reasoning tasks, such as solving math word problems as demonstrated in GSM8K~\cite{cobbe2021training}. Given an input problem $x$, the LLMs initially generates multiple candidate solutions $y_{1}, \ldots, y_{n}$. Each solution $y_{i}=\left[z_{i}, a_{i}\right]$ comprises a reasoning path (explanation) $z_{i}$ leading to the predicted answer $a_{i}$. Subsequently, the critic model $\mathcal{C}$ assigns a plausibility score $s_{i}$ to each candidate reasoning path $z_{i}$. The final selection of the best solution from the scored set $\left(z_{i}, a_{i}, s_{i}\right)_{i=1}^{n}$ is achieved via either ranking or voting.
+
+Various critic models have been proposed in different works. For instance, DIVERSE~\cite{li-etal-2023-making} trains a binary verifier based on DeBERTa~\cite{he2021deberta}, utilizing reasoning paths corresponding to the correct final answer as positive examples and others as negative examples. The best answer is then determined by a majority vote of positively verified candidates. Wengt et al.~\cite{weng2023large} introduce a training-free critic model based on the idea of self-verification, where the plausibility score is calculated by assessing the consistency between the results of forward reasoning and backward reasoning. In a different vein, RR~\cite{he2022rethinking} presents a critic model to assess the faithfulness of each reasoning path by retrieving supporting information from a knowledge base. LEVER~\cite{ni2023lever} applies this strategy in language-to-code generation, with each solution $y_{i}$ serving as a candidate SQL program for the question $x$. A verifier is trained to predict the likelihood of a program's correctness based on the program itself and its execution results. A similar concept is adopted in CodeT~\cite{chen2022codet} where multiple code solutions and test cases are generated by the LLMs, and the best code solution is selected through dual execution agreement.
+
+\subsection{Feedback-Guided Decoding}
+The generate-then-rank method, wherein the critic model offers output-level feedback on the entire reasoning path, encounters certain limitations: 1. The output-level feedback lacks the granularity necessary to pinpoint the exact error locations, 2. The extensive length of the output can complicate its quality assessment, and 3. This method does not facilitate fine-grained control over the generation process. For instance, the Language Model (LM) cannot correct its errors during the generation process but must await the completion of the entire output.
+
+To address these issues, several studies have embraced the feedback-guided decoding strategy, relying on step-level feedback to provide fine-grained guidance over the generation process. Here, the generation of the output $y$ is divided into multiple reasoning steps (or thoughts), i.e., $y_{i}=\left[o_{1}, o_{2}, \ldots, o_{n}\right]$. At each individual reasoning step $t$, the critic model provides feedback $\mathcal{C}\left(x, o_{1: t-1}, o_{t}\right)$ indicating the quality of $o_{t}$ as a candidate step. With the ability to generate and evaluate individual steps, a search algorithm, such as beam search or depth-first search, can be employed for a systematic exploration of the output space, effectively guiding the decoding process toward the generation of an optimal solution. This approach also allows the LM to recover from its early mistakes during generation and helps alleviate the reasoning inconsistency problem~\cite{zelikman2022star, creswell2022faithful}, i.e., incorrect reasoning leading to a correct final answer.
+
+The feedback-guided decoding strategy has found application in recent works, including Tree-of-Thought~\cite{yao2023tree}, GRACE~\cite{khalifa2023grace}, and RAP~\cite{hao2023reasoning}. These works primarily differ in how they obtain the critic model that provides automated step-level feedback, which constitutes the most challenging yet crucial element of this strategy. We classify their employed methods into four categories: human feedback, a trained verifier, external metrics, external knowledge, and self-evaluation.
+
+\begin{itemize}
+    \item \textbf{Reward Model from Human Feedback}: One approach involves training a step-level reward model by gathering human feedback.~\cite{uesato2022solving} solicits human annotators to evaluate the correctness of each reasoning step for the problems in GSM8K and subsequently trains a binary reward model.~\cite{lightman2023lets} expands this approach by annotating a larger dataset consisting of 800K instances of human step-level feedback. Both studies discover that step-level feedback assists in training a more reliable reward model, enhancing the faithfulness of reasoning.
+
+    \item \textbf{Training Verifier with Synthetic Data}: Considering the high cost of collecting human annotations and their limited scalability, some works~\cite{yang-etal-2022-generating, tafjord-etal-2022-entailer, li-etal-2023-making, khalifa2023grace} have trained a step-wise verifier using automatically constructed training data. Positive examples are derived from groundtruth reasoning paths, while negative examples are synthesized by proposing an alignment algorithm~\cite{khalifa2023grace} or by making text perturbations on positive samples~\cite{yang-etal-2022-generating}.
+
+    \item \textbf{Feedback from External Metric}: Several works also leverage external metrics to re-rank or guide text generation.~\cite{freitag-etal-2022-high} uses minimum bayes risk decoding on unbiased samples to optimize neural metrics as an alternative to beam search. `Plug and play'~\cite{dathathri2020plug} combines a pretrained model with attribute classifiers that guide text generation without any further training of the model. It leverages the gradient of the classifier to update LM and increase the likelihood of the desirable attribution at the text generation of LM. FUDGE~\cite{yang-klein-2021-fudge} reweights the model predictions at each token and estimates the attribution classification at each partial sequence. Following up on the gradient-based approach, DiffusionLM~\cite{li2022diffusionlm} obtains a sequence of intermediate latent variables by denoising a sequence of Gaussian vectors. It performs iterative gradient updates over latent representations to satisfy controlled requirements from an attribute classifier.
+
+    \item \textbf{Feedback from External Knowledge}: External knowledge sources have also been used to guide the LLMs in generation.~\cite{varshney2023stitch} retrieves relevant knowledge from Wikipedia as evidence to validate and correct LLMs' generated sentences at each step. Once a non-factual sentence is corrected, the revised sentence is added back to the input along with the prior generations to continue generating the next sentence. In a different approach, MemPrompt~\cite{madaan-etal-2022-memory} leverages prior user feedback as a knowledge source. It maintains an external pool of user feedback and searches it for responses that match the intent of the current query. The retrieved feedback is then concatenated with the input to guide the following generation.
+
+    \item \textbf{Self-Evaluation}: Some studies have utilized a more flexible strategy, employing the LLMs itself as the critic model by designing appropriate prompts. For instance, in Tree-of-Thought~\cite{yao2023tree}, the LLMs are prompted to assess the value of the current state by producing a scalar value (e.g., `1-10') or short phrases (e.g., `sure/likely/impossible').~\cite{xie2023selfevaluation} employed a similar approach by prompting the LLMs with `Is the above step of reasoning: (A) Correct (B) Incorrect'. Self-evaluation provides an efficient evaluation method without requiring task-specific verifier fine-tuning.
+\end{itemize}
+
+Existing studies have employed varied strategies to govern the decoding process with the assistance of the step-level critic model. Tree-of-Thought implemented breadth-first search and depth-first search, whereas GRACE~\cite{khalifa2023grace} and~\cite{xie2023selfevaluation} embraced the beam search strategy. In each step, the top-k scoring candidates are chosen for subsequent generations. This iterative process continues until the final answer is generated. Conversely, CoRe~\cite{zhu-etal-2023-solving} and RAP~\cite{hao2023reasoning} opted for the Monte Carlo Tree Search (MCTS) to achieve a suitable equilibrium between exploration and exploitation, enhancing the efficiency of discovering the optimal reasoning path.
+
+\section{Post-hoc Correction}
+The success of generation-time correction relies on accurate critic feedback for intermediate outputs. However, for holistic tasks like summarization, evaluation requires the full output. Thus, post-hoc correction methods intervene after output generation. Post-hoc correction also allows detailed natural language feedback. Strategies include self-correction, external feedback, and multi-agent debates.
+
+\subsection{Self-Correction}
+The implementation of post-hoc correction is facilitated through the `Self-Correction' technique, wherein a LM is employed to generate feedback and refine its own output. Initially, an LM is utilized to generate an initial output, and subsequently, the same model serves as a critic to produce feedback and refine this initial output based on the received feedback. This iterative process continues until an output of acceptable quality is achieved or a pre-specified number of iterations are reached.
+
+The Self-Refine framework~\cite{madaan2023selfrefine} proposes a simple yet effective self-correction approach by utilizing a single powerful pre-trained LLMs to generate output, provide feedback, and refine the output based on that feedback. All these steps are executed using the same LLMs, guided by different prompts. Similarly, in the context of Clinical Self-Verification~\cite{gero2023selfverification}, the self-correction framework is applied to extract patient data from clinical notes. Feedback is generated to identify missing elements in the initially extracted data and to validate the generated data. The output is then refined by eliminating unsupported elements. In contrast, Reflexion~\cite{shinn2023reflexion} emphasizes that prior self-correction research has concentrated on single-turn generation tasks and failed to maintain a record of past errors. To address this, Reflexion proposes the use of the same self-correction framework with the addition of a `long-term memory' capable of storing prior feedback and outputs, thereby preventing the repetition of previous mistakes. Additionally, Reflexion enhances Self-Refine by incorporating scalar-valued feedback and other forms of feedback.
+
+Although self-correction has proven effective for various text-generation tasks, this strategy necessitates the use of powerful, large-scale LLMs capable of refining text based on provided feedback. As noted by~\cite{madaan2023selfrefine}, smaller, open-source models often struggle to refine their output effectively, even when correct feedback is provided. A potential solution involves explicitly training models for this self-correction process. SelFee~\cite{selfee2023} proposes training a model to emulate the self-correction process by generating output, feedback, and a refined solution in an auto-regressive manner. More powerful LLMs are employed to provide feedback and refinement data, with data collection facilitated through ChatGPT.
+
+\subsection{Models/Tools as Feedback}
+Self-correction relies on language models for feedback, and the quality of this feedback is inherently constrained by the inherent limitations of LLMs, such as the inability to access up-to-date information, take actions, or perform precise mathematical reasoning. To overcome these limitations, recent studies have explored the integration of external tools to enhance the feedback provided. Various external tools, including trained models, code interpreters, and search engines, can be incorporated to offer specialized feedback.
+
+\textbf{Code Interpreter}: In code generation, the program executor serves as a feedback source for refining the initial code generated by the model. For instance, Self-Edit~\cite{zhang2023selfedit} and Self-Evolve execute the initial program on example test cases and use the execution results as feedback. Subsequently, a LLM is prompted to refine the initial code based on this feedback. Self-Debug~\cite{chen2023teaching} explores program explanation, unit tests, and program interpreter as feedback types. ALGO~\cite{zhang2023algo} investigates a more fine-grained feedback approach for code generation, generating a reference oracle program for each problem and collecting feedback by comparing outputs from the LLM-generated program with the oracle outputs. The self-correction strategy has also been applied to the formal verification of software, with Bounded Model Checking employed to identify vulnerabilities, followed by LLM-based correction~\cite{charalambous2023new}.
+
+\textbf{Logic Reasoner}: Tool-assisted feedback is utilized to improve the faithfulness of LLMs' reasoning. For example, Logic-LM~\cite{pan2023logiclm} addresses logical reasoning problems by translating them into logical form with LLMs and performing inference with external symbolic solvers. To correct inaccuracies in logical forms, a self-refinement module modifies them using error messages returned by the symbolic reasoner as feedback. Similarly, Baldur~\cite{first2023baldur} utilizes existing search-based proof assistants as a source of feedback to enhance language models' ability to generate theorem proofs.
+
+\textbf{External Knowledge}: External knowledge is frequently integrated as a feedback source to detect and rectify factual errors in LLMs' output and to support LLM-generated facts with evidence or citations. RARR~\cite{gao2023rarr} and REFEED~\cite{yu2023improving} prompt LLMs to raise questions about different aspects of the generated output, and an external retriever searches for evidence to address each query. A refine model then amends the output based on any discrepancies between the output and the retrieved evidence. LLM-Augmenter~\cite{peng2023check} proposes a similar method but differentiates itself by automatically generating natural language feedback based on the retrieved evidence, identifying error locations, and providing revision suggestions. FACTOOL~\cite{chern2023factool} extends knowledge-assisted factual error correction to various tasks, including code generation, mathematical reasoning, and scientific literature review.
+
+\textbf{Trained Model}: Specialized models are fine-tuned for feedback generation, forming a critic that can be paired with similar or more powerful language models in an iterative refinement cycle. CodeRL~\cite{le2022coderl} treats program synthesis as a reinforcement learning task, training a critic model to optimize the main model's output. In contrast, REFINER~\cite{paul2023refiner} trains a task model to produce an intermediate representation, with a critique model providing feedback on each intermediate training step. RLAF~\cite{akyurek-etal-2023-rl4f} employs reinforcement learning to train a critic, keeping the downstream task model fixed, and uses this critic model to produce feedback for the main model. In applications like red-teaming, where vulnerabilities in content filtering systems are targeted, feedback from content filters can guide the generation of better adversarial examples. For instance, Feedback Loop In-context Red Teaming (FLIRT)~\cite{mehrabi2023flirt} uses an explicit image classifier's signal to guide a LLM in producing adversarial input prompts for a text-to-image system, generating more unsafe images for auditing purposes.
+
+\textbf{Integrating Multiple Tools}: Expanding on the concept of tool-assisted feedback, CRITIC~\cite{gou2023critic} integrates various tools in a unified framework, including program interpreters for coding feedback, external knowledge and search engines for factual information, calculators for verifying mathematical equations, and LLM-based natural language feedback. Each tool contributes feedback for different aspects, creating a comprehensive feedback system.
+
+\subsection{Multi-Agent Debate}
+In addition to the integration of external tools, recent research has investigated the approach of engaging in debates among multiple LLMs, inspired by collaborative intelligence, where diverse perspectives often converge toward a more refined solution. This strategy aims to enhance output quality by employing several instances of LLMs. Each instance generates and debates individual responses over multiple rounds to achieve a consensus final answer.
+
+The application and evaluation of this strategy in arithmetic reasoning tasks were first explored by~\cite{du2023improving}. In this context, each agent (a duplicate of an LLM) initially formulates an individual solution along with justifications. The debate phase involves aggregating responses from all agents and presenting this as context to each agent. Based on this context, each agent is then directed to formulate a revised response. The models converge on a shared solution after multiple debate iterations. Experimental results demonstrate that multi-agent debate yields improved performance compared to the self-correction strategy. Expanding on this concept, PRD~\cite{li2023prd} introduced the peer rank algorithm to enhance the consensus-building process after debates. This algorithm considers pairwise preferences between all possible answer pairs from individual LLMs, using these preferences to generate a final ranking of models.
+
+Beyond reasoning tasks, LM vs LM~\cite{cohen2023lm} provided further evidence of the effectiveness of multi-agent debate in detecting factual errors. The approach involves a generator LLMs creating a claim, while an examiner LLMs probes for factual inaccuracies through a multi-turn interaction. To extend the application of this concept, Fu et al.~\cite{fu2023improving} demonstrated that interactions between different LLMs could simulate human behavior in real-world tasks. The study illustrated this through a bargaining scenario where different LLMs agents assumed the roles of buyer and seller. This underscores the versatile applications of multi-agent debates.
+
+\section{Direction of Current Research}
+In light of the inherent challenges associated with the correction process during the training of Large Language Models, particularly when confronted with resource constraints or inaccessible model weights, and considering the impracticality of deploying such procedures for colossal LLMs with billions of parameters, there arises a compelling need for alternative methodologies. A promising avenue in this context is the exploration of post-hoc correction methods, which operate on the outputs of LLMs subsequent to the generation phase.
+
+While the efficacy of self-correction strategies in refining text generation tasks is evident, it is imperative to acknowledge their dependence on robust, large-scale LLMs capable of assimilating feedback for effective refinement. It is noteworthy that smaller, open-source models encounter challenges in refining output, even when furnished with accurate feedback, as underscored by Madaan et al.~\cite{madaan2023selfrefine}.
+
+Furthermore, the domain of software error debugging poses a challenging and intricate problem, necessitating innovative approaches for effective resolution. Consequently, this research seeks to contribute to the field by adopting the CoT prompting technique. Specifically, the focus is on guiding the self-correction process of closed-source LLMs, utilizing a \textbf{post-hoc correction} style. This involves harnessing three external feedback sources, namely the \textbf{code executor}'s traceback message, external knowledge extracted from the \textbf{troubleshooting discussion} from StackOverflow and results from \textbf{unit tests}. Anticipated as a means to address the limitations associated with conventional correction methods, especially in scenarios where model access is restricted or resource-intensive, this approach offers a novel and pragmatic solution aimed at enhancing the accuracy and efficiency of employing self-correcting LLMs for software debugging, as illustrated in Figure~\ref{fig:direction_of_research}.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.90\textwidth]{img/direction_of_research}
+    \caption{Focus areas of the current research.}\label{fig:direction_of_research}
+\end{figure}
+
+\chapter{Theoretical Background}
+This section provides the relevant background to understand the fundamentals related to LLMs. Aligned with the objective of providing a comprehensive overview of this direction, this section offers a comprehensive yet concise outline of the basic concepts. The focus is more on the intuitive aspects and interested readers are referred to the original works for details.
+
+\section{Tokenization}
+LLMs are trained on text to predict text, and similar to other natural language processing systems, they use tokenization~\cite{webster1992tokenization} as the essential preprocessing step. It aims to parse the text into non-decomposing units called tokens. Tokens can be characters, subwords~\cite{kudo2018subword}, symbols~\cite{sennrich2015neural}, or words, depending on the size and type of the model. Some of the commonly used tokenization schemes in LLMs are briefed here. Readers are encouraged to refer to~\cite{mielke2021between} for a detailed survey.
+
+\begin{enumerate}
+    \item WordPiece~\cite{schuster2012japanese}: It was introduced in~\cite{schuster2012japanese} as a novel text segmentation technique for Japanese and Korean languages to improve the language model for voice search systems. WordPiece selects tokens that increase the likelihood of an n-grambased language model trained on the vocabulary composed of tokens.
+
+    \item BPE~\cite{sennrich2015neural}: Byte Pair Encoding (BPE) has its origin in compression algorithms. It is an iterative process of generating tokens where pairs of adjacent symbols are replaced by a new symbol, and the occurrences of the most occurring symbols in the input text are merged.
+
+    \item UnigramLM~\cite{kudo2018subword}: In this tokenization, a simple unigram LM is trained using an initial vocabulary of subword units. The vocabulary is pruned iteratively by removing the lowest probability items from the list, which are the worst performing on the unigram LM.
+\end{enumerate}
+
+\section{Attention in LLMs}
+The attention mechanism computes a representation of the input sequences by relating different positions (tokens) of these sequences. There are various approaches to calculating and implementing attention, out of which some famous types are given below.
+
+\begin{enumerate}
+    \item \textbf{Self-Attention}~\cite{vaswani2017attention}: Self-attention, also known as intra-attention, connects all the sequence positions with $O(1)$ space complexity, which is highly desirable for learning long-range dependencies in the input. In self-attention, all the queries, keys, and values come from the same block (encoder or decoder).
+
+    \item \textbf{Cross Attention}: In encoder-decoder architectures, the outputs of the encoder blocks act as the queries to the intermediate representation of the decoder, which provides the keys and values to calculate a representation of the decoder conditioned on the encoder. This attention is called cross-attention.
+
+    \item \textbf{Full Attention}: The naive implementation of calculating self-attention is known as full attention.
+
+    \item \textbf{Sparse Attention}~\cite{child2019generating}: Self-attention has a time complexity of $O(n^2)$, which becomes prohibitive when scaling the LLMs to large context windows. An approximation to self-attention was proposed in~\cite{child2019generating}, which greatly enhanced the capacity of GPT series LLMs to process a greater number of input tokens in a reasonable time.
+
+    \item \textbf{Flash Attention}~\cite{dao2022flashattention}: The bottleneck for calculating attention using GPUs lies in memory access rather than computational speed. Flash Attention uses classical input tiling to process input blocks in GPU on-chip SRAM rather than doing IO for every token from the High Bandwidth Memory (HBM). An extension of this approach to sparse attention follows the speed gains of the full attention implementation. This trick allows even greater context-length windows in the LLMs as compared to those LLMs with sparse attention.
+\end{enumerate}
+
+\section{Encoding Positions}
+The attention modules do not consider the order of processing by design. Transformer~\cite{vaswani2017attention} introduced `positional encodings' to feed information about the position of the tokens in input sequences. Several variants of positional encoding have been proposed~\cite{press2021train, su2024roformer}. Interestingly, a recent study [67] suggests that adding this information may not matter for the state-of-the-art decoder-only Transformers.
+
+\begin{enumerate}
+    \item \textbf{Absolute}: This is the most straightforward approach to adding the sequence order information by assigning a unique identifier to each position of the sequence before passing it to the attention module.
+
+    \item \textbf{Relative}: To pass the information on the relative dependencies of different tokens appearing at different locations in the sequence, a relative positional encoding is calculated by some kind of learning. Two famous types of relative encodings are:
+\end{enumerate}
+
+Alibi~\cite{press2021train}: In this approach, a scalar bias is subtracted from the attention score calculated using two tokens which increases with the distance between the positions of the tokens. This learned approach effectively favors using recent tokens for attention.
+
+RoPE~\cite{su2024roformer}: Keys, queries, and values are all vectors in the LLMs. RoPE involves the rotation of the query and key representations at an angle proportional to their absolute positions of the tokens in the input sequence. This step results in a relative positional encoding scheme which decays with the distance between the tokens.
+
+\section{Activation Functions}
+The activation functions serve a crucial role in the curvefitting abilities of the neural networks, as proved in~\cite{hornik1989multilayer}. The modern activation functions used in LLMs are different from the earlier squashing functions but are critical to the success of LLMs. The activation functions are discussed in this section.
+
+\begin{enumerate}
+    \item ReLU~\cite{nair2010rectified}: Rectified linear unit (ReLU) is defined as
+
+          \begin{equation}
+              ReLU(x)=\max(0, x).
+          \end{equation}
+
+    \item GeLU~\cite{hendrycks2016gaussian}: Gaussian Error Linear Unit (GeLU) is the combination of ReLU, dropout~\cite{srivastava2014dropout} and zoneout~\cite{krueger2016zoneout}. It is the most widely used activation function in contemporary LLMs literature.
+
+    \item GLU variants~\cite{shazeer2020glu}: Gated Linear Unit~\cite{dauphin2017language} is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as
+
+          \begin{equation}
+              GLU(x, W, V, b, c)=(xW + b) \otimes \sigma(xV + c),
+          \end{equation}
+
+          where $X$ is the input of layer and $l, W, b, V$ and $c$ are learned parameters.
+
+          GLU was modified in~\cite{shazeer2020glu} to evaluate the effect of different variations in the training and testing of transformers, resulting in better empirical results. Here are the different GLU variations introduced in~\cite{shazeer2020glu} and used in LLMs:
+
+          \begin{equation}
+              ReGLU(x, W, V, b, c) = \max (0, xW + b) \otimes,
+          \end{equation}
+
+          \begin{equation}
+              GEGLU(x, W, V, b, c) = GELU(xW + b) \otimes(xV + c),
+          \end{equation}
+
+          \begin{equation}
+              SwiGLU(x, W, V, b, c, \beta) = Swish \beta(xW + b) \otimes(xV + c).
+          \end{equation}
+\end{enumerate}
+
+\section{Layer Normalization}
+Layer normalization leads to faster convergence and is a widely used component in transformers. Different normalization techniques widely used in LLMs literature are provided in this section.
+
+\begin{enumerate}
+    \item LayerNorm: Layer norm computes statistics over all the hidden units in a layer $(l)$ as follows:
+
+          \begin{equation}
+              u^{l} = \frac{1}{n} \sum_{i}^{n} a_{i}^{l} \quad \sigma^{l} = \sqrt{\frac{1}{n} \sum_{i}^{n}{a_{i}^{l}-u^{l}}^{2}}
+          \end{equation}
+
+          where $n$ is the number of neurons in layer $l$ and $a_{i}^{l}$ is the summed input of neuron $i$ in layer $l$. LayerNorm provides invariance to rescaling of the weights and re-centering of the distribution.
+
+    \item RMSNorm:~\cite{zhang2019root} proposed that the invariance properties of LayerNorm are spurious, and computationally efficient normalization achieving the same performance benefits as LayerNorm can be obtained by trading off re-centering invariance with speed. LayerNorm gives the normalized summed input to layer $l$ as follows:
+
+          \begin{equation}
+              \overline{a_{i}^{l}} = \frac{a_{i}^{l}-u^{l}}{\sigma} g_{i}^{l}
+          \end{equation}
+
+          where $g_{i}^{l}$ is the gain parameter. RMSNorm~\cite{zhang2019root} modifies $\overline{a_{i}^{l}}$ as:
+
+          \begin{equation}
+              \overline{a_{i}^{l}} = \frac{a_{i}^{l}}{\operatorname{RMS}\left(\mathbf{a}^{l}\right)} g_{i}^{l} \text {, where } \operatorname{RMS}\left(\mathbf{a}^{l}\right) = \sqrt{\frac{1}{n} \sum_{i}^{n}{a_{i}^{l}}^{2}}.
+          \end{equation}
+
+    \item Pre-Norm and Post-Norm: LLMs use the transformer~\cite{vaswani2017attention} architecture with some variations. The original implementation~\cite{vaswani2017attention} used layer normalization after the residual connection, commonly called post-LN, concerning the order of Multihead attention - Residual - LN. Another order of normalization, referred to as pre-LN~\cite{baevski2018adaptive}, places normalization before the self-attention layer as in LN - Multihead attention - Residual. Pre-LN is known to provide more stability in training~\cite{shleifer2021normformer}.
+
+    \item DeepNorm: While pre-LN has certain benefits over post-LN training, pre-LN training has an unwanted effect on the gradients~\cite{shleifer2021normformer}. The earlier layers have larger gradients than those at the bottom. DeepNorm~\cite{wang2022deepnet} mitigates these adverse gradient effects. It is given as:
+
+          \begin{equation}
+              \mathbf{x}^{l_{f}} = LN\left(\alpha \mathbf{x}^{l_{p}}+G^{l_{p}}\left(\mathbf{x}^{l_{p}}, \theta^{l_{p}}\right)\right),
+          \end{equation}
+
+          where $\alpha$ is a constant and $\theta^{l_{p}}$ represents the parameters of layer $l_{p}$. These parameters are scaled by another constant $\beta$. Both constants depend only on the architecture.
+\end{enumerate}
+
+\section{Architectures}
+Variants of the transformer architectures arising from differences in attention patterns and connection of transformer blocks are discussed here. Figure~\ref{fig:attention_patterns} illustrates the attention patterns of these architectures.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/attention_patterns}
+    \caption{Attention patterns in a causal decoder, non-causal decoder, and encoder-decoder.~\cite{wang2022language}.}\label{fig:attention_patterns}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Encoder Decoder}: Transformers were originally designed as sequence transduction models following prevalent model architectures for machine translation. They utilized an encoder-decoder architecture to train on human language translation tasks. This architecture is adopted by~\cite{raffel2020exploring, tay2022unifying}. In this scheme, an encoder encodes input sequences into variable length context vectors, which a decoder then processes to maximize a joint objective of minimizing the gap between predicted token labels and actual target token labels.
+
+    \item \textbf{Causal Decoder}: The underlying objective of a LLM is to predict the next token based on the input sequence. Although additional encoder information strongly binds the prediction to context, in practice LLMs can perform well lacking an encoder~\cite{liu2018generating}, relying solely on the decoder. Like the original encoder-decoder's decoder block, this decoder restricts backward information flow, i.e. predicted token $t_k$ depends only on preceding tokens up to $t_{k-1}$. This is the most widely used variant in state-of-the-art LLMs.
+
+    \item \textbf{Prefix Decoder}: The causally masked attention is reasonable in encoder-decoder architectures where the encoder can attend to all sentence tokens from every position via self-attention. This means the encoder can also attend to tokens $t_{k+1}$ to $t_n$ in addition to $t_1$ to $t_{k-1}$ when calculating the representation for $t_k$. But dropping the encoder also loses this attention flexibility. A decoder-only architecture variation changes the mask from strictly causal to fully visible on a portion of the input. The prefix decoder is also known as a non-causal decoder architecture.
+\end{enumerate}
+
+\section{Model Adaptation}
+LLMs adaptation stage fundamentals, from pre-training to fine-tuning for downstream tasks and utilization, are discussed here.
+
+\begin{enumerate}
+    \item Pre-Training: Initially, the model is trained self-supervised on a large corpus to predict next tokens given the input. LLMs design choices vary for architectures, building blocks, and loss functions.
+
+    \item Fine-Tuning: There are different LLMs fine-tuning approaches, briefly discussed here.
+\end{enumerate}
+
+\textbf{Transfer Learning}: Pre-trained LLMs perform well for various tasks~\cite{brown2020language, chowdhery2023palm}. But to improve performance for a downstream task, pre-trained models are fine-tuned with task-specific data~\cite{raffel2020exploring, xue2020mt5}, known as transfer learning.
+
+\textbf{Instruction-tuning}: To enable effective model response to user queries, the pre-trained model is fine-tuned on instruction formatted data, i.e. an instruction and input-output pair. Instructions generally comprise multi-task data in plain natural language, guiding the model to respond according to the prompt and input. This fine-tuning improves zero-shot generalization and downstream task performance. Details on instruction data formatting and styles are available in~\cite{chung2022scaling, zhao2023survey, iyer2022opt}.
+
+\textbf{Alignment-tuning}: LLMs are prone to generate false, biased, and harmful text. To develop helpful, honest, and harmless models, alignment with human feedback is used. Alignment involves asking LLMs to generate unexpected responses, then updating parameters to avoid such responses~\cite{ouyang2022training, touvron2023llama, sun2023principle}. This ensures LLMs operate according to human intentions and values. A model is considered `aligned' if it meets the three criteria of being helpful, honest, and harmless or `HHH'~\cite{askell2021general}.
+
+Researchers employ reinforcement learning with human feedback~\cite{ziegler2019fine} for model alignment. In RLHF, a fine-tuned model on demonstrations is further trained with reward modeling (RM) and reinforcement learning (RL). RM and RL pipelines in RLHF are briefly discussed below.
+
+Reward modeling trains a model to rank generated responses by human preferences using a classification objective. To train the classifier, humans annotate LLMs generated responses based on HHH criteria.
+
+Reinforcement learning combines the reward model for alignment in the next stage. The trained reward model ranks LLM-generated responses into preferred vs. dispreferred, which alignment uses via proximal policy optimization (PPO). This process repeats iteratively until convergence.
+
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item Prompting/Utilization: Prompting queries trained LLMs to generate responses. LLMs can be prompted in various setups, either adapting to instructions without fine-tuning or with fine-tuning containing different prompt styles~\cite{chung2022scaling, kim2023cot, liu2023zero}. A good prompt engineering guide is available at~\cite{saravia2022prompt}. Various widely used prompt setups are discussed below.
+\end{enumerate}
+
+\textbf{Zero-Shot Prompting}: LLMs are zero-shot learners and capable of answering queries never seen before. This prompting style requires LLMs to answer user questions without any examples in the prompt.
+
+\textbf{In-context Learning}: Also known as few-shot learning, here multiple input-output demonstration pairs are provided to the model to generate the desired response. This adaptation style is also called few-shot learning. Discussions on formatting in-context learning (ICL) templates are available in~\cite{dong2022survey, zhao2023survey, wang2022super, chung2022scaling}.
+
+\textbf{Reasoning in LLMs}: LLMs are zero-shot reasoners and can be provoked to generate answers to logical problems, task planning, critical thinking, etc. with reasoning. Generating reasons is only possible using different prompting styles, while to further improve LLMs on reasoning tasks many methods~\cite{chung2022scaling, iyer2022opt} train them on reasoning datasets. Various prompting techniques for reasoning are discussed below.
+
+\textbf{Chain-of-Thought}: A special prompting case where demonstrations contain reasoning information aggregated with inputs and outputs so the model generates outcomes with step-by-step reasoning. More CoT prompt details are in~\cite{huang2022towards, wei2022chain, kim2023cot}.
+
+\textbf{Self-Consistency}: Improves CoT performance by generating multiple responses and selecting the most frequent answer~\cite{wang2022self}.
+
+\textbf{Tree-of-Thought}: Explores multiple reasoning paths with possibilities to look ahead and backtrack for problem-solving~\cite{yao2023tree}.
+
+\textbf{Single-Turn Instructions}: In this prompting setup, LLMs are queried only once with all relevant information in the prompt. LLMs generate responses by understanding the context either zero-shot or few-shot.
+
+\textbf{Multi-Turn Instructions}: Solving complex tasks requires multiple LLMs interactions, where feedback and responses from other tools are next round LLMs inputs. This style of using LLMs in the loop is common in autonomous agents.
+
+\chapter{Referenced Works}
+This section discusses two major works referenced in this research: the CoT framework for facilitating reasoning in language models, and a code evolution framework~\cite{jiang2023selfevolve} for improving code generation. Both claim state-of-the-art results in their domains. Their key ideas, results, and potential for further improvement are examined.
+
+\section{CoT Prompting}
+Humans often solve complex reasoning tasks by decomposing them into intermediate steps. For example, when solving multi-step math word problems, people break the problem down into smaller steps, solving each sub-problem sequentially. The CoT paper~\cite{wei2023chainofthought} aims to enable language models to mimic this reasoning process by generating coherent chains of thought.
+
+The authors demonstrate that with the right few-shot prompting, large language models can produce chains of thought leading to correct solutions for problems they initially failed. As shown in Figure~\ref{fig:cot_prompting}, a model generates a step-by-step reasoning chain to solve a math problem it previously answered incorrectly. Although resembling a solution, these reasoning chains are called chains of thought to emphasize they mimic human step-by-step reasoning.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/cot_prompting}
+    \caption{Example of CoT reasoning processes.~\cite{wei2023chainofthought}.}\label{fig:cot_prompting}
+\end{figure}
+
+Chain-of-thought prompting has several key advantages:
+
+\begin{enumerate}
+    \item It allows dynamic computation allocation, with more steps for harder problems needing more reasoning.
+    \item It provides interpretability into model reasoning, aiding debugging.
+    \item It is widely applicable to language-based reasoning tasks.
+    \item It only requires including reasoning chain examples in few-shot prompts.
+\end{enumerate}
+
+In summary, chain-of-thought prompting is a promising approach to improve reasoning and interpretability in language models.
+
+\section{Code Evolution Framework}
+The process of code generation based on problem descriptions alone remains a challenging task for LLMs. Drawing inspiration from the approach of many programmers who frequently consult knowledge documentation and grapple with debugging using existing tools, SelfEvolve~\cite{jiang2023selfevolve} presents a two-step method for prompt-based code generation. The initial step encourages LLMs to grasp additional knowledge and task-specific instructions, while the subsequent step instructs the models to modify the produced code solution based on feedback from human users or an oracle instructor. In this two-step framework, the second generation phase does not degrade the preliminary output from the first phase. Thus, these stages adhere to a topological order in terms of optimization, allowing for sequential optimization and integration.
+
+Reflecting on the above, SelfEvolve offers a promising reference. It enhances both steps by facilitating the progressive evolution of generated code using solely a large language model, without any need for further learning. Similar to previous work, SelfEvolve generates code by conditioning on the knowledge in the prompt. However, the knowledge is produced by the LLM instead of being sourced from external knowledge databases. After the output of the first step is obtained, SelfEvolve employs the LLM to iteratively modify the generated code. This procedure aligns with the approach of Chen et al.~\cite{chen2023teaching} to rectify code errors by utilizing feedback from a code executor, but it does not require specific test cases.
+
+\section{Evaluation Results}
+SelfEvolve presents a significant enhancement over other base models, demonstrating an average gain of 7.8 in $\text{pass@1}$ (equating to a relative increase of 15.8\%) when compared to ChatGPT. Furthermore, SelfEvolve outperforms the prompt-based approach, Self-Debugging, by a notable performance margin of 4.1. It was also observed that the integration of self-generated knowledge with the self-refinement module yields a considerably higher improvement. Specifically, SelfEvolve boosts the baseline across all perturbation types, which indicates that this method can substantially augment the robustness of large language models.
+
+\begin{table}[H]
+    \caption{$\text{Pass@1}$ results on the DS-1000 dataset. (\%)}\label{tab:ds1000_results}
+    \begin{center}
+        \begin{tabular}{|lccccc|}
+            \hline
+            \multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Method}}} & \multicolumn{4}{c|}{\textbf{Perturbation}} & \multirow{2}{*}{\textbf{Overall}}                                                                                                \\ \cline{2-5}
+            \multicolumn{1}{|c|}{}                                 & \multicolumn{1}{l|}{Origin}                & \multicolumn{1}{l|}{Surface}        & \multicolumn{1}{l|}{Semantic}       & \multicolumn{1}{l|}{Diff-Rewrite}   &                \\ \hline
+            \multicolumn{6}{|c|}{\textit{Prior work}}                                                                                                                                                                                              \\ \hline
+            \multicolumn{1}{|l|}{Codex (Completion)†}              & \multicolumn{1}{c|}{44.93}                 & \multicolumn{1}{c|}{37.94}          & \multicolumn{1}{c|}{34.35}          & \multicolumn{1}{c|}{16.94}          & 39.20          \\ \hline
+            \multicolumn{1}{|l|}{Codex (Insertion)†}               & \multicolumn{1}{c|}{47.76}                 & \multicolumn{1}{c|}{50.18}          & \multicolumn{1}{c|}{38.39}          & \multicolumn{1}{c|}{21.05}          & 43.30          \\ \hline
+            \multicolumn{1}{|l|}{DocPrompting}                     & \multicolumn{1}{c|}{53.95}                 & \multicolumn{1}{c|}{50.00}          & \multicolumn{1}{c|}{39.57}          & \multicolumn{1}{c|}{25.93}          & 45.50          \\ \hline
+            \multicolumn{1}{|l|}{Self-Debugging}                   & \multicolumn{1}{c|}{63.38}                 & \multicolumn{1}{c|}{59.21}          & \multicolumn{1}{c|}{45.65}          & \multicolumn{1}{c|}{28.40}          & 53.00          \\ \hline
+            \multicolumn{6}{|c|}{\textit{This work}}                                                                                                                                                                                               \\ \hline
+            \multicolumn{1}{|l|}{ChatGPT}                          & \multicolumn{1}{c|}{60.31}                 & \multicolumn{1}{c|}{52.63}          & \multicolumn{1}{c|}{41.30}          & \multicolumn{1}{c|}{26.54}          & 49.30          \\ \hline
+            \multicolumn{1}{|l|}{SelfEvolve}                       & \multicolumn{1}{c|}{\textbf{66.23}}        & \multicolumn{1}{c|}{\textbf{67.11}} & \multicolumn{1}{c|}{\textbf{48.70}} & \multicolumn{1}{c|}{\textbf{33.95}} & \textbf{57.10} \\ \hline
+            \multicolumn{1}{|r|}{\textit{w/o self-refinement}}     & \multicolumn{1}{c|}{60.09}                 & \multicolumn{1}{c|}{59.21}          & \multicolumn{1}{c|}{41.30}          & \multicolumn{1}{c|}{29.01}          & 50.60          \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\section{Conclusion}
+The SelfEvolve framework, despite demonstrating impressive performance across multiple benchmarks, still has unexplored avenues for further enhancement:
+
+\begin{enumerate}
+    \item Currently, SelfEvolve depends exclusively on feedback from the code executor. However, there exists a plethora of other feedback sources that could be beneficially exploited.
+
+    \item The CoT prompting technique has not been integrated into the SelfEvolve's feedback loop, with the system instead utilizing a more traditional approach.
+\end{enumerate}
+
+The objective of this research is to augment the capabilities of SelfEvolve by integrating the CoT prompting method and diversifying the feedback sources to include not only the code executor but also human discussions from platforms such as StackOverflow.
+
+\chapter{Proposed Solutions}
+\section{Reference}
+The principal reference for this master's thesis is the SelfEvolve framework, the enhancement of which is the main objective. The formal formulation of this framework is presented as follows:
+
+\subsection{Framework Structure}
+SelfEvolve, a framework that facilitates the progressive evolution of generated code using only a LLM without any learning requirements, improves both steps of the process. Like prior research, SelfEvolve generates code conditioned on the knowledge embedded in the prompt. However, this knowledge is produced by the LLM rather than being drawn from external knowledge bases. After the first step's output is obtained, SelfEvolve employs the LLM to iteratively revise the generated code. This procedure, following the method of Chen et al.~\cite{chen2023teaching}, corrects code errors by leveraging feedback from a code executor, eliminating the need for specific test cases.
+
+In a nutshell, Jiang et al.~\cite{jiang2023selfevolve} amalgamate two LLM-driven methods: generation based on self-generated knowledge and refinement via error messages to devise a more efficient method known as SelfEvolve. These two components mutually reinforce each other almost orthogonally. On one hand, self-generated knowledge enhances self-refinement steps. By conditioning on knowledge from models' parameters, intermediate output explicitly applies the knowledge. With a more accurate output, the self-refinement steps need fewer iterations to fix the code, thereby reducing the difficulty. On the other hand, the self-refinement steps enhance the application of generated knowledge. The input knowledge may contain irrelevant information or noise during the generation process. The self-refinement steps remove this noise by introducing an external interpreter, enhancing the overall quality of the generated code. Subsequent empirical experiments will illustrate how these two modules mutually reinforce each other.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/selfevolve}
+    \caption{SelfEvolve pipeline.~\cite{jiang2023selfevolve}.}\label{fig:selfevolve}
+\end{figure}
+
+\subsection{Evaluation Strategy}
+In the foundational work of SelfEvolve, the team defines the metric $\text{pass@1}$ as the proportion of unit tests that are successfully executed on the first attempt, allowing for additional iterations solely for syntax correction. However, this metric is somewhat inflexible as it does not specify the total number of iterations the LLM is allowed to attempt to solve the problem.
+
+In light of these limitations, this study introduces an alternative metric to assess the model's performance. The novel metric, termed $\text{pass@n}$, where $n$ represents the maximum number of iterations permitted for the model to resolve the problem. This metric is defined as the proportion of unit tests that are correctly executed after $k$ attempts as long as $k \leq n$. This metric offers greater flexibility and enables a more realistic evaluation of the model's performance.
+
+\section{Dataset}
+\subsection{\text{DS-1000}}
+DS-1000~\cite{pmlr-v202-lai23b} serves as a benchmark for code generation, encompassing a thousand data science problems across seven Python libraries, including NumPy and Pandas. Distinct from prior works, DS-1000's problems are diverse, realistic, and practical, as they are collected from StackOverflow. The automated evaluation is highly reliable, with only 1.8\% of all Codex-002-predicted solutions accepted by our evaluation system being incorrect. This accuracy is ensured through multi-criteria metrics, which check functional correctness by running test cases and surface form constraints by limiting API usages or keywords. To mitigate potential memorization, we've modified more than half of the DS-1000 problems from their original StackOverflow versions, including 152 surface perturbations, 235 semantic perturbations, and 162 complex rewrites. This alteration prevents models from correctly answering them by simply recalling the solutions from pre-training. The current leading public system, Codex-002, achieves an accuracy of 43.3\%, suggesting considerable room for improvement.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/ds1000_example}
+    \caption{An example problem of Matplotlib.}\label{fig:ds1000_example}
+\end{figure}
+
+\subsection{StackOverflow}
+StackOverflow serves as a comprehensive resource for programmers worldwide, providing an extensive repository of knowledge on various programming languages, libraries, and frameworks. This platform facilitates discussions among developers, allowing them to share insights and potential solutions to coding challenges. The discussions and queries on this platform have been utilized to generate CoT prompts for LLMs in the proposed solutions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/stackoverflow}
+    \caption{A discussion on StackOverflow.}\label{fig:stackoverflow}
+\end{figure}
+
+As depicted in Figure~\ref{fig:stackoverflow}, the platform hosts a wealth of questions and answers, providing a rich source of data for generating LLM prompts.
+
+\subsubsection{Data Collection}
+A substantial data dump from StackOverflow was procured from the Stack Exchange Data Dump (https://archive.org/details/stackexchange). After filtering out posts related to specific libraries such as `matplotlib', `pandas', `numpy', `scipy', `seaborn', `sklearn', `tensorflow', and `pytorch', a total of \textbf{558,402 posts} and \textbf{972,513 related comments} remained. This refined dataset proves invaluable for guiding LLMs in generating CoT prompts.
+
+\subsubsection{Generate Embeddings}
+The original XML-formatted data, which includes each post and its associated comments, undergoes a comprehensive cleansing process to make it suitable for use. Once cleaned, these elements are structured into a document of the following format:
+
+\begin{lstlisting}
+Post: <content_of_post>
+Comments:
+- <content_of_comment_1>
+- <content_of_comment_2>
+...
+- <content_of_comment_n>
+\end{lstlisting}
+
+Given the context window size limit of approximately 4000 tokens for many LLMs, it is crucial to maintain the total number of tokens in the document below 3000. This precautionary measure ensures ample space is preserved for the original question. To effectively manage the allocation of comments within a post while adhering to this limit, a greedy allocation algorithm is implemented.
+
+Consider a post $P$, $N$ comments, and a function $f$ that calculates the number of tokens in a string. The algorithm operates in the following manner:
+
+\begin{lstlisting}
+docs = []
+for i in range(1, N):
+    doc = []
+    doc.append(P)
+    length = f(P)
+    for j in range(i, N):
+        if length + f(comment[j]) < 3000:
+            doc.append(comment[j])
+            length += f(comment[j])
+        else:
+            break
+    docs.append(doc)
+\end{lstlisting}
+
+Subsequently, each document is processed by a function that employs OpenAI's text embedding model to generate embeddings for both the post and its comments. These embeddings are then securely stored in a database for future retrieval and use.
+
+Refer to Appendix~\ref{app:stackoverflow_doc} for an example of the generated document.
+
+\section{Proposed Enhancements}
+In the SelfEvolve paper, it is explicitly stated that the model primarily relies on feedback from the code executor to refine the generated code. However, there exist additional potential feedback sources that could be harnessed to bolster the model's performance. This study seeks to investigate the integration of the CoT prompting method and the inclusion of human discussions.
+
+The architecture of SelfEvolve is illustrated in Figure~\ref{fig:selfevolve_architecture}, while the architecture of the enhanced model, CoT-SelfEvolve, is portrayed in Figure~\ref{fig:cot_selfevolve_architecture}, featuring the subsequent enhancements:
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/selfevolve_architecture}
+    \caption{Architecture of SelfEvolve.}\label{fig:selfevolve_architecture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/cot_selfevolve_architecture}
+    \caption{Architecture of CoT-SelfEvolve with Auto-CoT prompt generators.}\label{fig:cot_selfevolve_architecture}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Auto-CoT Prompt Generator 1}: This component is an automatic CoT prompt generator that gleans insights from the problem description and StackOverflow discussions to sequentially suggest hints for another LLM to generate code.
+    \item \textbf{External Knowledge Base}: Contrasting the original SelfEvolve framework that only utilizes feedback generated by the code, this model also incorporates feedback from human discussions. This external knowledge base operates as a similarity search engine, leveraging the embeddings produced from StackOverflow data.
+    \item \textbf{Syntax Checker}: This module is tasked with verifying the syntax of the generated code and offering feedback to the Auto-CoT Prompt Generator 2. Since executing the generated code in the code executor can be time-intensive, this module allows for the detection of syntax errors without the need for code execution in many cases.
+    \item \textbf{Auto-CoT Prompt Generator 2}: This component is another automatic CoT prompt generator that learns from both the problem description and the feedback from the syntax checker or the code executor. It sequentially suggests hints for another LLM to generate code.
+\end{enumerate}
+
+The subsequent sections will delve into the rationale, structure, and outcomes associated with the suggested improvements in depth.
+
+\subsection{Auto-CoT Prompt Generator 1}
+\subsubsection{Motivation}
+The CoT prompting technique provides a compelling approach to enhancing reasoning in language models. The core idea behind this technique is to break down complex problems into intermediate natural language reasoning steps, forming a `chain-of-thought'. This method not only enables models to handle multi-step problems more effectively by allocating additional computation to more complex reasoning steps, but also offers an interpretable window into the model's behavior. It suggests how the model might have arrived at a particular answer, providing opportunities to debug where the reasoning path may have gone awry. Furthermore, CoT can be applied to a wide range of tasks that humans can solve via language, such as math word problems, commonsense reasoning, and symbolic manipulation. Importantly, this method can be easily implemented in sufficiently large off-the-shelf language models simply by including examples of chain of thought sequences into the exemplars of few-shot prompting.
+
+In the context of code generation, the application of the CoT prompting technique could significantly enhance the accuracy of the generated code. However, given the dynamic nature of programming problems, relying solely on a fixed template of steps, as in the original CoT work, may not be sufficient. To address this, the idea of using a LLM model to learn from discussions on StackOverflow and generate step-by-step guidelines is proposed. By doing so, the model can adapt to the evolving nature of programming problems and generate more accurate and contextually appropriate code.
+
+The motivation behind improving code generation using a combination of CoT and automatic prompt generation learned from StackOverflow discussions is threefold.
+
+\begin{enumerate}
+    \item Firstly, CoT allows for the decomposition of complex coding tasks into manageable steps, making the process more interpretable and debuggable.
+    \item Secondly, the incorporation of StackOverflow discussions provides a rich and evolving source of real-world programming knowledge, allowing the model to stay current with the latest programming trends and challenges.
+    \item Lastly, the use of a LLM to learn from these discussions and generate prompts ensures that the process is dynamic and adaptable, capable of handling a wide range of programming problems.
+\end{enumerate}
+
+This fusion of techniques aims to harness the strengths of CoT prompting and the practical insights from StackOverflow to significantly enhance the performance of code generation models.
+
+\subsubsection{Architecture}
+The Auto-CoT Prompt Generator 1, as depicted in Figure~\ref{fig:cot_generator_1}, is an innovative architecture that leverages the abilities of LLMs for improved guideline generation.
+
+This module takes as input a specially composed document, which is a synthesis of the problem description and a relevant discussion from StackOverflow. The role of the Auto-CoT Prompt Generator 1 is to analyze the discussion in the context of the problem, extracting key insights, common solutions, and potential pitfalls. It then uses this analysis to generate a series of step-by-step guidelines for solving the problem. These guidelines essentially form a chain-of-thought prompt, breaking down the complex problem into a series of smaller, more manageable tasks.
+
+The generated guidelines are then fed into the second component of the architecture, the Initial Code Generator. This component is another LLM model, but its task is to take the step-by-step guidelines and translate them into code. It leverages the CoT prompt to generate code solutions that are not only accurate, but also in line with the best practices and solutions discussed on StackOverflow.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/cot_generator_1}
+    \caption{Architecture of Auto-CoT Prompt Generator 1.}\label{fig:cot_generator_1}
+\end{figure}
+
+The prompt to combine the problem description and StackOverflow discussion is formatted as follows:
+
+\begin{lstlisting}
+    Given the problem description with the code, and a StackOverflow post, you need to learn from the comments to generate step-by-step suggestions that help another agent to solve the problem.
+    The given problem is: {problem}.
+    The StackOverflow post with supportive comments is: {post}.
+    Please generate a series of suggestions that help another agent to solve the problem step-by-step.
+    Here are some suggestions:
+    - Suggestion 1: [...]
+    - Suggestion 2: [...]
+    - Suggestion 3: [...]
+    - Final suggestion: [...]
+\end{lstlisting}
+
+\subsection{Auto-CoT Prompt Generator 2}
+\subsubsection{Motivation}
+Drawing from the foundational principles of the CoT prompting technique, it is observed that feedback from syntax checkers or code executors can sometimes be too comprehensive for the model to effectively process. This feedback often encompasses a vast array of information, including error messages, standard output, and other intricate details, which can prove challenging for the model to interpret accurately. To address this complexity, the concept of employing an LLM model to generate a CoT prompt that poses salient questions for another LLM to use in code generation is proposed. This approach enables the model to adapt to the dynamic nature of programming problems, thereby generating code that is more precise and contextually relevant.
+
+The key questions that the model should consider to guide the code generation process include:
+\begin{enumerate}
+    \item What is the problem and what does it require?
+
+    \item What are the input and output formats?
+
+    \item How does the current problem relate to the defined problem?
+
+    \item What are the differences between the current state and the desired outcome? Are additional imports necessary? Is there a need to create our own test cases?
+
+    \item What is the error message? What is the expected output?
+\end{enumerate}
+
+\subsubsection{Architecture}
+The Auto-CoT Prompt Generator 2, as depicted in Figure~\ref{fig:cot_generator_2}, takes the feedback from either the syntax checker or the code executor and asks the LLM to suggest areas that need improvement. The generated suggestions are then used to guide the code generation process, ensuring that the final output is accurate and error-free.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/cot_generator_2}
+    \caption{Architecture of Auto-CoT Prompt Generator 2.}\label{fig:cot_generator_2}
+\end{figure}
+
+\subsection{Results and Discussions}
+\subsubsection{Main Results}
+In a comprehensive system test encompassing a variety of LLMs including GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were significantly promising. The CoT-SelfEvolve model, employing GPT-4 as the base LLM, outperformed the original SelfEvolve model in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear superiority. Despite a minor setback observed with Scipy questions, the overall performance remained impressive. Even though the original SelfEvolve study did not provide results for Pandas, Numpy, and Tensorflow, when compared with various LLMs, CoT-SelfEvolve achieved outstanding results, notably with GPT-4. These remarkable findings are concisely compiled and presented in Table~\ref{tab:cot_selfevolve_ds1000_results}.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}\label{tab:cot_selfevolve_ds1000_results}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|c|c|c|c|c|c|c|}
+            \hline
+                                                     & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
+            \multirow{2}{*}{SelfEvolve}              & GPT-3.5       & 52.83                      & 64.71                        & 73.04                        & 78.06                           & N/A                         & N/A                        & N/A                             \\ \cline{2-9}
+                                                     & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           & N/A                         & N/A                        & N/A                             \\ \hline
+            \multirow{6}{*}{\textit{CoT-SelfEvolve}} & GPT-3.5       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \cline{2-9}
+                                                     & GPT-4         & 53.77                      & \textbf{89.71}               & \textbf{97.39}               & \textbf{85.16}                  & \textbf{92.78}              & \textbf{76.36}             & \textbf{84.44}                  \\ \cline{2-9}
+                                                     & Claude 2.1    & 47.17                      & 83.82                        & 85.22                        & 83.23                           & 65.64                       & 61.82                      & 57.78                           \\ \cline{2-9}
+                                                     & Claude 3      & 44.34                      & 76.47                        & 73.91                        & 85.81                           & 43.64                       & 31.36                      & 53.33                           \\ \cline{2-9}
+                                                     & Mistral Large & 45.28                      & 80.88                        & 78.26                        & 52.26                           & 68.04                       & 43.64                      & 53.33                           \\ \cline{2-9}
+                                                     & Mistral 8x7B  & 30.19                      & 57.35                        & 56.52                        & 69.68                           & 38.49                       & 35.91                      & 44.44                           \\ \hline
+        \end{tabular}%
+    }
+\end{table}
+
+\subsubsection{Discussions}
+\subsubsubsection{The importance of Auto-CoT prompt generators}
+While the CoT-SelfEvolve generally delivers remarkable results when operating with all enhancements, including two Auto-CoT prompt generators, it is essential to comprehend the influence of each individual prompt generator on the same benchmark. Consequently, an additional experiment was conducted, featuring four configurations that utilize CoT prompts for both the Initial Code Generator and the Self-Correction Code Generator. The outcomes of this experiment are presented in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_1}. To expedite the acquisition of these results, GPT-3.5 was employed for this test. Furthermore, an overall score was computed instead of individual scores for each library.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset with or without CoT prompts. (\%)}\label{tab:cot_selfevolve_ds1000_results_ablation_1}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Configuration & \begin{tabular}[c]{@{}c@{}}Initial\\ Code Generator\end{tabular} & \begin{tabular}[c]{@{}c@{}}Self-Correction\\ Code Generator\end{tabular} & \multicolumn{1}{l|}{Overall} \\ \hline
+        1             & GPT-3.5                                                          & GPT-3.5                                                                  & 30.52                        \\ \hline
+        2             & GPT-3.5 + CoT                                                    & GPT-3.5                                                                  & 34.73                        \\ \hline
+        3             & GPT-3.5                                                          & GPT-3.5 + CoT                                                            & 32.52                        \\ \hline
+        4             & GPT-3.5 + CoT                                                    & GPT-3.5 + CoT                                                            & 35.51                        \\ \hline
+    \end{tabular}
+\end{table}
+
+The performance enhancement brought about by the CoT prompt generators is evident when compared to the non-CoT prompt version, with a relative gain of \textbf{16.39\%}. This finding highlights the significance of CoT prompt generators in augmenting the efficacy of the CoT-SelfEvolve model.
+
+Furthermore, the differential impact of the two prompt generators is noteworthy. The first CoT prompt generator, which employs human discussions from StackOverflow to propose a step-by-step guideline, contributes to a relative performance improvement of \textbf{13.77\%}. In contrast, the second CoT prompt generator, which formulates suggestions based on feedback from the syntax checker or code executor, accounts for a relative gain of \textbf{6.56\%}. This outcome suggests a more pivotal role for the first CoT prompt generator in amplifying the performance of the CoT-SelfEvolve model.
+
+\subsubsubsection{Using larger LLM to guide the code generation process}
+Motivated by the understanding that employing large LLMs, such as GPT-4 or Claude 3, can be costly, especially when multiple runs of the self-correction code generator are permitted, an experiment was conducted to evaluate the impact of using a large LLM to guide the code generation process while deploying a smaller LLM for actual code production. The results of this study are illustrated in Table~\ref{tab:cot_selfevolve_ds1000_results_ablation_2}. The data clearly shows that leveraging a larger LLM to steer the code generation process can significantly enhance the model's performance, as evidenced by a relative gain of \textbf{11.26\%}.
+
+\begin{table}[H]
+    \caption{$\text{Pass@5}$ results on the DS-1000 dataset with different LLM stacks. (\%)}\label{tab:cot_selfevolve_ds1000_results_ablation_2}
+    \centering
+    \resizebox{\columnwidth}{!}{%
+        \begin{tabular}{|l|c|c|c|c|c|c|c|}
+            \hline
+            Configuration              & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{Pytorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{Tensorflow} \\ \hline
+            GPT-3.5 CoT + GPT-3.5 Code & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           \\ \hline
+            GPT-4 CoT + GPT-3.5 Code   & 37.74                      & 83.82                        & 73.04                        & 35.48                           & 31.62                       & 19.55                      & 53.33                           \\ \hline
+        \end{tabular}%
+    }
+\end{table}
+
+\chapter{Conclusion}
+This study presents a comprehensive examination of the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging software code is a challenging task, traditionally dependent on extensive manual effort and domain expertise. However, the advent of large language models opens new avenues for automated debugging.
+
+\section{Achievements}
+The CoT-SelfEvolve model, which leverages the power of large language models such as GPT-4, exhibits superior performance in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear advancement over the original SelfEvolve model. The study also reveals that the CoT-SelfEvolve model performs impressively when compared with various LLMs, particularly with GPT-4, on tasks involving Pandas, Numpy, and Tensorflow. Furthermore, the ablation study confirms the significant contribution of the CoT prompt generators to the model's performance, with a notable relative gain of \textbf{16.39\%}. The differential impact of the two prompt generators also sheds light on their individual importance in the overall system. Lastly, the study uncovers the potential of using a larger LLM to guide the code generation process, which results in a significant performance boost, as evidenced by a relative gain of \textbf{11.26\%}.
+
+\section{Things to Improve}
+Despite the promising results, there are areas that warrant further investigation. The study reveals a minor underperformance of the model with Scipy questions, indicating room for improvement in handling such tasks. Additionally, the effects of parameters of the LLM, such as temperature, on the model's performance have not been thoroughly explored and could be a fruitful area for future research. Finally, the optimal number of discussions from StackOverflow that should be used for the CoT prompt generator is still an open question. Diving deeper into these areas could lead to further enhancements of the CoT-SelfEvolve model and, consequently, more efficient and effective automated debugging.
+
+\newpage
+\appendix
+\chapter{StackOverflow Document}
+\label{app:stackoverflow_doc}
+\begin{lstlisting}
+Post: <p>I have a Numpy array of colors that is returned when using K-means quantization on an image. After K-means is used, I need to take those centers and calculate the convex hull of the set of color centers.</p>
+
+<p>Essentially I need to find which points/colors don't have enough contrast from another color. I think the answer to this would be to find the points inside the hull (simplices?) that aren't the vertices of the hull.</p>
+
+<pre><code>import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+from scipy.spatial import ConvexHull
+from skimage import color, exposure
+from sklearn import cluster
+
+def quantize(pixels, n_colors):
+    width, height, depth = pixels.shape
+    reshaped_pixels = np.reshape(pixels, (width * height, depth))
+    model = cluster.KMeans(n_clusters=n_colors, n_init=100, precompute_distances=True)
+    labels = model.fit_predict(reshaped_pixels)
+    centers = model.cluster_centers_
+    quantized_pixels = np.reshape(centers[labels], (width, height, centers.shape[1]))
+
+    return quantized_pixels, centers, labels
+
+def scale_image(img, max_width=100):
+    img_width, img_height = img.size
+    ratio = (max_width / float(img_width))
+    new_height = int((float(img_height)*float(ratio)))
+    img.thumbnail((max_width, new_height), Image.NEAREST)
+    return img
+
+# Open image, convert to RGB just in case
+img = Image.open('image2.jpg').convert('RGB')
+
+# Scale image to speed up processing
+img = scale_image(img, 80)
+
+# Convert to numpy array
+np_img_array = np.array(img)
+
+# Convert rgb to lab colorspace
+lab_pixels = color.rgb2lab(np_img_array)
+
+# Kmeans quantization
+quantized_lab_pixels, centers, labels = quantize(lab_pixels, 16)
+
+# Convert pixels back to rgb
+quantized_rgb_pixels = (color.lab2rgb(quantized_lab_pixels)*255).astype('uint8')
+
+# Attempt to use convex hull around cluster centers
+hull = ConvexHull(centers)
+
+for simplex in hull.simplices:
+    plt.plot(centers[simplex, 0], centers[simplex, 1])
+plt.scatter(*centers.T, alpha=.5, color='k', marker='v')
+
+
+for p in centers:
+    point_is_in_hull = point_in_hull(p, hull)
+    marker = 'x' if point_is_in_hull else 'd'
+    color = 'g' if point_is_in_hull else 'm'
+    plt.scatter(p[0], p[1], marker=marker, color=color)
+
+plt.show()
+</code></pre>
+
+<p><strong>Update:</strong> Here is my rendered plot output. I'm not using the color labels in the plotting in this render.</p>
+
+<p><a href="https://i.stack.imgur.com/Luv0j.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/Luv0j.png" alt="enter image description here"></a></p>
+
+<p>Here is more so what would be helpful to see. However, the plots aren't what I need... I need to find out which of the cluster centers (colors) make up the vertices of the hull and then pair them back to the vertices labels.</p>
+
+<p><a href="https://i.stack.imgur.com/OgQci.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/OgQci.png" alt="enter image description here"></a></p>
+
+<p>Here is an example of the RGB colors outputted (on the left), and then on the right you would have the final colors, which would be after excluding cluster centers that fall outside of the region.</p>
+
+<p><a href="https://i.stack.imgur.com/lRVVB.jpg" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/lRVVB.jpg" alt="enter image description here"></a></p>
+
+
+Comments:
+- comment: Can you add to your code a sample output of your code, and also what the desired output would be?
+- comment: @user8153 I'll try... but not really sure how to go about that since I'm not getting the correct outputs to start with. It's more so about finding which clusters are not within the hull region... and that would be the answer.
+- comment: Could you please clarify: you want to "find out which of the cluster centers are not within the convex hull" -- the convex hull of what? The convex hull of the cluster centers?
+- comment: @user8153 yes that is correct. These cluster centers are actual colors. Sometimes the cluster centers are very similar colors, but I need to exclude the very similar colors based on contrast to the rest of the cluster centers. I was thinking that if I used each of the centers to draw the regions then it would potentially exclude clusters that didn't have enough contrast between them.
+- comment: Just updated the question with another image to show sample output and desired output.
+- comment: Why doesn't every cluster center lie within the convex hull of the the cluster centers? Doesn't the convex hull of a set of points include all those points?
+- comment: After thinking more, I believe you're right. I think the answer is to find the points inside the hull... the points that are masked. The edge points (points that make up the hull mask) are the points that will be used in the final output.
+- comment: If your cluster centers are too similar, you should try using fewer clusters or change your distance measure so it uses contrast instead of euclidean distance along lab colorspace.
+- comment: @swenzel I don't see either one of those solving the problem in a precise way. Both of those suggestions will leave the door open for other problems. If you calculate based only on contrast, then you're not going to effectively cluster the colors...
+- comment: Sorry, I didn't really know what I was talking about when I mentioned contrast. I've read a little about colorcoding now and understand that contrast doesn't take into account the color itself but only relative luminance. I meant you need a distance measure, that has the same idea of similarity which you have. Apparently you consider colors similar which the clustering algorithm considers different. So change the distance measure, play around with it, make luminance count a little less for example.
+\end{lstlisting}
+
+\newpage
+\renewcommand{\bibname}{References}
+\bibliography{references}
+
+\end{document}

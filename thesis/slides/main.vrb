@@ -1,0 +1,18 @@
+\frametitle{Example: Pandas-273 Solution}
+\begin{verbatim}
+import pandas as pd
+import numpy as np
+
+df, list_of_my_columns = \
+pickle.load(open(f"input/input{args.test_case}.pkl", "rb"))
+
+###BEGIN SOLUTION
+df['Sum'] = df[list_of_my_columns].sum(axis=1)
+###END SOLUTION
+
+result = df
+
+with open('result/result_{}.pkl'.format(
+    args.test_case), 'wb') as f:
+    pickle.dump(result, f)
+    \end{verbatim}
