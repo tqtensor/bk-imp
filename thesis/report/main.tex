@@ -379,7 +379,7 @@
   \begin{center}
     \large\bf ABSTRACT OF DISSERTATION
   \end{center}
-  This thesis explores the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}, focusing on the use of self-correcting Large Language Models (LLMs) to assist in software bug resolution. The study introduces and evaluates a novel method that combines the Chain-of-Thought (CoT) prompting technique and a code evolution framework, specifically applied to Python data science problems. This approach, referred to as the CoT-SelfEvolve model, is evaluated against several benchmarks and compared with other published methods. The CoT-SelfEvolve model demonstrates superior performance, particularly with Pytorch, Sklearn, Matplotlib, Pandas, Numpy, and Tensorflow tasks, highlighting the potential of LLMs in automated debugging. However, areas for improvement were identified, such as underperformance with Scipy questions and the need for further exploration of LLM parameters' effects on performance. The study concludes that the CoT-SelfEvolve model is a promising step towards more efficient and effective automated debugging, and it paves the way for future research in this domain.
+  This thesis explores the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}, focusing on the use of self-correcting Large Language Models (LLMs) to assist in software bug resolution. The study introduces and evaluates a novel method that combines the Chain-of-Thought (CoT) prompting technique and a code evolution framework, specifically applied to Python data science problems. This approach, referred to as the CoT-SelfEvolve model, is evaluated against several benchmarks and compared with other published methods. The CoT-SelfEvolve model demonstrates superior performance, particularly with Pytorch, Sklearn, Matplotlib, Pandas, NumPy, and Tensorflow tasks, highlighting the potential of LLMs in automated debugging. However, areas for improvement were identified, such as underperformance with SciPy questions and the need for further exploration of LLM parameters' effects on performance. The study concludes that the CoT-SelfEvolve model is a promising step towards more efficient and effective automated debugging, and it paves the way for future research in this domain.
 \end{titlepage}
 
 
@@ -1062,14 +1062,14 @@ The Auto-CoT Prompt Generator 2, as depicted in Figure~\ref{fig:cot_generator_2}
 
 \subsection{Results and Discussions}
 \subsubsection{Main Results}
-In a comprehensive system test encompassing a variety of LLMs including GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were significantly promising. The CoT-SelfEvolve model, employing GPT-4 as the base LLM, outperformed the original SelfEvolve model in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear superiority. Despite a minor setback observed with Scipy questions, the overall performance remained impressive. Even though the original SelfEvolve study did not provide results for Pandas, Numpy, and Tensorflow, when compared with various LLMs, CoT-SelfEvolve achieved outstanding results, notably with GPT-4. These remarkable findings are concisely compiled and presented in Table~\ref{tab:cot_selfevolve_ds1000_results}.
+In a comprehensive system test encompassing a variety of LLMs including GPT-3.5, GPT-4, Claude 2.1, Claude 3, Mistral Large, and Mistral 8x7B, the $\text{pass@5}$ results were significantly promising. The CoT-SelfEvolve model, employing GPT-4 as the base LLM, outperformed the original SelfEvolve model in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear superiority. Despite a minor setback observed with SciPy questions, the overall performance remained impressive. Even though the original SelfEvolve study did not provide results for Pandas, NumPy, and Tensorflow, when compared with various LLMs, CoT-SelfEvolve achieved outstanding results, notably with GPT-4. These remarkable findings are concisely compiled and presented in Table~\ref{tab:cot_selfevolve_ds1000_results}.
 
 \begin{table}[H]
   \caption{$\text{Pass@5}$ results on the DS-1000 dataset. (\%)}\label{tab:cot_selfevolve_ds1000_results}
   \resizebox{\textwidth}{!}{%
     \begin{tabular}{|l|l|c|c|c|c|c|c|c|c|}
       \hline
-                                      & LLM           & \multicolumn{1}{l|}{Scipy} & \multicolumn{1}{l|}{PyTorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{Numpy} & \multicolumn{1}{l|}{TensorFlow} & \multicolumn{1}{l|}{Overall} \\ \hline
+                                      & LLM           & \multicolumn{1}{l|}{SciPy} & \multicolumn{1}{l|}{PyTorch} & \multicolumn{1}{l|}{Sklearn} & \multicolumn{1}{l|}{Matplotlib} & \multicolumn{1}{l|}{Pandas} & \multicolumn{1}{l|}{NumPy} & \multicolumn{1}{l|}{TensorFlow} & \multicolumn{1}{l|}{Overall} \\ \hline
       \multirow{2}{*}{SelfEvolve}     & GPT-3.5       & 52.83                      & 64.71                        & 73.04                        & 78.06                           &                             &                            &                                 & \multicolumn{1}{l|}{}        \\ \cline{2-10}
                                       & GPT-4         & \textbf{58.49}             & 70.59                        & 70.43                        & 84.52                           &                             &                            &                                 & \multicolumn{1}{l|}{}        \\ \hline
       \multirow{6}{*}{CoT-SelfEvolve} & GPT-3.5       & 32.08                      & 72.06                        & 66.09                        & 32.26                           & 29.55                       & 17.73                      & 46.67                           & 35.5                         \\ \cline{2-10}
@@ -1092,7 +1092,7 @@ While the CoT-SelfEvolve generally delivers remarkable results when operating wi
   \resizebox{\columnwidth}{!}{%
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
       \hline
-      Auto-CoT 1 & Auto-CoT 2 & Scipy & PyTorch & Sklearn & Matplotlib & Pandas & Numpy & TensorFlow & Overall \\ \hline
+      Auto-CoT 1 & Auto-CoT 2 & SciPy & PyTorch & Sklearn & Matplotlib & Pandas & NumPy & TensorFlow & Overall \\ \hline
       off        & off        & 33.02 & 64.71   & 59.13   & 26.45      & 23.02  & 14.09 & 42.22      & 30.52   \\ \hline
       on         & off        & 28.3  & 75      & 63.48   & 29.68      & 29.21  & 17.27 & 51.11      & 34.73   \\ \hline
       on         & on         & 32.08 & 72.06   & 66.09   & 32.26      & 29.55  & 17.73 & 46.67      & 35.51   \\ \hline
@@ -1114,7 +1114,7 @@ Motivated by the understanding that employing large LLMs, such as GPT-4 or Claud
   \resizebox{\columnwidth}{!}{%
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
       \hline
-      Auto-CoT LLM & Code LLM & Scipy & PyTorch & Sklearn & Matplotlib & Pandas & Numpy & TensorFlow & Overall \\ \hline
+      Auto-CoT LLM & Code LLM & SciPy & PyTorch & Sklearn & Matplotlib & Pandas & NumPy & TensorFlow & Overall \\ \hline
       GPT-3.5      & GPT-3.5  & 32.08 & 72.06   & 66.09   & 32.26      & 29.55  & 17.73 & 46.67      & 35.51   \\ \hline
       GPT-4        & GPT-3.5  & 37.74 & 83.82   & 73.04   & 35.48      & 31.62  & 19.55 & 53.33      & 39.50   \\ \hline
     \end{tabular}%
@@ -1125,17 +1125,17 @@ Motivated by the understanding that employing large LLMs, such as GPT-4 or Claud
 This study presents a comprehensive examination of the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}. Debugging software code is a challenging task, traditionally dependent on extensive manual effort and domain expertise. However, the advent of large language models opens new avenues for automated debugging.
 
 \section{Achievements}
-The CoT-SelfEvolve model, which leverages the power of large language models such as GPT-4, exhibits superior performance in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear advancement over the original SelfEvolve model. The study also reveals that the CoT-SelfEvolve model performs impressively when compared with various LLMs, particularly with GPT-4, on tasks involving Pandas, Numpy, and Tensorflow. Furthermore, the ablation study confirms the significant contribution of the CoT prompt generators to the model's performance, with a notable relative gain of \textbf{16.39\%}. The differential impact of the two prompt generators also sheds light on their individual importance in the overall system. Lastly, the study uncovers the potential of using a larger LLM to guide the code generation process, which results in a significant performance boost, as evidenced by a relative gain of \textbf{11.26\%}.
+The CoT-SelfEvolve model, which leverages the power of large language models such as GPT-4, exhibits superior performance in handling Pytorch, Sklearn, and Matplotlib questions, demonstrating a clear advancement over the original SelfEvolve model. The study also reveals that the CoT-SelfEvolve model performs impressively when compared with various LLMs, particularly with GPT-4, on tasks involving Pandas, NumPy, and Tensorflow. Furthermore, the ablation study confirms the significant contribution of the CoT prompt generators to the model's performance, with a notable relative gain of \textbf{16.39\%}. The differential impact of the two prompt generators also sheds light on their individual importance in the overall system. Lastly, the study uncovers the potential of using a larger LLM to guide the code generation process, which results in a significant performance boost, as evidenced by a relative gain of \textbf{11.26\%}.
 
 \section{Things to Improve}
-Despite the promising results, there are areas that warrant further investigation. The study reveals a minor underperformance of the model with Scipy questions, indicating room for improvement in handling such tasks. Additionally, the effects of parameters of the LLM, such as temperature, on the model's performance have not been thoroughly explored and could be a fruitful area for future research. Finally, the optimal number of discussions from StackOverflow that should be used for the CoT prompt generator is still an open question. Diving deeper into these areas could lead to further enhancements of the CoT-SelfEvolve model and, consequently, more efficient and effective automated debugging.
+Despite the promising results, there are areas that warrant further investigation. The study reveals a minor underperformance of the model with SciPy questions, indicating room for improvement in handling such tasks. Additionally, the effects of parameters of the LLM, such as temperature, on the model's performance have not been thoroughly explored and could be a fruitful area for future research. Finally, the optimal number of discussions from StackOverflow that should be used for the CoT prompt generator is still an open question. Diving deeper into these areas could lead to further enhancements of the CoT-SelfEvolve model and, consequently, more efficient and effective automated debugging.
 
 \newpage
 \appendix
 \chapter{StackOverflow Document}
 \label{app:stackoverflow_doc}
 \begin{lstlisting}
-Post: <p>I have a Numpy array of colors that is returned when using K-means quantization on an image. After K-means is used, I need to take those centers and calculate the convex hull of the set of color centers.</p>
+Post: <p>I have a NumPy array of colors that is returned when using K-means quantization on an image. After K-means is used, I need to take those centers and calculate the convex hull of the set of color centers.</p>
 
 <p>Essentially I need to find which points/colors don't have enough contrast from another color. I think the answer to this would be to find the points inside the hull (simplices?) that aren't the vertices of the hull.</p>
 
