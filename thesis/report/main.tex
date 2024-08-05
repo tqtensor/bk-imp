@@ -2,7 +2,6 @@
 
 \usepackage[english]{babel}
 \usepackage[lined,boxed,commentsnumbered]{algorithm2e}
-\usepackage[square,numbers]{natbib}
 \usepackage[utf8]{inputenc}
 \usepackage{a4wide}
 \usepackage{amsbsy}
@@ -29,6 +28,7 @@
 \usepackage{layout}
 \usepackage{listings}
 \usepackage{lmodern}
+\usepackage{mathptmx}
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{pgfplots}
@@ -53,7 +53,8 @@
 
 \definecolor{lightgray}{gray}{0.9}
 
-\bibliographystyle{ieeetr}
+\usepackage[style=ieee,maxnames=2,minnames=1,natbib=true,url=false]{biblatex}
+\addbibresource{references.bib}
 
 \setlength{\parindent}{2.5em}
 \setlength{\parskip}{.5em}
@@ -145,16 +146,9 @@
 	\end{tabular}
 \end{tabular}
 }
-\fancyhead[R]{
-	\begin{tabular}{l}
-		\tiny \bf \\
-		\tiny \bf
-	\end{tabular}  }
-\fancyfoot{} % clear all footer fields
 
-\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.3pt}
-\renewcommand{\footrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
 \renewcommand{\baselinestretch}{1.5}
 
 \setcounter{secnumdepth}{4}
@@ -187,219 +181,9 @@
 
 \begin{document}
 
-\begin{titlepage}
-    \thispagestyle{empty}
-    \usetikzlibrary{calc}
-    \begin{tikzpicture}[overlay,remember picture]
-        \draw [line width=3pt]
-        ($ (current page.north west) + (2.0cm,-2.0cm) $)
-        rectangle
-        ($ (current page.south east) + (-1.5cm,1.8cm) $);
-        \draw [line width=1pt]
-        ($ (current page.north west) + (2.15cm,-2.15cm) $)
-        rectangle
-        ($ (current page.south east) + (-1.65cm,1.95cm) $);
-    \end{tikzpicture}
-
-    \begin{center}
-        \begin{large}
-            {\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}} \\
-            \fontsize{12pt}{1}\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
-            \fontsize{12pt}{1}\textbf{Faculty of Computer Science and Engineering}
-        \end{large} \\
-        \textbf{--------------------  *  ---------------------}\\
-
-        \vspace{0.8cm}
-        \includegraphics[scale=.35]{img/hcmut}\\
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
-
-        \vspace{0.8cm}
-        {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}\\[.75cm]
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1} Major: Computer Science}\\[.2cm]
-
-        \vspace{0.2cm}
-        {\fontsize{14.4pt}{1} Major code: 8480101}\\[.2cm]
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{MASTER'S THESIS}}
-    \end{center}
-
-    \vspace{1.0cm}
-
-    \hspace{.5cm}
-
-    \begin{center}
-        {{\fontsize{12pt}{1} Ho Chi Minh City, May 2024}}
-    \end{center}
-\end{titlepage}
-
 \newpage
-\begin{titlepage}
-    \thispagestyle{empty}
-    \usetikzlibrary{calc}
-    \begin{tikzpicture}[overlay,remember picture]
-        \draw [line width=3pt]
-        ($ (current page.north west) + (2.0cm,-2.0cm) $)
-        rectangle
-        ($ (current page.south east) + (-1.5cm,1.8cm) $);
-        \draw [line width=1pt]
-        ($ (current page.north west) + (2.15cm,-2.15cm) $)
-        rectangle
-        ($ (current page.south east) + (-1.65cm,1.95cm) $);
-    \end{tikzpicture}
-
-    \begin{center}
-        \begin{large}
-            {\fontsize{12pt}{1}\textbf{VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY}} \\
-            \fontsize{12pt}{1}\textbf{HO CHI MINH UNIVERSITY OF TECHNOLOGY} \\
-            \fontsize{12pt}{1}\textbf{Faculty of Computer Science and Engineering}
-        \end{large} \\
-        \textbf{--------------------  *  ---------------------}\\
-
-        \vspace{0.8cm}
-        \includegraphics[scale=.35]{img/hcmut}\\
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{TANG QUOC THAI}}\\[.75cm]
-
-        \vspace{0.8cm}
-        {\fontsize{17pt}{1}\selectfont \textbf{\MakeUppercase{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}}}\\[.75cm]
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1} Major: Computer Science}\\[.2cm]
-
-        \vspace{0.2cm}
-        {\fontsize{14.4pt}{1} Major code: 8480101}\\[.2cm]
-
-        \vspace{0.8cm}
-        {\fontsize{14.4pt}{1}\selectfont \textbf{MASTER'S THESIS}}
-    \end{center}
-
-    \vspace{1.0cm}
-
-    \hspace{.5cm}
-
-    \begin{center}
-        {{\fontsize{12pt}{1} Ho Chi Minh City, May 2024}}
-    \end{center}
-\end{titlepage}
-
-\newpage
-\begin{titlepage}
-    \begin{tikzpicture}[remember picture, overlay]
-        \draw[line width=0.5pt] ($(current page.north west) + (2cm,-2cm) $) rectangle ($(current page.south east) + (-1.5cm,1.8cm) $);
-    \end{tikzpicture}
-
-    \begin{center}
-        {\fontsize{12pt}{1}\textbf{THIS THESIS IS COMPLETED AT}} \\
-        \fontsize{12pt}{1}\textbf{HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY -\ VNU-HCM}
-    \end{center}
-
-    \vspace{0.2cm}
-
-    \begin{flushleft}
-        {
-        {\fontsize{12pt}{1}  Supervisor:}\\
-        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Huynh Tuong Nguyen}\\
-        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
-        {\fontsize{12pt}{1}  Examiner 1:}\\
-        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
-        {\fontsize{12pt}{1}  Examiner 2:}\\
-        {\fontsize{12pt}{1}  Assoc.\ Prof.\ Quan Thanh Tho}\\
-        }
-    \end{flushleft}
-
-    \vspace{0.2cm}
-
-    \begin{center}
-        {\fontsize{12pt}{1} This master's thesis is defended at HCM City University of Technology,}\\
-        {\fontsize{12pt}{1} VNU- HCM City on \ldots\ldots\ldots}\\[0.2cm]
-    \end{center}
-
-    \vspace{0.1cm}
-
-    \begin{flushleft}
-        {{\fontsize{12}{1} Master's Thesis Committee:}}
-        \begin{enumerate}
-            \item \ldots\ldots\ldots\ldots\ldots\ldots
-            \item \ldots\ldots\ldots\ldots\ldots\ldots
-            \item \ldots\ldots\ldots\ldots\ldots\ldots
-            \item \ldots\ldots\ldots\ldots\ldots\ldots
-            \item \ldots\ldots\ldots\ldots\ldots\ldots
-        \end{enumerate}
-
-        \vspace{0.1cm}
-
-        {{\fontsize{12}{1} Approval of the Chair of Master's Thesis Committee and Dean of Faculty of Computer Science and Engineering after the thesis being corrected (If any).}}
-    \end{flushleft}
-
-    \vspace{0.1cm}
-
-    \begin{minipage}[t]{0.45\textwidth}
-        \begin{flushleft}
-            {\fontsize{8pt}{1}\textbf{CHAIR OF THESIS COMMITTEE}}\\[0.1cm]
-            {\fontsize{8pt}{1}\textbf{}}\\[1cm]
-            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
-        \end{flushleft}
-    \end{minipage}
-    \begin{minipage}[t]{0.55\textwidth}
-        \begin{flushleft}
-            {\fontsize{8pt}{1}\textbf{DEAN OF FACULTY OF}}\\[0.1cm]
-            {\fontsize{8pt}{1}\textbf{COMPUTER SCIENCE AND ENGINEERING}}\\[1cm]
-            {\fontsize{8pt}{1} Assoc.\ Prof.\ Quan Thanh Tho}
-        \end{flushleft}
-    \end{minipage}
-
-    \vskip0pt plus1fill
-\end{titlepage}
-
-\newpage
-\begin{titlepage}
-    \begin{center}
-        \large\bf ACKNOWLEDGEMENTS
-    \end{center}
-    The completion of this thesis was made possible by the significant support I received from numerous individuals. I am deeply grateful to my primary supervisors, \textbf{Assoc.\ Prof.\ Quan Thanh Tho} and \textbf{Assoc.\ Prof.\ Huynh Tuong Nguyen}. Their guidance, provision of resources, and continuous monitoring of this topic's progress were invaluable. They were always ready to help when I faced challenges. Above all, their passion for machine learning, deep learning, natural language processing, and various other aspects of Computer Science has been a source of inspiration.
-
-    I wish to express my profound gratitude to the esteemed professors and lecturers of the Department of Computer Science and Engineering, and the Ho Chi Minh City University of Technology at large. The knowledge they imparted is priceless and has been instrumental in the completion of this thesis.
-
-    I would also like to extend my appreciation to the startup PixelML for your generous contribution of AWS credits, which facilitated the use of several LLMs for this project.
-
-    Lastly, I am thankful for my family, relatives, and friends. Their concern, encouragement, and support, both emotionally and physically, provided me with the strength and resilience needed to successfully complete this thesis.
-
-    With heartfelt gratitude, I wish good health and all the best to the professors and lecturers of the Department of Computer Science and Engineering at the Ho Chi Minh City University of Technology, National University of Ho Chi Minh City.
-\end{titlepage}
-
-\newpage
-\begin{titlepage}
-    \begin{center}
-        \large\bf ABSTRACT OF DISSERTATION
-    \end{center}
-    This thesis explores the \textbf{\textit{Application of Large Language Models in Software Error Debugging}}, focusing on the use of self-correcting Large Language Models (LLMs) to assist in software bug resolution. The study introduces and evaluates a novel method that combines the Chain-of-Thought (CoT) prompting technique and a code evolution framework, specifically applied to Python data science problems. This approach, referred to as the CoT-SelfEvolve model, is evaluated against several benchmarks and compared with other published methods. The CoT-SelfEvolve model demonstrates superior performance, particularly with Pytorch, Sklearn, Matplotlib, Pandas, Numpy, and Tensorflow tasks, highlighting the potential of LLMs in automated debugging. However, areas for improvement were identified, such as underperformance with Scipy questions and the need for further exploration of LLM parameters' effects on performance. The study concludes that the CoT-SelfEvolve model is a promising step towards more efficient and effective automated debugging, and it paves the way for future research in this domain.
-\end{titlepage}
-
-
-\newpage
-\begin{titlepage}
-    \begin{center}
-        \large\bf DECLARATION
-    \end{center}
-    I solemnly affirm that the thesis titled: \textbf{\textit{APPLICATION OF LARGE LANGUAGE MODELS IN SOFTWARE ERROR DEBUGGING}} is the product of my own research endeavors.
-
-    The data and findings presented in this thesis are entirely accurate to the best of my knowledge, and I accept full responsibility for any inaccuracies. I am prepared to face any disciplinary actions that may be imposed by the department or the university in case of any discrepancies.
-
-    \begin{flushright}
-        \begin{tabular}{c c}
-            \textbf{Student}        & \textbf{} \\[2cm]
-            \textbf{Tang Quoc Thai} & \textbf{} \\
-        \end{tabular}
-    \end{flushright}
-\end{titlepage}
-
-\newpage
+\pagenumbering{roman}
+\setcounter{page}{6}
 \tableofcontents
 
 \newpage
@@ -409,6 +193,8 @@
 \listoftables
 
 \newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 \chapter{Topic Introduction}
 
 \section{General Introduction}
@@ -651,33 +437,33 @@ Furthermore, the domain of software error debugging poses a challenging and intr
 This section provides the relevant background to understand the fundamentals related to LLMs. Aligned with the objective of providing a comprehensive overview of this direction, this section offers a comprehensive yet concise outline of the basic concepts. The focus is more on the intuitive aspects and interested readers are referred to the original works for details.
 
 \section{Tokenization}
-LLMs are trained on text to predict text, and similar to other natural language processing systems, they use tokenization~\cite{webster1992tokenization} as the essential preprocessing step. It aims to parse the text into non-decomposing units called tokens. Tokens can be characters, subwords~\cite{kudo2018subword}, symbols~\cite{sennrich2015neural}, or words, depending on the size and type of the model. Some of the commonly used tokenization schemes in LLMs are briefed here. Readers are encouraged to refer to~\cite{mielke2021between} for a detailed survey.
+LLMs are trained on text to predict text, and similar to other natural language processing systems, they use tokenization as the essential preprocessing step. It aims to parse the text into non-decomposing units called tokens. Tokens can be characters, subwords, symbols, or words, depending on the size and type of the model. Some of the commonly used tokenization schemes in LLMs are briefed here. Readers are encouraged to refer to for a detailed survey.
 
 \begin{enumerate}
-    \item WordPiece~\cite{schuster2012japanese}: It was introduced in~\cite{schuster2012japanese} as a novel text segmentation technique for Japanese and Korean languages to improve the language model for voice search systems. WordPiece selects tokens that increase the likelihood of an n-grambased language model trained on the vocabulary composed of tokens.
+    \item WordPiece: It was introduced as a novel text segmentation technique for Japanese and Korean languages to improve the language model for voice search systems. WordPiece selects tokens that increase the likelihood of an n-grambased language model trained on the vocabulary composed of tokens.
 
-    \item BPE~\cite{sennrich2015neural}: Byte Pair Encoding (BPE) has its origin in compression algorithms. It is an iterative process of generating tokens where pairs of adjacent symbols are replaced by a new symbol, and the occurrences of the most occurring symbols in the input text are merged.
+    \item BPE: Byte Pair Encoding (BPE) has its origin in compression algorithms. It is an iterative process of generating tokens where pairs of adjacent symbols are replaced by a new symbol, and the occurrences of the most occurring symbols in the input text are merged.
 
-    \item UnigramLM~\cite{kudo2018subword}: In this tokenization, a simple unigram LM is trained using an initial vocabulary of subword units. The vocabulary is pruned iteratively by removing the lowest probability items from the list, which are the worst performing on the unigram LM.
+    \item UnigramLM: In this tokenization, a simple unigram LM is trained using an initial vocabulary of subword units. The vocabulary is pruned iteratively by removing the lowest probability items from the list, which are the worst performing on the unigram LM.
 \end{enumerate}
 
 \section{Attention in LLMs}
 The attention mechanism computes a representation of the input sequences by relating different positions (tokens) of these sequences. There are various approaches to calculating and implementing attention, out of which some famous types are given below.
 
 \begin{enumerate}
-    \item \textbf{Self-Attention}~\cite{vaswani2017attention}: Self-attention, also known as intra-attention, connects all the sequence positions with $O(1)$ space complexity, which is highly desirable for learning long-range dependencies in the input. In self-attention, all the queries, keys, and values come from the same block (encoder or decoder).
+    \item \textbf{Self-Attention}: Self-attention, also known as intra-attention, connects all the sequence positions with $O(1)$ space complexity, which is highly desirable for learning long-range dependencies in the input. In self-attention, all the queries, keys, and values come from the same block (encoder or decoder).
 
     \item \textbf{Cross Attention}: In encoder-decoder architectures, the outputs of the encoder blocks act as the queries to the intermediate representation of the decoder, which provides the keys and values to calculate a representation of the decoder conditioned on the encoder. This attention is called cross-attention.
 
     \item \textbf{Full Attention}: The naive implementation of calculating self-attention is known as full attention.
 
-    \item \textbf{Sparse Attention}~\cite{child2019generating}: Self-attention has a time complexity of $O(n^2)$, which becomes prohibitive when scaling the LLMs to large context windows. An approximation to self-attention was proposed in~\cite{child2019generating}, which greatly enhanced the capacity of GPT series LLMs to process a greater number of input tokens in a reasonable time.
+    \item \textbf{Sparse Attention}: Self-attention has a time complexity of $O(n^2)$, which becomes prohibitive when scaling the LLMs to large context windows. An approximation to self-attention was proposed in, which greatly enhanced the capacity of GPT series LLMs to process a greater number of input tokens in a reasonable time.
 
-    \item \textbf{Flash Attention}~\cite{dao2022flashattention}: The bottleneck for calculating attention using GPUs lies in memory access rather than computational speed. Flash Attention uses classical input tiling to process input blocks in GPU on-chip SRAM rather than doing IO for every token from the High Bandwidth Memory (HBM). An extension of this approach to sparse attention follows the speed gains of the full attention implementation. This trick allows even greater context-length windows in the LLMs as compared to those LLMs with sparse attention.
+    \item \textbf{Flash Attention}: The bottleneck for calculating attention using GPUs lies in memory access rather than computational speed. Flash Attention uses classical input tiling to process input blocks in GPU on-chip SRAM rather than doing IO for every token from the High Bandwidth Memory (HBM). An extension of this approach to sparse attention follows the speed gains of the full attention implementation. This trick allows even greater context-length windows in the LLMs as compared to those LLMs with sparse attention.
 \end{enumerate}
 
 \section{Encoding Positions}
-The attention modules do not consider the order of processing by design. Transformer~\cite{vaswani2017attention} introduced `positional encodings' to feed information about the position of the tokens in input sequences. Several variants of positional encoding have been proposed~\cite{press2021train, su2024roformer}. Interestingly, a recent study [67] suggests that adding this information may not matter for the state-of-the-art decoder-only Transformers.
+The attention modules do not consider the order of processing by design. Transformer introduced `positional encodings' to feed information about the position of the tokens in input sequences. Several variants of positional encoding have been proposed. Interestingly, a recent study suggests that adding this information may not matter for the state-of-the-art decoder-only Transformers.
 
 \begin{enumerate}
     \item \textbf{Absolute}: This is the most straightforward approach to adding the sequence order information by assigning a unique identifier to each position of the sequence before passing it to the attention module.
@@ -690,18 +476,18 @@ Alibi~\cite{press2021train}: In this approach, a scalar bias is subtracted from 
 RoPE~\cite{su2024roformer}: Keys, queries, and values are all vectors in the LLMs. RoPE involves the rotation of the query and key representations at an angle proportional to their absolute positions of the tokens in the input sequence. This step results in a relative positional encoding scheme which decays with the distance between the tokens.
 
 \section{Activation Functions}
-The activation functions serve a crucial role in the curvefitting abilities of the neural networks, as proved in~\cite{hornik1989multilayer}. The modern activation functions used in LLMs are different from the earlier squashing functions but are critical to the success of LLMs. The activation functions are discussed in this section.
+The activation functions serve a crucial role in the curvefitting abilities of the neural networks. The modern activation functions used in LLMs are different from the earlier squashing functions but are critical to the success of LLMs. The activation functions are discussed in this section.
 
 \begin{enumerate}
-    \item ReLU~\cite{nair2010rectified}: Rectified linear unit (ReLU) is defined as
+    \item ReLU: Rectified linear unit (ReLU) is defined as
 
           \begin{equation}
               ReLU(x)=\max(0, x).
           \end{equation}
 
-    \item GeLU~\cite{hendrycks2016gaussian}: Gaussian Error Linear Unit (GeLU) is the combination of ReLU, dropout~\cite{srivastava2014dropout} and zoneout~\cite{krueger2016zoneout}. It is the most widely used activation function in contemporary LLMs literature.
+    \item GeLU: Gaussian Error Linear Unit (GeLU) is the combination of ReLU, dropout and zoneout. It is the most widely used activation function in contemporary LLMs literature.
 
-    \item GLU variants~\cite{shazeer2020glu}: Gated Linear Unit~\cite{dauphin2017language} is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as
+    \item GLU variants: Gated Linear Unit is a neural network layer that is an element-wise product $(\otimes)$ of a linear transformation and a sigmoid transformed $(\sigma)$ linear projection of the input given as
 
           \begin{equation}
               GLU(x, W, V, b, c)=(xW + b) \otimes \sigma(xV + c),
@@ -709,7 +495,7 @@ The activation functions serve a crucial role in the curvefitting abilities of t
 
           where $X$ is the input of layer and $l, W, b, V$ and $c$ are learned parameters.
 
-          GLU was modified in~\cite{shazeer2020glu} to evaluate the effect of different variations in the training and testing of transformers, resulting in better empirical results. Here are the different GLU variations introduced in~\cite{shazeer2020glu} and used in LLMs:
+          GLU was modified to evaluate the effect of different variations in the training and testing of transformers, resulting in better empirical results. Here are the different GLU variations introduced and used in LLMs:
 
           \begin{equation}
               ReGLU(x, W, V, b, c) = \max (0, xW + b) \otimes,
@@ -736,7 +522,7 @@ Layer normalization leads to faster convergence and is a widely used component i
 
           where $n$ is the number of neurons in layer $l$ and $a_{i}^{l}$ is the summed input of neuron $i$ in layer $l$. LayerNorm provides invariance to rescaling of the weights and re-centering of the distribution.
 
-    \item RMSNorm:~\cite{zhang2019root} proposed that the invariance properties of LayerNorm are spurious, and computationally efficient normalization achieving the same performance benefits as LayerNorm can be obtained by trading off re-centering invariance with speed. LayerNorm gives the normalized summed input to layer $l$ as follows:
+    \item RMSNorm: proposed that the invariance properties of LayerNorm are spurious, and computationally efficient normalization achieving the same performance benefits as LayerNorm can be obtained by trading off re-centering invariance with speed. LayerNorm gives the normalized summed input to layer $l$ as follows:
 
           \begin{equation}
               \overline{a_{i}^{l}} = \frac{a_{i}^{l}-u^{l}}{\sigma} g_{i}^{l}
@@ -748,9 +534,9 @@ Layer normalization leads to faster convergence and is a widely used component i
               \overline{a_{i}^{l}} = \frac{a_{i}^{l}}{\operatorname{RMS}\left(\mathbf{a}^{l}\right)} g_{i}^{l} \text {, where } \operatorname{RMS}\left(\mathbf{a}^{l}\right) = \sqrt{\frac{1}{n} \sum_{i}^{n}{a_{i}^{l}}^{2}}.
           \end{equation}
 
-    \item Pre-Norm and Post-Norm: LLMs use the transformer~\cite{vaswani2017attention} architecture with some variations. The original implementation~\cite{vaswani2017attention} used layer normalization after the residual connection, commonly called post-LN, concerning the order of Multihead attention - Residual - LN. Another order of normalization, referred to as pre-LN~\cite{baevski2018adaptive}, places normalization before the self-attention layer as in LN - Multihead attention - Residual. Pre-LN is known to provide more stability in training~\cite{shleifer2021normformer}.
+    \item Pre-Norm and Post-Norm: LLMs use the transformer architecture with some variations. The original implementation used layer normalization after the residual connection, commonly called post-LN, concerning the order of Multihead attention - Residual - LN. Another order of normalization, referred to as pre-LN, places normalization before the self-attention layer as in LN - Multihead attention - Residual. Pre-LN is known to provide more stability in training.
 
-    \item DeepNorm: While pre-LN has certain benefits over post-LN training, pre-LN training has an unwanted effect on the gradients~\cite{shleifer2021normformer}. The earlier layers have larger gradients than those at the bottom. DeepNorm~\cite{wang2022deepnet} mitigates these adverse gradient effects. It is given as:
+    \item DeepNorm: While pre-LN has certain benefits over post-LN training, pre-LN training has an unwanted effect on the gradients. The earlier layers have larger gradients than those at the bottom. DeepNorm mitigates these adverse gradient effects. It is given as:
 
           \begin{equation}
               \mathbf{x}^{l_{f}} = LN\left(\alpha \mathbf{x}^{l_{p}}+G^{l_{p}}\left(\mathbf{x}^{l_{p}}, \theta^{l_{p}}\right)\right),
@@ -959,8 +745,6 @@ for i in range(1, N):
 
 Subsequently, each document is processed by a function that employs OpenAI's text embedding model to generate embeddings for both the post and its comments. These embeddings are then securely stored in a database for future retrieval and use.
 
-Refer to Appendix~\ref{app:stackoverflow_doc} for an example of the generated document.
-
 \section{Proposed Enhancements}
 In the SelfEvolve paper, it is explicitly stated that the model primarily relies on feedback from the code executor to refine the generated code. However, there exist additional potential feedback sources that could be harnessed to bolster the model's performance. This study seeks to investigate the integration of the CoT prompting method and the inclusion of human discussions.
 
@@ -1125,102 +909,7 @@ The CoT-SelfEvolve model, which leverages the power of large language models suc
 \section{Things to Improve}
 Despite the promising results, there are areas that warrant further investigation. The study reveals a minor underperformance of the model with Scipy questions, indicating room for improvement in handling such tasks. Additionally, the effects of parameters of the LLM, such as temperature, on the model's performance have not been thoroughly explored and could be a fruitful area for future research. Finally, the optimal number of discussions from StackOverflow that should be used for the CoT prompt generator is still an open question. Diving deeper into these areas could lead to further enhancements of the CoT-SelfEvolve model and, consequently, more efficient and effective automated debugging.
 
-\newpage
-\appendix
-\chapter{StackOverflow Document}
-\label{app:stackoverflow_doc}
-\begin{lstlisting}
-Post: <p>I have a Numpy array of colors that is returned when using K-means quantization on an image. After K-means is used, I need to take those centers and calculate the convex hull of the set of color centers.</p>
-
-<p>Essentially I need to find which points/colors don't have enough contrast from another color. I think the answer to this would be to find the points inside the hull (simplices?) that aren't the vertices of the hull.</p>
-
-<pre><code>import matplotlib.pyplot as plt
-import numpy as np
-from PIL import Image
-from scipy.spatial import ConvexHull
-from skimage import color, exposure
-from sklearn import cluster
-
-def quantize(pixels, n_colors):
-    width, height, depth = pixels.shape
-    reshaped_pixels = np.reshape(pixels, (width * height, depth))
-    model = cluster.KMeans(n_clusters=n_colors, n_init=100, precompute_distances=True)
-    labels = model.fit_predict(reshaped_pixels)
-    centers = model.cluster_centers_
-    quantized_pixels = np.reshape(centers[labels], (width, height, centers.shape[1]))
-
-    return quantized_pixels, centers, labels
-
-def scale_image(img, max_width=100):
-    img_width, img_height = img.size
-    ratio = (max_width / float(img_width))
-    new_height = int((float(img_height)*float(ratio)))
-    img.thumbnail((max_width, new_height), Image.NEAREST)
-    return img
-
-# Open image, convert to RGB just in case
-img = Image.open('image2.jpg').convert('RGB')
-
-# Scale image to speed up processing
-img = scale_image(img, 80)
-
-# Convert to numpy array
-np_img_array = np.array(img)
-
-# Convert rgb to lab colorspace
-lab_pixels = color.rgb2lab(np_img_array)
-
-# Kmeans quantization
-quantized_lab_pixels, centers, labels = quantize(lab_pixels, 16)
-
-# Convert pixels back to rgb
-quantized_rgb_pixels = (color.lab2rgb(quantized_lab_pixels)*255).astype('uint8')
-
-# Attempt to use convex hull around cluster centers
-hull = ConvexHull(centers)
-
-for simplex in hull.simplices:
-    plt.plot(centers[simplex, 0], centers[simplex, 1])
-plt.scatter(*centers.T, alpha=.5, color='k', marker='v')
-
-
-for p in centers:
-    point_is_in_hull = point_in_hull(p, hull)
-    marker = 'x' if point_is_in_hull else 'd'
-    color = 'g' if point_is_in_hull else 'm'
-    plt.scatter(p[0], p[1], marker=marker, color=color)
-
-plt.show()
-</code></pre>
-
-<p><strong>Update:</strong> Here is my rendered plot output. I'm not using the color labels in the plotting in this render.</p>
-
-<p><a href="https://i.stack.imgur.com/Luv0j.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/Luv0j.png" alt="enter image description here"></a></p>
-
-<p>Here is more so what would be helpful to see. However, the plots aren't what I need... I need to find out which of the cluster centers (colors) make up the vertices of the hull and then pair them back to the vertices labels.</p>
-
-<p><a href="https://i.stack.imgur.com/OgQci.png" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/OgQci.png" alt="enter image description here"></a></p>
-
-<p>Here is an example of the RGB colors outputted (on the left), and then on the right you would have the final colors, which would be after excluding cluster centers that fall outside of the region.</p>
-
-<p><a href="https://i.stack.imgur.com/lRVVB.jpg" rel="nofollow noreferrer"><img src="https://i.stack.imgur.com/lRVVB.jpg" alt="enter image description here"></a></p>
-
-
-Comments:
-- comment: Can you add to your code a sample output of your code, and also what the desired output would be?
-- comment: @user8153 I'll try... but not really sure how to go about that since I'm not getting the correct outputs to start with. It's more so about finding which clusters are not within the hull region... and that would be the answer.
-- comment: Could you please clarify: you want to "find out which of the cluster centers are not within the convex hull" -- the convex hull of what? The convex hull of the cluster centers?
-- comment: @user8153 yes that is correct. These cluster centers are actual colors. Sometimes the cluster centers are very similar colors, but I need to exclude the very similar colors based on contrast to the rest of the cluster centers. I was thinking that if I used each of the centers to draw the regions then it would potentially exclude clusters that didn't have enough contrast between them.
-- comment: Just updated the question with another image to show sample output and desired output.
-- comment: Why doesn't every cluster center lie within the convex hull of the the cluster centers? Doesn't the convex hull of a set of points include all those points?
-- comment: After thinking more, I believe you're right. I think the answer is to find the points inside the hull... the points that are masked. The edge points (points that make up the hull mask) are the points that will be used in the final output.
-- comment: If your cluster centers are too similar, you should try using fewer clusters or change your distance measure so it uses contrast instead of euclidean distance along lab colorspace.
-- comment: @swenzel I don't see either one of those solving the problem in a precise way. Both of those suggestions will leave the door open for other problems. If you calculate based only on contrast, then you're not going to effectively cluster the colors...
-- comment: Sorry, I didn't really know what I was talking about when I mentioned contrast. I've read a little about colorcoding now and understand that contrast doesn't take into account the color itself but only relative luminance. I meant you need a distance measure, that has the same idea of similarity which you have. Apparently you consider colors similar which the clustering algorithm considers different. So change the distance measure, play around with it, make luminance count a little less for example.
-\end{lstlisting}
-
-\newpage
-\renewcommand{\bibname}{References}
-\bibliography{references}
+\sloppy
+\printbibliography[heading=subbibintoc,type=article,title=References]
 
 \end{document}
